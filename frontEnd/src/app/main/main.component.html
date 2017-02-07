@@ -1,7 +1,13 @@
-<p>
-  main works!
-</p>
+<div *ngIf="!isLoggedIn">
+    <input input id="name" type="text" [(ngModel)]="model.name">
+    <button (click)="logIn()">Login</button>
+    <div>{{model | json}}</div>
+    <div *ngIf="userNameTaken">I can see this</div>
+</div>
 
-<app-chatdetails></app-chatdetails>
-<app-chatpicker></app-chatpicker>
-<app-currentchat></app-currentchat>
+
+<div *ngIf="isLoggedIn">
+    <app-chatdetails></app-chatdetails>
+    <app-chatpicker></app-chatpicker>
+    <app-currentchat></app-currentchat>
+</div>

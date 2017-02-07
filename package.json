@@ -1,0 +1,9 @@
+{
+	"name" : "chatserver",
+	"description" : "WEPO Chat client assignment",
+	"version" : "0.0.1",
+	"dependencies" : {  
+		"express" : "4.14.1",
+		"socket.io" : "1.7.2"
+	}
+}
