@@ -1,5 +1,5 @@
 <div *ngIf="!isLoggedIn">
-    <input input id="name" type="text" [(ngModel)]="model.name">
+    <input input id="name" type="text" [(ngModel)]="userName">
     <button (click)="logIn()">Login</button>
     <div>{{model | json}}</div>
     <div *ngIf="userNameTaken">I can see this</div>

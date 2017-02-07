@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import * as sClient from 'socket.io-client';
+import { Room } from '../classes/room';
 
 @Component({
   selector: 'app-main',
@@ -9,7 +10,11 @@ import * as sClient from 'socket.io-client';
 export class MainComponent implements OnInit {
     public userNameTaken:boolean;
     public isLoggedIn:boolean;
-    public model:any;
+    public userName:string;
+    public allAvailableRooms:Room[];
+    public allUsers:any;
+
+
     private socket:any;
 
 
@@ -18,7 +23,9 @@ export class MainComponent implements OnInit {
     ngOnInit() {
         this.isLoggedIn = false;
         this.userNameTaken = false;
-        this.model = {name: ""};
+        this.userName = "";
+
+
         this.socket = sClient("localhost:8080/");
         this.socket.on("connect", () =>{
             console.log("Connected!");
@@ -26,7 +33,7 @@ export class MainComponent implements OnInit {
     }
 
     public logIn(){
-        this.socket.emit("adduser", this.model.name, (success) =>{
+        this.socket.emit("adduser", this.userName, (success) =>{
             if(success){
                 this.isLoggedIn = true;
                 console.log("Hey ur in!", success);
