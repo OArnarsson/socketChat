@@ -3,12 +3,28 @@
 #chatDetails
   width: 100%
   height: 100%
+  overflow: hidden
   background-color: $color-main
   border-left: 0.5px solid $color-light
-  .user
-    display: flex
-    align-items: center
-    border-bottom: 0.5px solid $color-light
-    img
-      border-radius: 50%
-      margin: 2%
+  h3
+    text-align: center
+    margin: 3% 0
+  .users
+    height: 25%
+    width: 100%
+    .userHeads
+      width: 100%
+      padding: 5%
+      img
+        padding: 1%
+  .activity
+    height: 75%
+    width: 100%
+    .activityLogs
+      height: 100%
+      overflow-y: auto
+      .log
+        display: flex
+        align-items: center
+        justify-content: space-around
+        padding: 2.5% 0

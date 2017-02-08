@@ -1,8 +1,24 @@
 <div id="chatDetails">
-  <h2>Users Online</h2>
-  <div class="user" *ngFor="let user of allUsers">
-    <img alt="chatHead" src="http://placehold.it/30x30"><img>
-    <h3>{{user}}</h3>
+
+  <div class="users">
+    <h3>Users online</h3>
+    <div class="userHeads">
+      <img *ngFor="let user of allUsers" alt={{user}} src="http://placehold.it/30x30"><img>
+    </div>
+  </div>
+  <div class="activity">
+    <h3>Activity log</h3>
+    <div class="activityLogs">
+      <div class="log">
+        <div>&#x25C8;</div>
+        <div>User was kicked!</div>
+        <div>19:23</div>
+      </div>
+      <div class="log">
+        <div>&#x25C8;</div>
+        <div>User was kicked!</div>
+        <div>19:23</div>
+      </div>
+    </div>
   </div>
 </div>
-
