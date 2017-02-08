@@ -13,7 +13,7 @@ export class MainComponent implements OnInit {
     public loggedIn:boolean;
     public userNameAvailable:boolean;
     constructor(private chat:ChatService) {
-        this.loggedIn = false;
+        this.loggedIn = true;
         this.userNameAvailable = true;
     }
 

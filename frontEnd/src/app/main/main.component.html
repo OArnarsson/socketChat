@@ -1,13 +1,15 @@
-<div *ngIf="loggedIn" id="nav">
-    <h1 class="brand">OnRi Chat</h1>
-    <h2 class="roomName">Room Name</h2>
-    <div class="profile">Hello: {{userName}}</div>
-</div>
-
-<app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
-<div id="content" *ngIf="loggedIn">
-    <app-chatpicker ></app-chatpicker>
-    <app-currentchat [(urName)]="userName"></app-currentchat>
-    <app-chatdetails ></app-chatdetails>
+<div class="container">
+    <div *ngIf="loggedIn" id="nav">
+        <h1 class="brand">OnRi Chat</h1>
+        <h2 class="roomName">Room Name</h2>
+        <div class="profile">Hello: {{userName}}</div>
+    </div>
+    
+    <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
+    <div id="content" *ngIf="loggedIn">
+        <app-chatpicker ></app-chatpicker>
+        <app-currentchat [(urName)]="userName"></app-currentchat>
+        <app-chatdetails ></app-chatdetails>
+    </div>
 </div>
 
