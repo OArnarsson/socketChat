@@ -6,7 +6,7 @@ import {Component, OnInit, Input} from '@angular/core';
   styleUrls: ['./chatdetails.component.sass']
 })
 export class ChatdetailsComponent implements OnInit {
-    @Input() chosenChat:string;
+    @Input() allUsers:string[];
     constructor() {
     }
 

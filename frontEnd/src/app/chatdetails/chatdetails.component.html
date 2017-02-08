@@ -1,9 +1,6 @@
 <div id="chatDetails">
   <h2>Users Online</h2>
   <div>
-    <div>User1</div>
-    <div>User1</div>
-    <div>User1</div>
-    <div>User1</div>
+    <div *ngFor="let user of allUsers">{{user}}</div>
   </div>
 </div>

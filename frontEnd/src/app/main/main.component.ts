@@ -16,12 +16,11 @@ export class MainComponent implements OnInit {
     public roomList: string[];
 
     constructor(private chat:ChatService) {
-        this.loggedIn = true;
+        this.loggedIn = false;
         this.userNameAvailable = true;
     }
 
     ngOnInit() {
-        this.getAllUsers();
         this.getAllRooms();
     }
 
@@ -33,6 +32,7 @@ export class MainComponent implements OnInit {
                     console.log("User has been logged in");
                     this.loggedIn = true;
                     this.userName = newName;
+                    this.getAllUsers();
                 }
                 else{
                     this.userName ="";
@@ -54,6 +54,10 @@ export class MainComponent implements OnInit {
                 this.roomList = rooms;
             }
         )
+    }
+    public logStuff(){
+        console.log("Users: ",this.userList);
+        console.log("Rooms: ",this.roomList);
     }
 
 }
