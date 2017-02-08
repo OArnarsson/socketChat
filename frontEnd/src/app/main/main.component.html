@@ -1,13 +1,9 @@
-<div *ngIf="!isLoggedIn">
-    <input input id="name" type="text" [(ngModel)]="userName">
-    <button (click)="logIn()">Login</button>
-    <div>{{model | json}}</div>
-    <div *ngIf="userNameTaken">I can see this</div>
-</div>
 
+<app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
 
-<div *ngIf="isLoggedIn">
-    <app-chatdetails></app-chatdetails>
-    <app-chatpicker></app-chatpicker>
-    <app-currentchat></app-currentchat>
+<div *ngIf="loggedIn">
+    <h1>Hello: {{userName}}</h1>
+    <app-chatdetails ></app-chatdetails>
+    <app-chatpicker ></app-chatpicker>
+    <app-currentchat [(urName)]="userName"></app-currentchat>
 </div>

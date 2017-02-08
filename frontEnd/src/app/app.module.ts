@@ -2,12 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { CurrentchatComponent } from './currentchat/currentchat.component';
 import { ChatdetailsComponent } from './chatdetails/chatdetails.component';
 import { ChatpickerComponent } from './chatpicker/chatpicker.component';
+import {ChatService} from "./chat.service";
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     declarations: [
@@ -15,15 +16,15 @@ import { ChatpickerComponent } from './chatpicker/chatpicker.component';
         MainComponent,
         CurrentchatComponent,
         ChatdetailsComponent,
-        ChatpickerComponent
+        ChatpickerComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
-        AppRoutingModule
+        HttpModule
     ],
-    providers: [],
+    providers: [ChatService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

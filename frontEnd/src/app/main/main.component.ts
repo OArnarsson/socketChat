@@ -1,47 +1,39 @@
 import {Component, OnInit} from '@angular/core';
-import * as sClient from 'socket.io-client';
-import { Room } from '../classes/room';
+import { ChatService }       from '../chat.service';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.sass']
+    selector: 'app-main',
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.sass'],
+    providers: [ChatService]
+
 })
 export class MainComponent implements OnInit {
-    public userNameTaken:boolean;
-    public isLoggedIn:boolean;
     public userName:string;
-    public allAvailableRooms:Room[];
-    public allUsers:any;
-
-
-    private socket:any;
-
-
-    constructor() { }
-
-    ngOnInit() {
-        this.isLoggedIn = false;
-        this.userNameTaken = false;
-        this.userName = "";
-
-
-        this.socket = sClient("localhost:8080/");
-        this.socket.on("connect", () =>{
-            console.log("Connected!");
-        });
+    public loggedIn:boolean;
+    public userNameAvailable:boolean;
+    constructor(private chat:ChatService) {
+        this.loggedIn = false;
+        this.userNameAvailable = true;
     }
 
-    public logIn(){
-        this.socket.emit("adduser", this.userName, (success) =>{
-            if(success){
-                this.isLoggedIn = true;
-                console.log("Hey ur in!", success);
-            }
-            else{
-                this.userNameTaken = true;
-            }
-        });
+    ngOnInit() {
+    }
+
+    //Socket Functions
+    public logIn(newName:string){
+        this.chat.logIn(newName).subscribe(
+            data => {
+                if (data) {
+                    console.log("User has been logged in");
+                    this.loggedIn = true;
+                    this.userName = newName;
+                }
+                else{
+                    this.userName ="";
+                    this.userNameAvailable = false;
+                }
+            });
     }
 
 }
