@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.isLoggedIn = false;
+        this.isLoggedIn = true;
         this.userNameTaken = false;
         this.userName = "";
 
