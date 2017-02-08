@@ -14,10 +14,12 @@ export class MainComponent implements OnInit {
     public userNameAvailable:boolean;
     public userList: string[];
     public roomList: string[];
+    public roomObj: any;
 
     constructor(private chat:ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
+        this.roomObj = {room:"lobby"};
     }
 
     ngOnInit() {
@@ -32,7 +34,7 @@ export class MainComponent implements OnInit {
                     console.log("User has been logged in");
                     this.loggedIn = true;
                     this.userName = newName;
-                    this.getAllUsers();
+                    this.joinRoom();
                 }
                 else{
                     this.userName ="";
@@ -40,14 +42,16 @@ export class MainComponent implements OnInit {
                 }
             });
     }
-
-    public getAllUsers(){
-        this.chat.getAllUsers().subscribe(
-            users => {
-                this.userList = users;
+    public joinRoom(){
+        this.chat.joinRoom(this.roomObj).subscribe(
+            roomObj => {
+                this.roomObj = roomObj;
+                this.userList = this.roomObj.users;
             }
         )
     }
+
+
     public getAllRooms(){
         this.chat.getAllRooms().subscribe(
             rooms => {

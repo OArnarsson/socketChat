@@ -40,16 +40,26 @@ export class ChatService {
         return observable;
     }
 
-    getAllUsers() : Observable<string[]>{
+    joinRoom(roomObj) : Observable<string[]>{
         let observable = new Observable(observer => {
-            this.socket.emit("users");
-            this.socket.on("userlist", (data) => {
-                let arr:string[] = [];
-                for(var x of data){
-                    arr.push(x);
+            this.socket.emit("joinroom", roomObj, (data) =>{
+                if(data){
+                    this.socket.on("updateusers", (room, users, ops) =>{
+                        let userArr: string[] = [];
+                        for(let user in users){
+                            userArr.push(user);
+                        }
+                        let obj = {
+                            room: room,
+                            users: userArr
+                        };
+                        console.log(obj);
+
+                        observer.next(obj);
+                    });
                 }
-                observer.next(arr);
             });
+
         });
         return observable;
     }
