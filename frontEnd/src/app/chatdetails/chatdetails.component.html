@@ -1,6 +1,8 @@
 <div id="chatDetails">
   <h2>Users Online</h2>
-  <div>
-    <div *ngFor="let user of allUsers">{{user}}</div>
+  <div class="user" *ngFor="let user of allUsers">
+    <img alt="chatHead" src="http://placehold.it/30x30"><img>
+    <h3>{{user}}</h3>
   </div>
 </div>
+

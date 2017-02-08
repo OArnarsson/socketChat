@@ -1,10 +1,19 @@
 <div class="container">
     <div *ngIf="loggedIn" id="nav">
-        <h1 class="brand">OnRi Chat</h1>
-        <h2 class="roomName">Room Name</h2>
-        <div class="profile" (click)="logStuff()">Hello: {{userName}}</div>
+        <div class="navLeft">
+            <img alt="OnRi" src="http://placehold.it/30x30"><img>
+            <h1 class="brand" (click)="logStuff()">OnRi Chat</h1>
+        </div>
+        <div class="navCenter">
+            <h2 class="roomName">Room Name</h2>
+            <img alt="roomImage" src="http://placehold.it/30x30"><img>
+        </div>
+        <div class="navRight">
+            <h2 class="profile">Hello: {{userName}}</h2>
+            <img alt="{{userName}} - profileImage" src="http://placehold.it/30x30"><img>
+        </div>
     </div>
-    
+
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">
         <app-chatpicker [(allRooms)]="roomList"></app-chatpicker>
@@ -12,4 +21,3 @@
         <app-chatdetails [(allUsers)]="userList"></app-chatdetails>
     </div>
 </div>
-
