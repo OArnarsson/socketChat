@@ -11,13 +11,25 @@
   height: 5%
   width: 100%
   text-align: center
-  background-color: magenta
-  .brand
-    width: $size-picker
-  .roomName
-    width: $size-current
-  .profile
-    width: $size-details  
+  background-color: $color-main-accent
+  div
+    display: flex
+    align-content: center
+    &:nth-of-type(3)
+      justify-content: flex-end
+    img
+      margin: $padding-normal
+  .navLeft
+      width: $size-picker
+  .navCenter
+      width: $size-current
+  .navRight
+    width: $size-details 
+    text-align: right
+    img
+      border-radius: 50%
+  
+
   
 
 #content

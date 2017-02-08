@@ -3,4 +3,47 @@
 #currentChat
   width: 100%
   height: 100%
-  background-color: red 
+  overflow: hidden
+
+  .mainChat
+    height: 96%
+    width: 100%
+    overflow-y: scroll
+    overflow-x: hidden
+    background-color: #FFF
+    font-size: 15px
+    color: #000
+    .messageOuter
+      background: lightcyan
+      display: flex
+      width: 95%
+      padding: 10px 2.5%
+      img
+        width: 30px
+        height: 30px
+        margin: 3px 7.5px 0 0
+      margin-bottom: 12.5px
+      .messageInner
+        display: inline-block
+        height: 100%
+        width: 93%
+        flex-direction: column
+        align-content: center
+        .messageStamp
+          display: flex
+          justify-content: space-between
+        .messageText
+          padding: 1% 5% 0 0
+        div
+          display: inline-block
+        .messageUser
+          font-size: 1.05rem
+          width: 90%
+    .ownMessage
+      float:right
+
+  input
+    margin: 0
+    padding: 0 0.5%
+    height: 3.5%
+    width: 100%
