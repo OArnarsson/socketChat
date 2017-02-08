@@ -1,45 +1,61 @@
 @import '../../variables.sass'
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
+
 
 #currentChat
   width: 100%
   height: 100%
   overflow: hidden
+  font-family: 'Source Sans Pro', sans-serif
 
   .mainChat
-    height: 96%
+    display: flex
+    height: 96.25%
     width: 100%
+    flex-direction: column
+    justify-content: flex-end
     overflow-y: auto
     overflow-x: hidden
     background-color: #FFF
     font-size: 15px
     color: #000
     border-left: 0.5px solid $color-light
+    .unread
+      background-color: rgba(213, 245, 226, 0.8)
     .messageOuter
-      background: lightcyan
       display: flex
       width: 95%
       padding: 10px 2.5%
-      img
+      margin-top: 0.4em
+      .avatar
+        display: flex
         width: 30px
         height: 30px
-        margin: 3px 7.5px 0 0
-      margin-bottom: 12.5px
+        margin: 3px 15px 3px 0
+        justify-content: center
+        align-items: center
+        border-radius: 4px
+        background-color: lightgreen
       .messageInner
         display: inline-block
         height: 100%
-        width: 93%
+        width: 100%
         flex-direction: column
         align-content: center
+        .messageUser
+          opacity: 0.7
+          color: #333
+          font-size: 1.05rem
+          width: 90%
+        .messageTime
+          color: $color-font-light
         .messageStamp
           display: flex
           justify-content: space-between
         .messageText
-          padding: 1% 5% 0 0
+          padding: 0% 6% 0 0
         div
           display: inline-block
-        .messageUser
-          font-size: 1.05rem
-          width: 90%
     .ownMessage
       float:right
 
