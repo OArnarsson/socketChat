@@ -2,11 +2,19 @@
 
 #nav
   display: flex
-  justify-content: space-between
+  justify-content: space-around
   align-items: center 
-  height: 55px
+  height: $size-nav
   width: 100%
+  text-align: center
   background-color: magenta
+  .brand
+    width: $size-picker
+  .roomName
+    width: $size-current
+  .profile
+    width: $size-details  
+  
 
 
 
@@ -18,10 +26,14 @@
   height: 100%
   background-color: $color-bg
 
-app-chatPicker, app-chatDetails
-  width: 15%
+app-chatPicker
+  width: $size-picker
+  height: 100%
+
+app-chatDetails
+  width: $size-details
   height: 100%
 
 app-currentChat
-  width: 60%
+  width: $size-current
   height: 100%
