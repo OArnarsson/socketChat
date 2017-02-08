@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ChatService }       from '../chat.service';
+import { ChatService } from '../chat.service';
 
 @Component({
     selector: 'app-main',
@@ -12,12 +12,17 @@ export class MainComponent implements OnInit {
     public userName:string;
     public loggedIn:boolean;
     public userNameAvailable:boolean;
+    public userList: string[];
+    public roomList: string[];
+
     constructor(private chat:ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
     }
 
     ngOnInit() {
+        this.getAllUsers();
+        this.getAllRooms();
     }
 
     //Socket Functions
@@ -34,6 +39,21 @@ export class MainComponent implements OnInit {
                     this.userNameAvailable = false;
                 }
             });
+    }
+
+    public getAllUsers(){
+        this.chat.getAllUsers().subscribe(
+            users => {
+                this.userList = users;
+            }
+        )
+    }
+    public getAllRooms(){
+        this.chat.getAllRooms().subscribe(
+            rooms => {
+                this.roomList = rooms;
+            }
+        )
     }
 
 }

@@ -276,6 +276,7 @@ io.sockets.on('connection', function (socket) {
 		for(var user in users) {
 			userlist.push(user);
 		}
+		console.log("Requesting list of users");
 		socket.emit('userlist', userlist);
 	});
 
