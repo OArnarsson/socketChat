@@ -1,18 +1,8 @@
 <div id="chatDetails">
-  <div class="user">
+  <h2>Users Online</h2>
+  <div class="user" *ngFor="let user of allUsers">
     <img alt="chatHead" src="http://placehold.it/30x30"><img>
-    <h3>{{userName}} Nonni</h3>
-  </div>
-  <div class="user">
-    <img alt="chatHead" src="http://placehold.it/30x30"><img>
-    <h3>Guðbrandur Ari</h3>
-  </div>
-  <div class="user">
-    <img alt="chatHead" src="http://placehold.it/30x30"><img>
-    <h3>Brandari</h3>
-  </div>
-  <div class="user">
-    <img alt="chatHead" src="http://placehold.it/30x30"><img>
-    <h3>S3cureM4st3r</h3>
+    <h3>{{user}}</h3>
   </div>
 </div>
+

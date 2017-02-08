@@ -43,9 +43,9 @@ export class ChatService {
     getAllUsers() : Observable<string[]>{
         let observable = new Observable(observer => {
             this.socket.emit("users");
-            this.socket.on('userlist', (data) => {
+            this.socket.on("userlist", (data) => {
                 let arr:string[] = [];
-                for(let x of data){
+                for(var x of data){
                     arr.push(x);
                 }
                 observer.next(arr);
@@ -57,9 +57,9 @@ export class ChatService {
     getAllRooms() : Observable<string[]>{
         let observable = new Observable(observer => {
             this.socket.emit("rooms");
-            this.socket.on('roomlist', (data) => {
+            this.socket.on("roomlist", (data) => {
                 let arr:string[] = [];
-                for(let x of data){
+                for(var x in data){
                     arr.push(x);
                 }
                 observer.next(arr);

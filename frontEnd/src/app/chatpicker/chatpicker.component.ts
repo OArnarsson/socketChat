@@ -6,7 +6,7 @@ import {Component, OnInit, Input} from '@angular/core';
   styleUrls: ['./chatpicker.component.sass']
 })
 export class ChatpickerComponent implements OnInit {
-    @Input() chosenChat:string;
+    @Input() allRooms:string[];
     constructor() { }
 
     ngOnInit() {

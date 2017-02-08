@@ -1,7 +1,7 @@
 <div class="container">
     <div *ngIf="loggedIn" id="nav">
         <div class="navLeft">
-            <h1 class="brand">OnRi Chat</h1>
+            <h1 class="brand" (click)="logStuff()">OnRi Chat</h1>
         </div>
         <div class="navCenter">
             <h2 class="roomName">Room Name</h2>
@@ -15,8 +15,8 @@
 
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">
-        <app-chatpicker></app-chatpicker>
-        <app-currentchat [(urName)]="userName"></app-currentchat>
-        <app-chatdetails></app-chatdetails>
+        <app-chatpicker [(allRooms)]="roomList"></app-chatpicker>
+        <app-currentchat></app-currentchat>
+        <app-chatdetails [(allUsers)]="userList"></app-chatdetails>
     </div>
 </div>
