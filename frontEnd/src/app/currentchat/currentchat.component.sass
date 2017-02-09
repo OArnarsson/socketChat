@@ -9,7 +9,6 @@
   font-family: 'Source Sans Pro', sans-serif
 
   .mainChat
-    display: flex
     height: 96.25%
     width: 100%
     flex-direction: column
@@ -22,40 +21,42 @@
     border-left: 0.5px solid $color-light
     .unread
       background-color: rgba(213, 245, 226, 0.8)
-    .messageOuter
+    .message
       display: flex
-      width: 95%
-      padding: 10px 2.5%
       margin-top: 0.4em
+      margin: 15px 0%
+      padding: 0% 1.5%
+      div 
+        &:nth-of-type(1)
+          margin-right: 1.5%
+        &:nth-of-type(2)
+          display: flex
+          flex-direction: column
+          justify-content: flex-start
+          width: 100%
+
       .avatar
-        display: flex
         width: 30px
         height: 30px
-        margin: 3px 15px 3px 0
+        display: flex
         justify-content: center
         align-items: center
         border-radius: $radius
         background-color: lightgreen
-      .messageInner
+        align-self: center
+      .messageUser
+        line-height: 1
+        padding-bottom: 4px
+        opacity: 0.7
+        color: #333
+        font-size: 1.05rem
+      .messageTime
+        color: $color-font-light
+      .messageStamp
+        display: flex
+        justify-content: space-between
+      div
         display: inline-block
-        height: 100%
-        width: 100%
-        flex-direction: column
-        align-content: center
-        .messageUser
-          opacity: 0.7
-          color: #333
-          font-size: 1.05rem
-          width: 90%
-        .messageTime
-          color: $color-font-light
-        .messageStamp
-          display: flex
-          justify-content: space-between
-        .messageText
-          padding: 0% 6% 0 0
-        div
-          display: inline-block
     .ownMessage
       float:right
 

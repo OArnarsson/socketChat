@@ -1,4 +1,4 @@
-<input input id="name" type="text" [(ngModel)]="userName">
-<button (click)="logIn()">Login</button>
-<div>{{userName}}</div>
-<div *ngIf="!isAvailable">I can see this</div>
+<div class="flexContainer">
+    <input input id="name" type="text" [(ngModel)]="userName">
+    <div *ngIf="!isAvailable">That username is taken!</div>
+</div>
