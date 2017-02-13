@@ -19,8 +19,6 @@
         </div>
     </div>
 
-    <!--Arrow?!-->
-
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">
         <app-chatpicker></app-chatpicker>
