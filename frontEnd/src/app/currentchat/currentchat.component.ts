@@ -7,17 +7,28 @@ import { ChatService } from '../chat.service'
   styleUrls: ['./currentchat.component.sass']
 })
 export class CurrentchatComponent implements OnInit {
-    @Input() urName:string;
-    @Output() childChangeName = new EventEmitter();
+    message:string;
+    allMessages:any;
     constructor(private chat:ChatService) {
-
+        this.message = "";
+        this.getMessages();
     }
 
     ngOnInit() {
 
     }
-    Testing(){
-        this.childChangeName.emit('newNameFromChild');
+    sendMsg(event:any){
+        if(event.keyCode == 13){
+            console.log(this.message);
+            let msg = {roomName: "lobby", msg: this.message};
+            this.chat.sendMessage(msg);
+            this.message = "";
+        }
+    }
+    getMessages(){
+        this.chat.getMessages().subscribe(
+            messages => this.allMessages = messages['msgHistory']
+        );
     }
 
 }
