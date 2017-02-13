@@ -1,7 +1,11 @@
 <div id="chatPicker">
+  <div (click)="newRoom()" class="room button">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    <div class="roomName">New room</div>
+  </div>
   <div class="room" *ngFor="let room of availableRooms">
-    <img alt="roomImg" src="http://placehold.it/30x30">
+    <img *ngIf="room != 'lobby'" alt="roomImg" src="http://placehold.it/30x30">
+    <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
     <div class="roomName">{{room}}</div>
   </div>
-    <button (click)="newRoom()">New Room</button>
 </div>

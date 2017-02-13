@@ -18,14 +18,13 @@
     background-color: #FFF
     font-size: 15px
     color: #000
-    border-left: 0.5px solid $color-light  
+    border-left: $borderThick solid $color-light  
     .unread
       background-color: rgba(213, 245, 226, 0.8)
     .message
       display: flex
       margin-top: 0.4em
-      margin: 15px 0%
-      padding: 0% 1.5% 10px 1.5%
+      padding: 10px 1.5% 10px 1.5%
       div 
         &:nth-of-type(1)
           margin-right: 1.5%
@@ -68,9 +67,10 @@
       position: fixed
       bottom: 0
     input
+      width: 90%
       margin: 0
       padding: 0 0.5%
-      width: 90%
+      border: $borderThick solid $color-light
       &:focus
         outline: none
     div
