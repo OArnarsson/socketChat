@@ -24,44 +24,22 @@ export class ChatService {
        return observable;
     }
 
-    sendMessage(message){
-        this.socket.emit('add-message', message);
+    sendMessage(msg){
+        this.socket.emit('sendmsg', msg);
     }
 
     getMessages() {
         let observable = new Observable(observer => {
-            this.socket.on('message', (data) => {
-                observer.next(data);
+            this.socket.on('updatechat', (room, history) => {
+                let x = {room: room, msgHistory: history};
+                observer.next(x);
             });
-            return () => {
-                this.socket.disconnect();
-            };
         });
         return observable;
     }
 
-    joinRoom(roomObj) : Observable<string[]>{
-        let observable = new Observable(observer => {
-            this.socket.emit("joinroom", roomObj, (data) =>{
-                if(data){
-                    this.socket.on("updateusers", (room, users, ops) =>{
-                        let userArr: string[] = [];
-                        for(let user in users){
-                            userArr.push(user);
-                        }
-                        let obj = {
-                            room: room,
-                            users: userArr
-                        };
-                        console.log(obj);
-
-                        observer.next(obj);
-                    });
-                }
-            });
-
-        });
-        return observable;
+    joinRoom(room){
+        this.socket.emit('joinroom', room);
     }
 
     getAllRooms() : Observable<string[]>{
@@ -73,6 +51,35 @@ export class ChatService {
                     arr.push(x);
                 }
                 observer.next(arr);
+            });
+        });
+        return observable;
+    }
+
+
+    getAllUsers(){
+        let observable = new Observable(observer => {
+            this.socket.on("updateusers", (room, users, ops) =>{
+                let userArr:string[] = [];
+                for(let x in users){
+                    userArr.push(x);
+                }
+                let opsArr:string[] = [];
+                for(let x in ops){
+                    opsArr.push(x);
+                }
+                let roomObj = {room: room, users:userArr, ops: opsArr};
+                observer.next(roomObj);
+            });
+        });
+        return observable;
+    }
+
+    getRoomTopic(){
+        let observable = new Observable(observer => {
+            this.socket.on("updatetopic", (room, topic, username) =>{
+                let roomObj = {room: room, topic:topic, username: username};
+                observer.next(roomObj);
             });
         });
         return observable;

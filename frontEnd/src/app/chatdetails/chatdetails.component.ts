@@ -1,4 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ChatService} from "../chat.service";
 
 @Component({
   selector: 'app-chatdetails',
@@ -6,11 +7,18 @@ import {Component, OnInit, Input} from '@angular/core';
   styleUrls: ['./chatdetails.component.sass']
 })
 export class ChatdetailsComponent implements OnInit {
-    @Input() allUsers:string[];
-    constructor() {
+    public userList:any;
+    constructor(private chat:ChatService) {
+        this.userList = {room:'', users:[], ops:[]};
+        this.getUsers();
     }
 
     ngOnInit() {
-    }
 
+    }
+    getUsers(){
+        this.chat.getAllUsers().subscribe(
+            userList => this.userList = userList
+        );
+    }
 }

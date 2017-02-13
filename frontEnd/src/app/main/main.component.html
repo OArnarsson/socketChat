@@ -4,15 +4,15 @@
             <p><i class="fa fa-angle-left" aria-hidden="true"></i></p>
         </div>
         <div class="navLeft">
-            <h1 class="brand" (click)="logStuff()">OnRi Chat</h1>
+            <h1 class="brand">OnRi Chat</h1>
         </div>
         <div class="navCenter">
             <img class="roomImage" src="http://placehold.it/30x30">
-            <h2 class="roomName">BingoChat</h2>
+            <h2 class="roomName">{{roomObj.room}} - {{roomObj.topic}}</h2>
         </div>
         <div class="navRight">
-            <h2 class="profile">{{userName}}</h2>
-            <img alt="{{userName}} - profileImage" src="http://placehold.it/30x30"><img>
+            <h2 class="profile">{{roomObj.username}}</h2>
+            <img alt="{{roomObj.username}} - profileImage" src="http://placehold.it/30x30"><img>
         </div>
         <div class="navButton">
             <p><i class="fa fa-angle-right" aria-hidden="true"></i></p>
@@ -23,8 +23,8 @@
 
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">
-        <app-chatpicker [(allRooms)]="roomList"></app-chatpicker>
+        <app-chatpicker></app-chatpicker>
         <app-currentchat></app-currentchat>
-        <app-chatdetails [(allUsers)]="userList"></app-chatdetails>
+        <app-chatdetails></app-chatdetails>
     </div>
 </div>

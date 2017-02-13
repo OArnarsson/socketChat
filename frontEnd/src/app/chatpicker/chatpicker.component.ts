@@ -1,4 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ChatService} from "../chat.service";
 
 @Component({
   selector: 'app-chatpicker',
@@ -6,10 +7,20 @@ import {Component, OnInit, Input} from '@angular/core';
   styleUrls: ['./chatpicker.component.sass']
 })
 export class ChatpickerComponent implements OnInit {
-    @Input() allRooms:string[];
-    constructor() { }
+    availableRooms: string[];
+
+    constructor(private chat:ChatService) {
+        this.availableRooms = [];
+        this.getAllRooms();
+    }
 
     ngOnInit() {
+    }
+
+    getAllRooms(){
+        this.chat.getAllRooms().subscribe(
+            data => this.availableRooms =  data
+        );
     }
 
 }
