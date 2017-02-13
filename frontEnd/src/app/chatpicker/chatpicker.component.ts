@@ -22,5 +22,8 @@ export class ChatpickerComponent implements OnInit {
             data => this.availableRooms =  data
         );
     }
+    newRoom(){
+        this.chat.newRoom();
+    }
 
 }

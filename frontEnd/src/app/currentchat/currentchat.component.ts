@@ -9,6 +9,7 @@ import { ChatService } from '../chat.service'
 export class CurrentchatComponent implements OnInit {
     message:string;
     allMessages:any;
+    @Input() activeRoom:string;
     constructor(private chat:ChatService) {
         this.message = "";
         this.getMessages();
@@ -19,8 +20,7 @@ export class CurrentchatComponent implements OnInit {
     }
     sendMsg(event:any){
         if(event.keyCode == 13){
-            console.log(this.message);
-            let msg = {roomName: "lobby", msg: this.message};
+            let msg = {roomName: this.activeRoom, msg: this.message};
             this.chat.sendMessage(msg);
             this.message = "";
         }

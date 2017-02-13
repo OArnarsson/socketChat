@@ -49,6 +49,7 @@ io.sockets.on('connection', function (socket) {
 		// If the room does not exist
 		if(rooms[room] === undefined) {
 			rooms[room] = new Room();
+			rooms[room].topic = joinObj.topic;
 			// Op the user if he creates the room.
 			rooms[room].ops[socket.username] = socket.username;
 			// If the user wants to password protect the room we set the password.
@@ -66,6 +67,7 @@ io.sockets.on('connection', function (socket) {
 			// Update topic
 			socket.emit('updatetopic', room, rooms[room].topic, socket.username);
 			io.sockets.emit('servermessage', "join", room, socket.username);
+			//Hey Boi
 		}
 		else {
 
@@ -93,6 +95,7 @@ io.sockets.on('connection', function (socket) {
 				if (fn) {
 					fn(true);
 				}
+				console.log("User was added to room"); //Debugging
 				//Add user to room.
 				rooms[room].addUser(socket.username);
 				//Keep track of the room in the user object.
@@ -111,7 +114,7 @@ io.sockets.on('connection', function (socket) {
 
 	// when the client emits 'sendchat', this listens and executes
 	socket.on('sendmsg', function (data) {
-		
+		console.log("trying to send msg from:", data.roomName); //Debugging
 		var userAllowed = false;
 
 		//Check if user is allowed to send message.
