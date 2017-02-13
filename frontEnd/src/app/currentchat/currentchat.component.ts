@@ -8,11 +8,14 @@ import { ChatService } from '../chat.service'
 })
 export class CurrentchatComponent implements OnInit {
     message:string;
-    allMessages:any;
+    allMessages:string[];
+    oldLength:number;
     @Input() activeRoom:string;
     constructor(private chat:ChatService) {
         this.message = "";
         this.getMessages();
+        this.allMessages = [];
+        this.oldLength = 0;
     }
 
     ngOnInit() {
@@ -27,7 +30,10 @@ export class CurrentchatComponent implements OnInit {
     }
     getMessages(){
         this.chat.getMessages().subscribe(
-            messages => this.allMessages = messages['msgHistory']
+            messages => {
+                this.oldLength = this.allMessages.length;
+                this.allMessages = messages['msgHistory'];
+            }
         );
     }
 

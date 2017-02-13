@@ -1,6 +1,6 @@
 <div id="currentChat">
   <div class="mainChat">
-    <div class="message" *ngFor="let msg of allMessages">
+    <div class="message" *ngFor="let msg of allMessages; let x = index" [ngClass]="{'unread': x>=oldLength}">
       <div><div class="avatar">US</div></div>
       <div>
         <div class="messageUser">{{msg.nick}}</div>

@@ -20,7 +20,15 @@
     color: #000
     border-left: $borderThick solid $color-light  
     .unread
-      background-color: rgba(213, 245, 226, 0.8)
+      background-color: #FFF
+      animation: deGreen 1.5s linear
+
+    @keyframes deGreen
+      0%
+        background: lightgreen
+      100%
+        background: #FFF
+
     .message
       display: flex
       margin-top: 0.4em
