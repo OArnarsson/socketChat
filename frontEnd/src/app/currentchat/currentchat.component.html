@@ -1,7 +1,7 @@
 <div id="currentChat">
   <div class="mainChat">
     <div class="message" *ngFor="let msg of allMessages">
-      <div><div class="avatar">US</div></div>
+      <div><div class="avatar" [ngStyle]="{'background-color':msg.nick | namecolor}">{{msg.nick | initials}}</div></div>
       <div>
         <div class="messageUser">{{msg.nick}}</div>
         <div class="messageText">{{msg.message}}</div>

@@ -84,8 +84,7 @@ export class ChatService {
         });
         return observable;
     }
-    newRoom(){
-        let x = {room: 'BadAssRoom', topic: "Some Topic"};
+    changeRoom(x){
         this.socket.emit("joinroom",x);
     }
 

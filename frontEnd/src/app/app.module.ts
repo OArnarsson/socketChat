@@ -9,6 +9,8 @@ import { ChatdetailsComponent } from './chatdetails/chatdetails.component';
 import { ChatpickerComponent } from './chatpicker/chatpicker.component';
 import {ChatService} from "./chat.service";
 import { LoginComponent } from './login/login.component';
+import { InitialsPipe } from './initials.pipe';
+import { NamecolorPipe } from './namecolor.pipe';
 
 @NgModule({
     declarations: [
@@ -17,14 +19,16 @@ import { LoginComponent } from './login/login.component';
         CurrentchatComponent,
         ChatdetailsComponent,
         ChatpickerComponent,
-        LoginComponent
+        LoginComponent,
+        InitialsPipe,
+        NamecolorPipe
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule
     ],
-    providers: [ChatService],
+    providers: [ChatService, InitialsPipe, NamecolorPipe],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
