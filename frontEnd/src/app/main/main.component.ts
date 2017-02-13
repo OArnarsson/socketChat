@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
     constructor(private chat:ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
-        this.roomObj = {room: "", topic: "", username: ""};
+        this.roomObj = {room: "lobby", topic: "", username: ""};
 
     }
 

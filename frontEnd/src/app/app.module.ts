@@ -21,7 +21,7 @@ import { NamecolorPipe } from './namecolor.pipe';
         ChatpickerComponent,
         LoginComponent,
         InitialsPipe,
-        NamecolorPipe
+        NamecolorPipe,
     ],
     imports: [
         BrowserModule,

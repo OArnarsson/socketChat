@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { ChatService } from '../chat.service'
+import {Chatroom} from "./chatroom";
 
 @Component({
   selector: 'app-currentchat',
@@ -8,14 +9,13 @@ import { ChatService } from '../chat.service'
 })
 export class CurrentchatComponent implements OnInit {
     message:string;
-    allMessages:string[];
+    chatRooms:Chatroom[];
     oldLength:number;
     @Input() activeRoom:string;
     constructor(private chat:ChatService) {
         this.message = "";
         this.getMessages();
-        this.allMessages = [];
-        this.oldLength = 0;
+        this.chatRooms = [];
     }
 
     ngOnInit() {
@@ -30,11 +30,45 @@ export class CurrentchatComponent implements OnInit {
     }
     getMessages(){
         this.chat.getMessages().subscribe(
-            messages => {
-                this.oldLength = this.allMessages.length;
-                this.allMessages = messages['msgHistory'];
+            chatRoom => {
+                console.log("im here!!!!");
+                let isNew = true;
+                for(let index in this.chatRooms){
+                    if(this.chatRooms[index].name == chatRoom['name']){
+                        this.chatRooms[index] = chatRoom;
+                        if(this.chatRooms[index].name == this.activeRoom){
+                            this.chatRooms[index].unreadMessages = 0;
+                        }
+                        else{
+                            this.chatRooms[index].unreadMessages +=1;
+                        }
+                    }
+                }
+                if(isNew){
+                    this.chatRooms.push(chatRoom);
+                }
             }
         );
+    }
+    getUnreadMessages(){
+
+        let size:number;
+        for(let room of this.chatRooms){
+            if(room.name == this.activeRoom){
+                size = room.history.length - room.unreadMessages;
+            }
+        }
+        console.log("this is the size:" + size);
+        return size;
+    }
+
+    getActiveRoomChat(){
+        for(let room of this.chatRooms){
+            if(room.name == this.activeRoom){
+                return room.history;
+            }
+        }
+        return [];
     }
 
 }

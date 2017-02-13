@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
+import {Message} from './currentchat/message';
+import {Chatroom} from './currentchat/chatroom'
 @Injectable()
 export class ChatService {
-    private url = 'http://localhost:8080';
+    private url = 'localhost:8080/';
     private socket;
     //Room variables
 
     constructor(){
-        this.socket = io("localhost:8080/");
+        this.socket = io(this.url);
         this.socket.on("connect", () =>{
             console.log("Connected!");
         });
@@ -28,11 +30,16 @@ export class ChatService {
         this.socket.emit('sendmsg', msg);
     }
 
-    getMessages() {
+    getMessages():Observable<Chatroom> {
         let observable = new Observable(observer => {
             this.socket.on('updatechat', (room, history) => {
-                let x = {room: room, msgHistory: history};
-                observer.next(x);
+                let msgHistory:Message[] = [];
+                for(let msg of history){
+                    console.log("this is the msg"+msg);
+                    msgHistory.push(new Message(msg['nick'], msg['timestamp'],msg['message']))
+                };
+                let chatRoom = new Chatroom(room, msgHistory);
+                observer.next(chatRoom);
             });
         });
         return observable;

@@ -114,7 +114,7 @@ io.sockets.on('connection', function (socket) {
 
 	// when the client emits 'sendchat', this listens and executes
 	socket.on('sendmsg', function (data) {
-		console.log("trying to send msg from:", data.roomName); //Debugging
+		console.log("trying to send msg from:", socket.username); //Debugging
 		var userAllowed = false;
 
 		//Check if user is allowed to send message.
