@@ -1,5 +1,8 @@
 <div class="container">
     <div *ngIf="loggedIn" id="nav">
+        <div class="navButton">
+            <p><i class="fa fa-angle-left" aria-hidden="true"></i></p>
+        </div>
         <div class="navLeft">
             <h1 class="brand">OnRi Chat</h1>
         </div>
@@ -11,7 +14,12 @@
             <h2 class="profile">{{roomObj.username}}</h2>
             <img alt="{{roomObj.username}} - profileImage" src="http://placehold.it/30x30"><img>
         </div>
+        <div class="navButton">
+            <p><i class="fa fa-angle-right" aria-hidden="true"></i></p>
+        </div>
     </div>
+
+    <!--Arrow?!-->
 
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">

@@ -1,7 +1,5 @@
 <div id="currentChat">
   <div class="mainChat">
-
-
     <div class="message" *ngFor="let msg of allMessages">
       <div><div class="avatar">US</div></div>
       <div>
@@ -11,5 +9,9 @@
       <div class="messageTime">13:18</div>
     </div>
   </div>
-  <input [(ngModel)]="message" name="message" autofocus placeholder="Type a message.." (keyup)="sendMsg($event)">
+  <div class="inputContainer">
+    <input autofocus placeholder="Type a message..">
+    <input [(ngModel)]="message" name="message" autofocus placeholder="Type a message.." (keyup)="sendMsg($event)">
+    <div><i class="fa fa-paper-plane-o" aria-hidden="true"></i></div>
+  </div>
 </div>
