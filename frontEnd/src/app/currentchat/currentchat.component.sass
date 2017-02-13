@@ -9,7 +9,7 @@
   font-family: 'Source Sans Pro', sans-serif
 
   .mainChat
-    height: 96.25%
+    height: 95%
     width: 100%
     flex-direction: column
     justify-content: flex-end
@@ -18,14 +18,14 @@
     background-color: #FFF
     font-size: 15px
     color: #000
-    border-left: 0.5px solid $color-light
+    border-left: 0.5px solid $color-light  
     .unread
       background-color: rgba(213, 245, 226, 0.8)
     .message
       display: flex
       margin-top: 0.4em
       margin: 15px 0%
-      padding: 0% 1.5%
+      padding: 0% 1.5% 10px 1.5%
       div 
         &:nth-of-type(1)
           margin-right: 1.5%
@@ -60,8 +60,32 @@
     .ownMessage
       float:right
 
-  input
-    margin: 0
-    padding: 0 0.5%
-    height: 3.5%
-    width: 98.73%
+  .inputContainer
+    display: flex
+    width: 100%
+    height: 5%
+    @media screen and (max-width: 740px)
+      position: fixed
+      bottom: 0
+    input
+      margin: 0
+      padding: 0 0.5%
+      width: 90%
+      &:focus
+        outline: none
+    div
+      display: flex
+      justify-content: center
+      flex-direction: column
+      width: 10%
+      height: 100%
+      padding: 0
+      margin: 0
+      text-align: center
+      cursor: pointer
+      color: $color-light
+      background-color: #ed1965
+      @include transition
+      &:hover
+        color: lightgreen
+        @include transition

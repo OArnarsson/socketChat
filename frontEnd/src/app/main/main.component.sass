@@ -8,40 +8,52 @@
   display: flex
   justify-content: space-around
   align-items: center 
-  height: $size-nav
+  min-height: $size-nav
   width: 100%
   text-align: center
   background-image: linear-gradient(to left,#cc2b5e,#753a88)
+  @media screen and (max-width: 740px)
+    justify-content: space-between
 
   div
     display: flex
     align-content: center
-    &:nth-of-type(3)
+    &:nth-of-type(4)
       justify-content: flex-end
     img
       margin: $padding-normal
   .navLeft
       width: $size-picker
       margin-left: 10px
+      @media screen and (max-width: 740px)
+        display: none
       .brand
-        font-size: 1.5rem
+        font-size: 1.5em
         color: #AAA
         opacity: 0.6
   .navCenter
       width: $size-current
+      @media screen and (max-width: 740px)
+        width: auto
       .roomImage
         height: 37px
         width: 37px
         margin: 10px
         border-radius: $radius
+        @media screen and (max-width: 740px)
+          align-self: center
       .roomName
-        margin-left: 10px 
+        margin-left: 5px 10px 
         align-self: center
         font-size: 1.75rem
         color: #DDD
+        @media screen and (max-width: 740px)
+          font-size: 1.75em
   .navRight
     width: $size-details 
     text-align: right
+    @media screen and (max-width: 740px)
+      display: none
     .profile
       font-size: 1.5rem
       color: #AAA
@@ -50,8 +62,21 @@
       margin-right: 10px
     img
       border-radius: $radius
-  
-
+  .navButton
+    display: flex
+    justify-content: center
+    width: 40px
+    cursor: pointer
+    font-size: 1.3em
+    text-align: center
+    color: #FFF
+    background-color: transparent
+    @include transition
+    @media screen and (min-width: 740px)
+      display: none
+    &:hover
+      @include transition
+      color: lightgreen
   
 
 #content
@@ -65,11 +90,17 @@
 app-chatPicker
   width: $size-picker
   height: 100%
+  @media screen and (max-width: 740px)
+    display: none
 app-currentChat
   width: $size-current
   height: 100%
+  @media screen and (max-width: 740px)
+    width: 100%
 app-chatDetails
   width: $size-details
   height: 100%
+  @media screen and (max-width: 740px)
+    display: none
 
 

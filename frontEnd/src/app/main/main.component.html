@@ -1,17 +1,25 @@
 <div class="container">
     <div *ngIf="loggedIn" id="nav">
+        <div class="navButton">
+            <p><i class="fa fa-angle-left" aria-hidden="true"></i></p>
+        </div>
         <div class="navLeft">
             <h1 class="brand" (click)="logStuff()">OnRi Chat</h1>
         </div>
         <div class="navCenter">
             <img class="roomImage" src="http://placehold.it/30x30">
-            <h2 class="roomName">roomname</h2>
+            <h2 class="roomName">BingoChat</h2>
         </div>
         <div class="navRight">
             <h2 class="profile">{{userName}}</h2>
             <img alt="{{userName}} - profileImage" src="http://placehold.it/30x30"><img>
         </div>
+        <div class="navButton">
+            <p><i class="fa fa-angle-right" aria-hidden="true"></i></p>
+        </div>
     </div>
+
+    <!--Arrow?!-->
 
     <app-login *ngIf="!loggedIn" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">

@@ -9,7 +9,7 @@
   align-items: center
   background-image: linear-gradient(to left,#cc2b5e,#753a88)
   .loginButton
-    width: 20%
+    width: 25%
     height: 50px
     margin-top: 20px
     cursor: pointer
@@ -20,11 +20,13 @@
     align-items: center;
     color: #FFF
     font-size: 1.5em
+    @media screen and (max-width: 1000px)
+      width: 50%;
     &:hover
       background: opacify(#ed1965, 0.7)
 
 #name
-  width: 20%
+  width: 25%
   text-align: center
   font-size: 5em
   background: none
@@ -32,6 +34,9 @@
   border-bottom: 3px solid #ed1965
   color: #FFF
   opacity: 0.9
+  @media screen and (max-width: 1000px)
+    width: 50%;
+    font-size: 2.5em
   &:focus, &:active
     outline: none 
     border: none
