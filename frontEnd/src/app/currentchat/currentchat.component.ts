@@ -19,7 +19,7 @@ export class CurrentchatComponent implements OnInit {
 
     }
     sendMsg(event:any){
-        if(event.keyCode == 13){
+        if(event.keyCode == 13 || event == 'sendButton'){
             let msg = {roomName: this.activeRoom, msg: this.message};
             this.chat.sendMessage(msg);
             this.message = "";

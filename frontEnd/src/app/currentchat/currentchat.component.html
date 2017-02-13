@@ -11,6 +11,6 @@
   </div>
   <div class="inputContainer">
     <input [(ngModel)]="message" name="message" autofocus placeholder="Type a message.." (keyup)="sendMsg($event)">
-    <div><i class="fa fa-paper-plane-o" aria-hidden="true"></i></div>
+    <div (click)="sendMsg('sendButton')"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></div>
   </div>
 </div>
