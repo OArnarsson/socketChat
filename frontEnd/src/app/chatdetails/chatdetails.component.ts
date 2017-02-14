@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {ChatService} from "../chat.service";
 
 @Component({
@@ -10,6 +10,7 @@ import {ChatService} from "../chat.service";
 export class ChatdetailsComponent implements OnInit {
     public userList:any;
     public globalUsers:any;
+    @Output() setToPrivate = new EventEmitter();
     constructor(private chat:ChatService) {
         this.userList = {room:'', users:[], ops:[]};
         this.globalUsers = [];
@@ -32,5 +33,9 @@ export class ChatdetailsComponent implements OnInit {
             }
         );
     }
+    goToPrivate(userName:any){
+        this.setToPrivate.emit(userName);
+    }
+
 
 }

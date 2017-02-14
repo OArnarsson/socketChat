@@ -16,7 +16,7 @@ export class MainComponent implements OnInit {
     constructor(private chat:ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
-        this.roomObj = {room: "lobby", topic: "", username: ""};
+        this.roomObj = {room: "lobby", topic: "", username: "", privateMsg: false};
 
     }
 
@@ -32,6 +32,13 @@ export class MainComponent implements OnInit {
         this.chat.getRoomTopic().subscribe(
             room => this.roomObj = room
         );
+    }
+
+    setViewToPrivateMsg(userName:string){
+        if(userName.toLowerCase() != this.userName.toLowerCase()){
+            this.roomObj.room = userName;
+            this.roomObj.topic = "private Msg";
+        }
     }
 
 

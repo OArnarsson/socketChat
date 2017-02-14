@@ -8,7 +8,6 @@ import {ChatService} from "../chat.service";
 })
 export class ChatpickerComponent implements OnInit {
     availableRooms: string[];
-
     constructor(private chat:ChatService) {
         this.availableRooms = [];
         this.getAllRooms();

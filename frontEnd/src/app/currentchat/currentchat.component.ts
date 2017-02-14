@@ -10,7 +10,7 @@ import {Chatroom} from "./chatroom";
 export class CurrentchatComponent implements OnInit {
     message:string;
     chatRooms:Chatroom[];
-    @Input() activeRoom:string;
+    @Input() activeObj:any;
     constructor(private chat:ChatService) {
         this.message = "";
         this.getMessages();
@@ -22,8 +22,14 @@ export class CurrentchatComponent implements OnInit {
     }
     sendMsg(event:any){
         if(event.keyCode == 13 || event == 'sendButton'){
-            let msg = {roomName: this.activeRoom, msg: this.message};
-            this.chat.sendMessage(msg);
+            if(!this.activeObj.privateMsg){
+                 let msg = {roomName: this.activeObj.room, msg: this.message};
+                this.chat.sendMessage(msg);
+            }
+            else{
+                let msg = {roomName: this.activeObj.room, msg: this.message};
+                //this.chat.sendPrivateMsg(msg)
+            }
             this.message = "";
         }
     }
@@ -36,7 +42,7 @@ export class CurrentchatComponent implements OnInit {
                         this.chatRooms[index] = chatRoom;
                         isNew = false;
                         //This need some more work.
-                        if(this.chatRooms[index].name == this.activeRoom){
+                        if(this.chatRooms[index].name == this.activeObj.room){
                             this.chatRooms[index].unreadMessages = 0;
                         }
                         else{
@@ -53,7 +59,7 @@ export class CurrentchatComponent implements OnInit {
     getUnreadMessages(){
         let size:number;
         for(let room of this.chatRooms){
-            if(room.name == this.activeRoom){
+            if(room.name == this.activeObj.room){
                 size = room.history.length - room.unreadMessages;
             }
         }
@@ -63,7 +69,7 @@ export class CurrentchatComponent implements OnInit {
 
     getActiveRoomChat(){
         for(let room of this.chatRooms){
-            if(room.name == this.activeRoom){
+            if(room.name == this.activeObj.room){
                 return room.history;
             }
         }
