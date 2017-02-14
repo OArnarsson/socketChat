@@ -28,7 +28,7 @@ export class ChatpickerComponent implements OnInit {
     }
 
     toggleModal() {
-        this.isCreating = true;
+        this.isCreating = !this.isCreating;
     }
 
     newRoom(){

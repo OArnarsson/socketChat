@@ -17,7 +17,7 @@
   <div class="flexRow">
     <div class="flexCol">
       <div class="modal">
-        <h3>Create a room</h3>
+        <div class="flexRow"><h3>Create a room</h3> <i (click)="toggleModal()" class="fa fa-times exit" aria-hidden="true"></i></div>
         <input type="text" name="roomName" placeholder="Name" [(ngModel)]="newName">
         <input type="text" name="roomTopic" placeholder="Topic" [(ngModel)]="newTopic">
         <div (click)="newRoom()" class="button">CREATE</div>
