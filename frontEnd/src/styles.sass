@@ -1,11 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans:300')
+@import './variables.sass'
 
 body, h1, h2, h3, h4, h5, h6
   margin: 0
   padding: 0
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: 'Josefin Sans', sans-serif
   overflow: hidden
 
 body
   height: 100vh
+
+.avatar
+  width: 30px
+  height: 30px
+  margin: 0 15px
+  font-size: 15px
+  display: flex
+  justify-content: center
+  align-items: center
+  border-radius: $radius
+  background-color: lightgreen
+  align-self: center

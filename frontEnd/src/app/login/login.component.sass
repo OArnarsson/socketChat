@@ -14,16 +14,16 @@
     margin-top: 20px
     cursor: pointer
     border-radius: $radius
-    border: 2px solid #ed1965;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: 2px solid $color-pink
+    display: flex
+    justify-content: center
+    align-items: center
     color: #FFF
     font-size: 1.5em
     @media screen and (max-width: 1000px)
-      width: 50%;
+      width: 50%
     &:hover
-      background: opacify(#ed1965, 0.7)
+      background: opacify($color-pink, 0.7)
 
 #name
   width: 25%
@@ -31,13 +31,13 @@
   font-size: 5em
   background: none
   border: none
-  border-bottom: 3px solid #ed1965
+  border-bottom: 3px solid $color-pink
   color: #FFF
   opacity: 0.9
   @media screen and (max-width: 1000px)
-    width: 50%;
+    width: 50%
     font-size: 2.5em
   &:focus, &:active
     outline: none 
     border: none
-    border-bottom: 3px solid #ed1965
+    border-bottom: 3px solid $color-pink
