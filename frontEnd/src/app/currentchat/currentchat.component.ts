@@ -26,7 +26,6 @@ export class CurrentchatComponent implements OnInit {
     }
 
     sendMsg(event:any){
-        console.log("privateMSg Status:"+this.activeObj.privateMsg);
         if(event.keyCode == 13 || event == 'sendButton'){
             let msg = {roomName: this.activeObj.room, msg: this.message};
             if(!this.activeObj.privateMsg){
@@ -35,7 +34,6 @@ export class CurrentchatComponent implements OnInit {
             else{
                 let msg = {nick: this.activeObj.room, message: this.message};
                 let found = false;
-                console.log("im tryin to send private");
                 for(let index in this.privateConv){
                     if(this.privateConv[index].name = this.activeObj.room){
                         this.privateConv[index].history.push(new Message(this.activeObj.username, new Date(), this.message));
@@ -83,14 +81,12 @@ export class CurrentchatComponent implements OnInit {
                 size = room.history.length - room.unreadMessages;
             }
         }
-        console.log("this is the size:" + size);
         return size;
     }
 
     getPrivateMessages(){
         this.chat.getPrivateMessages().subscribe(
             message => {
-                console.log("receiving private:"+message);
                 let found = false;
                 for(let index in this.privateConv){
                     if(this.privateConv[index].name = message['nick']){

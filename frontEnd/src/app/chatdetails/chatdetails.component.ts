@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {ChatService} from "../chat.service";
 
 @Component({
@@ -10,6 +10,7 @@ import {ChatService} from "../chat.service";
 export class ChatdetailsComponent implements OnInit {
     public userList:any;
     public globalUsers:any;
+    @Input() whoAmI:string;
     @Output() setToPrivate = new EventEmitter();
     constructor(private chat:ChatService) {
         this.userList = {room:'', users:[], ops:[]};
@@ -19,7 +20,7 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        console.log("i'm"+this.whoAmI);
     }
 
     getUsers(){
