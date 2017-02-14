@@ -2,14 +2,17 @@
   <div class="user">
     <h3>Users online</h3>
     <div *ngFor="let user of globalUsers" class="userTab" (click)="goToPrivate(user)">
-        <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
-        <div class="userName">{{user}}</div>
+      <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
+      <div class="userName">{{user}}</div>
+    </div>
+    <div *ngIf="globalUsers.length < 1" class="nobody">
+      <div>You are the only one here.</div>
     </div>
   </div>
 </div>
 
 
-  <!--<div class="users">
+<!--<div class="users">
     <h3>Users online</h3>
     <div class="userHeads">
       <img *ngFor="let user of globalUsers" alt={{user}} src="http://placehold.it/30x30" (click)="goToPrivate(user)"><img>

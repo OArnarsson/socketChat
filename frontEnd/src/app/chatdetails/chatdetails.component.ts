@@ -32,6 +32,7 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.getGlobalUsers().subscribe(
             userList => {
                 this.globalUsers = userList;
+                this.globalUsers.splice(this.globalUsers.indexOf(this.whoAmI), 1);
             }
         );
     }
