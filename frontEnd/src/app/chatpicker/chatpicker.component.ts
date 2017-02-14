@@ -42,6 +42,7 @@ export class ChatpickerComponent implements OnInit {
     }
 
     leaveRoom(roomName){
+        console.log('leaving: ', roomName);
         this.chat.leaveRoom(roomName);
     }
 

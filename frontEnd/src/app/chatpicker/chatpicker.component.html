@@ -6,7 +6,8 @@
   <div class="room" *ngFor="let room of availableRooms" (click)="changeRoom({room: room})">
     <img *ngIf="room != 'lobby'" alt="roomImg" src="http://placehold.it/30x30">
     <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
-      <div class="roomName">{{room}}</div>
+    <div class="roomName">{{room}}</div>
+    <i (click)="leaveRoom(room)" class="fa fa-times exit" aria-hidden="true"></i>
   </div>
 </div>
 
