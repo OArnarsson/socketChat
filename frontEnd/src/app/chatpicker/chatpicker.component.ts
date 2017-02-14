@@ -41,4 +41,8 @@ export class ChatpickerComponent implements OnInit {
         this.chat.changeRoom(x);
     }
 
+    leaveRoom(roomName){
+        this.chat.leaveRoom(roomName);
+    }
+
 }
