@@ -22,13 +22,18 @@ io.sockets.on('connection', function (socket) {
 	socket.on('adduser', function(username, fn){
 
 		//Check if username is avaliable.
-		if (users[username] === undefined && username.toLowerCase != "server" && username.length < 21) {
+		if (users[username.toLowerCase()] === undefined && username.toLowerCase() != "server" && username.length < 21) {
 			socket.username = username;
 
 			//Store user object in global user roster.
 			users[username] = { username: socket.username, channels: {}, socket: this };
 			console.log("User added: " + username);
 			fn(true); // Callback, user name was available
+            var globalUsers = [];
+            for(var user in users){
+                globalUsers.push(user);
+            }
+            io.sockets.emit('globalUsers', globalUsers);
 		}
 		else {
 			console.log("User " + username + " already present!");
@@ -152,6 +157,7 @@ io.sockets.on('connection', function (socket) {
 	//When a user leaves a room this gets performed.
 	socket.on('partroom', function (room) {
 		//remove the user from the room roster and room op roster.
+        console.log("parting room");
 		delete rooms[room].users[socket.username];
 		delete rooms[room].ops[socket.username];
 		//Remove the channel from the user object in the global user roster.
