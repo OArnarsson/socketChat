@@ -22,13 +22,17 @@ export class ChatpickerComponent implements OnInit {
             data => this.availableRooms =  data
         );
     }
-    newRoom(){
-        let x = {room: 'BadAssRoom', topic: "Some Topic"};
+    newRoom(roomName, topic){
+        let x = {room: roomName, topic: topic};
         this.changeRoom(x);
     }
 
     changeRoom(x){
         this.chat.changeRoom(x);
+    }
+
+    leaveRoom(roomName){
+        this.chat.leaveRoom(roomName);
     }
 
 }

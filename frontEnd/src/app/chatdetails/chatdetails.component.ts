@@ -6,9 +6,10 @@ import {ChatService} from "../chat.service";
   templateUrl: './chatdetails.component.html',
   styleUrls: ['./chatdetails.component.sass']
 })
+
 export class ChatdetailsComponent implements OnInit {
     public userList:any;
-    public globalUsers:string[];
+    public globalUsers:any;
     constructor(private chat:ChatService) {
         this.userList = {room:'', users:[], ops:[]};
         this.globalUsers = [];
@@ -27,8 +28,9 @@ export class ChatdetailsComponent implements OnInit {
     getGlobalUsers(){
         this.chat.getGlobalUsers().subscribe(
             userList => {
-                this.userList = userList;
+                this.globalUsers = userList;
             }
         );
     }
+
 }

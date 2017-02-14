@@ -103,5 +103,8 @@ export class ChatService {
     changeRoom(x){
         this.socket.emit("joinroom",x);
     }
+    leaveRoom(roomName){
+        this.socket.emit("partroom", roomName);
+    }
 
 }
