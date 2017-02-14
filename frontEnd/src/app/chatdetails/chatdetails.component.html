@@ -2,8 +2,8 @@
   <div class="user">
     <h3>Users online</h3>
     <div *ngFor="let user of globalUsers" class="userTab" (click)="goToPrivate(user)">
-        <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
-        <div class="userName">{{user}}</div>
+          <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
+          <div class="userName">{{user}}</div>
     </div>
   </div>
 </div>
