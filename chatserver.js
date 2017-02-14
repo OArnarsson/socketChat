@@ -48,7 +48,6 @@ io.sockets.on('connection', function (socket) {
 
 		var room = joinObj.room;
 		var pass = joinObj.pass;
-		var isNew = joinObj.isNew;
 		var accepted = true;
 		var reason;
 
