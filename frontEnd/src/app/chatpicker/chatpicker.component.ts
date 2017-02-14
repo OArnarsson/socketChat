@@ -8,10 +8,14 @@ import {ChatService} from "../chat.service";
 })
 export class ChatpickerComponent implements OnInit {
     availableRooms: string[];
+    isCreating: boolean;
+    newName: string;
+    newTopic: string;
 
     constructor(private chat:ChatService) {
         this.availableRooms = [];
         this.getAllRooms();
+        this.isCreating = false;
     }
 
     ngOnInit() {
@@ -22,9 +26,15 @@ export class ChatpickerComponent implements OnInit {
             data => this.availableRooms =  data
         );
     }
+
+    toggleModal() {
+        this.isCreating = true;
+    }
+
     newRoom(){
-        let x = {room: 'BadAssRoom', topic: "Some Topic"};
+        let x = {room: this.newName, topic: this.newTopic};
         this.changeRoom(x);
+        this.isCreating = false;
     }
 
     changeRoom(x){

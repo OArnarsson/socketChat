@@ -1,5 +1,5 @@
 <div id="chatPicker">
-  <div (click)="newRoom()" class="room button">
+  <div (click)="toggleModal('true')" class="room button">
     <i class="fa fa-plus" aria-hidden="true"></i>
     <div class="roomName">New room</div>
   </div>
@@ -7,5 +7,20 @@
     <img *ngIf="room != 'lobby'" alt="roomImg" src="http://placehold.it/30x30">
     <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
       <div class="roomName">{{room}}</div>
+  </div>
+</div>
+
+
+
+<div *ngIf="isCreating" class="modalContainer">
+  <div class="flexRow">
+    <div class="flexCol">
+      <div class="modal">
+        <h3>Create a room</h3>
+        <input type="text" name="roomName" placeholder="Name" [(ngModel)]="newName">
+        <input type="text" name="roomTopic" placeholder="Topic" [(ngModel)]="newTopic">
+        <div (click)="newRoom()" class="button">CREATE</div>
+      </div>
+    </div>
   </div>
 </div>
