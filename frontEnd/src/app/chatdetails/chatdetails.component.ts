@@ -21,6 +21,7 @@ export class ChatdetailsComponent implements OnInit {
     ngOnInit() {
 
     }
+
     getUsers(){
         this.chat.getAllUsers().subscribe(
             userList => this.userList = userList
