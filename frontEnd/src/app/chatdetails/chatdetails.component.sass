@@ -7,26 +7,35 @@
   background-color: $color-main
   border-left: $borderThick solid $color-light
   h3
+    width: 100%
     margin: 3% 5%
     color: #333
     opacity: 0.7
-  .users
-    height: 25%
-    width: 100%
-    .userHeads
-      width: 100%
-      padding: 5%
-      img
-        margin: 1%
-        border-radius: $radius
-  .activity
-    height: 75%
-    width: 100%
-    .activityLogs
-      height: 100%
-      overflow-y: auto
-      .log
-        display: flex
-        align-items: center
-        justify-content: space-around
-        padding: 2.5% 0
+  .userTab
+    display: flex
+    align-items: center
+    padding: 15px 0 20px 0
+    cursor: pointer
+    &:hover
+      background: $color-light
+    .avatar
+      @include avatar
+    .userName
+    color: #333
+    opacity: 0.9
+    font-size: 1.5rem
+    font-weight: bold
+  
+  
+  // .activity
+  //   height: 75%
+  //   width: 100%
+  //   .activityLogs
+  //     height: 100%
+  //     overflow-y: auto
+  //     .log
+  //       display: flex
+  //       align-items: center
+  //       justify-content: space-around
+  //       padding: 2.5% 0
+

@@ -1,12 +1,14 @@
 <div id="chatPicker">
+  <h3>Available rooms</h3>
   <div (click)="toggleModal('true')" class="room button">
     <i class="fa fa-plus" aria-hidden="true"></i>
     <div class="roomName">New room</div>
   </div>
   <div class="room" *ngFor="let room of availableRooms" (click)="changeRoom({room: room})">
-    <img *ngIf="room != 'lobby'" alt="roomImg" src="http://placehold.it/30x30">
+    <div *ngIf="room != 'lobby'" class="avatar" [ngStyle]="{'background-color':room | namecolor}">{{room | initials}}</div>
     <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
-      <div class="roomName">{{room}}</div>
+    <div class="roomName">{{room}}</div>
+    <i (click)="leaveRoom(room)" class="fa fa-times exit" aria-hidden="true"></i>
   </div>
 </div>
 
@@ -16,7 +18,7 @@
   <div class="flexRow">
     <div class="flexCol">
       <div class="modal">
-        <h3>Create a room</h3>
+        <div class="flexRow"><h3>Create a room</h3> <i (click)="toggleModal()" class="fa fa-times exit" aria-hidden="true"></i></div>
         <input type="text" name="roomName" placeholder="Name" [(ngModel)]="newName">
         <input type="text" name="roomTopic" placeholder="Topic" [(ngModel)]="newTopic">
         <div (click)="newRoom()" class="button">CREATE</div>

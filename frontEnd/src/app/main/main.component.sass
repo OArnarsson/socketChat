@@ -22,6 +22,8 @@
       justify-content: flex-end
     img
       margin: $padding-normal
+    .avatar
+      @include avatar
   .navLeft
       width: $size-picker
       margin-left: 17.5px
@@ -32,23 +34,18 @@
         color: #BBB
         opacity: 0.75
   .navCenter
-      width: $size-current
+    width: $size-current
+    @media screen and (max-width: 740px)
+      width: auto
+    h2, h4
+      margin-left: 5px 10px 
+      align-self: center
+      font-size: 1.75em
+      color: #DDD
       @media screen and (max-width: 740px)
-        width: auto
-      .roomImage
-        height: 37px
-        width: 37px
-        margin: 10px
-        border-radius: $radius
-        @media screen and (max-width: 740px)
-          align-self: center
-      .roomName
-        margin-left: 5px 10px 
-        align-self: center
-        font-size: 1.75rem
-        color: #DDD
-        @media screen and (max-width: 740px)
-          font-size: 1.75em
+        font-size: 1.75em
+    h4
+      opacity: 0.7
   .navRight
     width: $size-details 
     text-align: right
@@ -57,7 +54,7 @@
     .profile
       font-size: 1.5rem
       color: #AAA
-      opacity: 0.6
+      opacity: 0.75
       align-self: center
       margin-right: 10px
     img

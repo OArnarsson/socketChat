@@ -4,6 +4,11 @@
   width: 100%
   height: 100%
   background-color: $color-main
+  h3
+    width: 100%
+    margin: 3% 5%
+    color: #333
+    opacity: 0.7
   .room
     display: flex
     align-items: center
@@ -16,13 +21,18 @@
       opacity: 0.9
       font-size: 1.5rem
       font-weight: bold
-    img
-      margin: 0 15px
-      border-radius: $radius
+      flex-grow: 2
+    .avatar
+      @include avatar
     i
       padding: 0px 15px 0 17.5px
       font-size: 30px
       color: #753a88
+      &.exit
+        font-size: 15px
+        color: $color-pink
+        &:hover
+          color: $color-pink-hover
 
 
 .modalContainer
@@ -51,10 +61,18 @@
         background-color: #753a88
         border-radius: $radius
         padding: 25px
-        h3
-          font-size: 2.5em
-          color: #FFF
-          margin-bottom: 30px
+        .flexRow
+          justify-content: space-between
+          height: auto
+          h3
+            font-size: 2.5em
+            color: #FFF
+            margin-bottom: 30px
+        i
+          font-size: 15px
+          color: $color-pink
+          &:hover
+            color: $color-pink-hover
         input
           font-size: 14px 
           padding: 7.5px 5px
