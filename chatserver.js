@@ -143,15 +143,17 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('privatemsg', function (msgObj, fn) {
-
+        console.log("trying to send private");
 		//If user exists in global user list.
 		if(users[msgObj.nick] !== undefined) {
+            console.log("found user:"+msgObj.nick);
 			//Send the message only to this user.
-			users[msgObj.nick].socket.emit('recv_privatemsg', socket.username, msgObj.message);
+			users[msgObj.nick].socket.emit('recvPrivateMsg', socket.username, msgObj.message);
 			//Callback recieves true.
 			fn(true);
 		}
 		fn(false);
+		//Comment
 	});
 
 	//When a user leaves a room this gets performed.
@@ -183,6 +185,13 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('servermessage', "quit", users[socket.username].channels, socket.username);
 			//Remove the user from the global user roster.
 			delete users[socket.username];
+
+			//Reconstructing globalUsers
+            var globalUsers = [];
+            for(var user in users){
+                globalUsers.push(user);
+            }
+            io.sockets.emit('globalUsers', globalUsers);
 		}
 	});
 
