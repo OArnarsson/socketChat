@@ -5,7 +5,7 @@
     <div class="roomName">New room</div>
   </div>
   <div class="room" *ngFor="let room of availableRooms" (click)="changeRoom({room: room})">
-    <img *ngIf="room != 'lobby'" alt="roomImg" src="http://placehold.it/30x30">
+    <div *ngIf="room != 'lobby'" class="avatar" [ngStyle]="{'background-color':room | namecolor}">{{room | initials}}</div>
     <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
     <div class="roomName">{{room}}</div>
     <i (click)="leaveRoom(room)" class="fa fa-times exit" aria-hidden="true"></i>

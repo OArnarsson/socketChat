@@ -22,6 +22,8 @@
       justify-content: flex-end
     img
       margin: $padding-normal
+    .avatar
+      @include avatar
   .navLeft
       width: $size-picker
       margin-left: 17.5px
@@ -35,17 +37,6 @@
     width: $size-current
     @media screen and (max-width: 740px)
       width: auto
-    .avatar
-      width: 30px
-      height: 30px
-      margin: 0 15px
-      font-size: 15px
-      display: flex
-      justify-content: center
-      align-items: center
-      align-self: center
-      border-radius: $radius
-      background-color: lightgreen
     h2, h4
       margin-left: 5px 10px 
       align-self: center
@@ -63,7 +54,7 @@
     .profile
       font-size: 1.5rem
       color: #AAA
-      opacity: 0.6
+      opacity: 0.75
       align-self: center
       margin-right: 10px
     img

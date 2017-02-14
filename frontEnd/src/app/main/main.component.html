@@ -12,8 +12,8 @@
             <h4>- {{roomObj.topic}}</h4>
         </div>
         <div class="navRight">
-            <h2 class="profile">{{roomObj.username}}</h2>
-            <img alt="{{roomObj.username}} - profileImage" src="http://placehold.it/30x30"><img>
+            <h2 class="profile">Online as: {{roomObj.username}}</h2>
+            <div class="avatar" [ngStyle]="{'background-color':roomObj.username | namecolor}">{{roomObj.username | initials}}</div>
         </div>
         <div class="navButton">
             <p><i class="fa fa-angle-right" aria-hidden="true"></i></p>
