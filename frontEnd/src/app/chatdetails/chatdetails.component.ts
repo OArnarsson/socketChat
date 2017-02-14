@@ -35,8 +35,29 @@ export class ChatdetailsComponent implements OnInit {
             }
         );
     }
+
     goToPrivate(userName:any){
         this.setToPrivate.emit(userName);
+    }
+
+    kickUser(userName:any){
+        let x = {room:this.userList.room, user: userName};
+        this.chat.kickUser(x);
+    }
+
+    opUser(userName:any){
+        let x = {room:this.userList.room, user: userName};
+        this.chat.opUser(x);
+    }
+
+    banUser(userName:any){
+        let x = {room:this.userList.room, user: userName};
+        this.chat.banUser(x);
+    }
+
+    unBanUser(userName:any){
+        let x = {room:this.userList.room, user: userName};
+        this.chat.unBanUser(x);
     }
 
 

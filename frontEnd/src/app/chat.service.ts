@@ -120,4 +120,37 @@ export class ChatService {
         this.socket.emit("partroom", roomName);
     }
 
+    kickUser(obj:any){
+        this.socket.emit('kick', obj, (data) => {});
+    }
+    opUser(obj:any){
+        this.socket.emit('op', obj, (data) => {});
+    }
+
+    banUser(obj:any){
+        this.socket.emit('ban', obj, (data) => {});
+    }
+
+    unBanUser(obj:any){
+        this.socket.emit('unban', obj, (data) => {});
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
