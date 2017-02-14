@@ -62,6 +62,15 @@ export class ChatService {
         });
         return observable;
     }
+    getGlobalUsers(){
+        let observable = new Observable(observer => {
+            this.socket.on("globalUsers", (users) =>{
+
+                observer.next(users);
+            });
+        });
+        return observable;
+    }
 
 
     getAllUsers(){

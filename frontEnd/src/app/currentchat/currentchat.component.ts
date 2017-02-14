@@ -10,7 +10,6 @@ import {Chatroom} from "./chatroom";
 export class CurrentchatComponent implements OnInit {
     message:string;
     chatRooms:Chatroom[];
-    oldLength:number;
     @Input() activeRoom:string;
     constructor(private chat:ChatService) {
         this.message = "";
@@ -31,11 +30,12 @@ export class CurrentchatComponent implements OnInit {
     getMessages(){
         this.chat.getMessages().subscribe(
             chatRoom => {
-                console.log("im here!!!!");
                 let isNew = true;
                 for(let index in this.chatRooms){
                     if(this.chatRooms[index].name == chatRoom['name']){
                         this.chatRooms[index] = chatRoom;
+                        isNew = false;
+                        //This need some more work.
                         if(this.chatRooms[index].name == this.activeRoom){
                             this.chatRooms[index].unreadMessages = 0;
                         }
@@ -51,7 +51,6 @@ export class CurrentchatComponent implements OnInit {
         );
     }
     getUnreadMessages(){
-
         let size:number;
         for(let room of this.chatRooms){
             if(room.name == this.activeRoom){

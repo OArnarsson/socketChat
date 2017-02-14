@@ -6,7 +6,7 @@
         <div class="messageUser">{{msgObj.nick}}</div>
         <div class="messageText">{{msgObj.message}}</div>
       </div>
-      <div class="messageTime">13:18</div>
+      <div class="messageTime">{{msgObj.timeStamp | date:'hh:mm'}}</div>
     </div>
   </div>
   <div class="inputContainer">

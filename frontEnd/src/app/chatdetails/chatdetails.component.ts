@@ -8,8 +8,11 @@ import {ChatService} from "../chat.service";
 })
 export class ChatdetailsComponent implements OnInit {
     public userList:any;
+    public globalUsers:string[];
     constructor(private chat:ChatService) {
         this.userList = {room:'', users:[], ops:[]};
+        this.globalUsers = [];
+        this.getGlobalUsers();
         this.getUsers();
     }
 
@@ -19,6 +22,13 @@ export class ChatdetailsComponent implements OnInit {
     getUsers(){
         this.chat.getAllUsers().subscribe(
             userList => this.userList = userList
+        );
+    }
+    getGlobalUsers(){
+        this.chat.getGlobalUsers().subscribe(
+            userList => {
+                this.userList = userList;
+            }
         );
     }
 }
