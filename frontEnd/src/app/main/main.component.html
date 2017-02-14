@@ -7,8 +7,9 @@
             <h1 class="brand">OnRi Chat</h1>
         </div>
         <div class="navCenter">
-            <img class="roomImage" src="http://placehold.it/30x30">
-            <h2 class="roomName">{{roomObj.room}} - {{roomObj.topic}}</h2>
+            <div class="avatar" [ngStyle]="{'background-color':roomObj.room | namecolor}">{{roomObj.room | initials}}</div>
+            <h2 class="roomName">{{roomObj.room}} &nbsp;</h2>
+            <h4>- {{roomObj.topic}}</h4>
         </div>
         <div class="navRight">
             <h2 class="profile">{{roomObj.username}}</h2>
