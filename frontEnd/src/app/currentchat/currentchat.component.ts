@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { ChatService } from '../chat.service'
 import {Chatroom} from "./chatroom";
+import {Message} from "./message";
 
 @Component({
   selector: 'app-currentchat',
@@ -10,25 +11,44 @@ import {Chatroom} from "./chatroom";
 export class CurrentchatComponent implements OnInit {
     message:string;
     chatRooms:Chatroom[];
+    privateConv:Chatroom[];
     @Input() activeObj:any;
     constructor(private chat:ChatService) {
         this.message = "";
         this.getMessages();
+        this.getPrivateMessages();
         this.chatRooms = [];
+        this.privateConv = [];
     }
 
     ngOnInit() {
 
     }
+
     sendMsg(event:any){
+        console.log("privateMSg Status:"+this.activeObj.privateMsg);
         if(event.keyCode == 13 || event == 'sendButton'){
+            let msg = {roomName: this.activeObj.room, msg: this.message};
             if(!this.activeObj.privateMsg){
-                 let msg = {roomName: this.activeObj.room, msg: this.message};
-                this.chat.sendMessage(msg);
+                    this.chat.sendMessage(msg);
             }
             else{
-                let msg = {roomName: this.activeObj.room, msg: this.message};
-                //this.chat.sendPrivateMsg(msg)
+                let msg = {nick: this.activeObj.room, message: this.message};
+                let found = false;
+                console.log("im tryin to send private");
+                for(let index in this.privateConv){
+                    if(this.privateConv[index].name = this.activeObj.room){
+                        this.privateConv[index].history.push(new Message(this.activeObj.username, new Date(), this.message));
+                        found = true;
+                    }
+                }
+            if(!found){
+                    let msgArr = [];
+                    let msg = new Message(this.activeObj.username, new Date(), this.message);
+                    msgArr.push(msg);
+                    this.privateConv.push(new Chatroom(this.activeObj.room, msgArr));
+                }
+                this.chat.sendPrivateMessage(msg);
             }
             this.message = "";
         }
@@ -67,14 +87,47 @@ export class CurrentchatComponent implements OnInit {
         return size;
     }
 
+    getPrivateMessages(){
+        this.chat.getPrivateMessages().subscribe(
+            message => {
+                console.log("receiving private:"+message);
+                let found = false;
+                for(let index in this.privateConv){
+                    if(this.privateConv[index].name = message['nick']){
+                        this.privateConv[index].history.push(new Message(message['nick'], message['timeStamp'], message['message']));
+                        found = true;
+                    }
+                }
+                if(!found){
+                    let msgArr = [];
+                    let msg = new Message(message['nick'], message['timeStamp'], message['message']);
+                    msgArr.push(msg);
+                    this.privateConv.push(new Chatroom(message['nick'], msgArr));
+                }
+            }
+        )
+    }
+
     getActiveRoomChat(){
-        for(let room of this.chatRooms){
-            if(room.name == this.activeObj.room){
-                return room.history;
+        console.log(this.privateConv.length);
+        if(!this.activeObj.privateMsg){
+            for(let room of this.chatRooms){
+                if(room.name == this.activeObj.room){
+                    return room.history;
+                }
+            }
+        }
+        else{
+            for(let room of this.privateConv){
+                if(room.name == this.activeObj.room){
+                    return room.history;
+                }
             }
         }
         return [];
     }
+
+
 
 
 }

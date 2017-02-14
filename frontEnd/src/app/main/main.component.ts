@@ -17,7 +17,6 @@ export class MainComponent implements OnInit {
         this.loggedIn = false;
         this.userNameAvailable = true;
         this.roomObj = {room: "lobby", topic: "", username: "", privateMsg: false};
-
     }
 
     ngOnInit() {
@@ -30,7 +29,10 @@ export class MainComponent implements OnInit {
     }
     getCurrentRoom(){
         this.chat.getRoomTopic().subscribe(
-            room => this.roomObj = room
+            room => {
+                this.roomObj = room
+                this.roomObj.privateMsg = false;
+            }
         );
     }
 
@@ -38,6 +40,7 @@ export class MainComponent implements OnInit {
         if(userName.toLowerCase() != this.userName.toLowerCase()){
             this.roomObj.room = userName;
             this.roomObj.topic = "private Msg";
+            this.roomObj.privateMsg = true;
         }
     }
 

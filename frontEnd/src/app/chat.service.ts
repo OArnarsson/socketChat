@@ -29,6 +29,20 @@ export class ChatService {
     sendMessage(msg){
         this.socket.emit('sendmsg', msg);
     }
+    sendPrivateMessage(msg){
+        this.socket.emit('privatemsg', msg, (data) => {});
+    }
+
+    getPrivateMessages(){
+        let observable = new Observable(observer => {
+            this.socket.on('recvPrivateMsg', (userName, msgObj) => {
+                let date = new Date();
+                let msg = new Message(userName, date, msgObj);
+                observer.next(msg);
+            });
+        });
+        return observable;
+    }
 
     getMessages():Observable<Chatroom> {
         let observable = new Observable(observer => {
@@ -65,7 +79,6 @@ export class ChatService {
     getGlobalUsers(){
         let observable = new Observable(observer => {
             this.socket.on("globalUsers", (users) =>{
-
                 observer.next(users);
             });
         });
