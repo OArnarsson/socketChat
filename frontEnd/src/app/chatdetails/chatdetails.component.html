@@ -9,7 +9,36 @@
       <div>You are the only one here.</div>
     </div>
   </div>
+
+  <div class="user">
+    <h3>Users in room</h3>
+    <div *ngFor="let user of globalUsers" class="userTab" (click)="toggleDropDown()">
+      <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
+      <div class="userName">{{user}}</div>
+      <div class="actionButtons">
+        <i (click)="goToPrivate(user)" class="fa fa-comment-o" aria-hidden="true">
+          <span class="tooltip">Message</span>
+        </i>
+        <i (click)="opUser(user)" class="fa fa-user-o" aria-hidden="true">
+          <span class="tooltip">OP</span>
+        </i>
+        <i (click)="kickUser(user)" class="fa fa-trash-o" aria-hidden="true">
+          <span class="tooltip">Kick</span>
+        </i>
+        <i (click)="banUser(user)" class="fa fa-circle" aria-hidden="true">
+          <span class="tooltip">Ban</span>
+        </i>
+        <i (click)="unBanUser(user)" class="fa fa-circle-o" aria-hidden="true">
+          <span class="tooltip">Unban</span>
+        </i>
+      </div>
+    </div>
+    <div *ngIf="globalUsers.length < 1" class="nobody">
+      <div>You are the only one here.</div>
+    </div>
+  </div>
 </div>
+
 
 
 <!--<div class="users">

@@ -10,11 +10,13 @@ import {ChatService} from "../chat.service";
 export class ChatdetailsComponent implements OnInit {
     public userList:any;
     public globalUsers:any;
+    public hiddenDropDown:boolean;
     @Input() whoAmI:string;
     @Output() setToPrivate = new EventEmitter();
     constructor(private chat:ChatService) {
         this.userList = {room:'', users:[], ops:[]};
         this.globalUsers = [];
+        this.hiddenDropDown = true;
         this.getGlobalUsers();
         this.getUsers();
     }

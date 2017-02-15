@@ -12,7 +12,7 @@
             <h4>- {{roomObj.topic}}</h4>
         </div>
         <div class="navRight">
-            <h2 class="profile">Online as: {{roomObj.username}}</h2>
+            <h2 class="profile">{{roomObj.username}}</h2>
             <div class="avatar" [ngStyle]="{'background-color':roomObj.username | namecolor}">{{roomObj.username | initials}}</div>
         </div>
         <div class="navButton">
