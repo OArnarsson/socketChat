@@ -57,15 +57,19 @@ export class CurrentchatComponent implements OnInit {
                 let isNew = true;
                 for (let index in this.chatRooms) {
                     if (this.chatRooms[index].name == chatRoom['name']) {
-                        this.chatRooms[index] = chatRoom;
-                        isNew = false;
                         //This need some more work.
                         if (this.chatRooms[index].name == this.activeObj.room) {
                             this.chatRooms[index].unreadMessages = 0;
+                            this.chatRooms[index].roomClass = "";
                         }
                         else {
-                            this.chatRooms[index].unreadMessages += 1;
+                            if(this.chatRooms[index].history.length < chatRoom['history'].length){
+                                this.chatRooms[index].roomClass = "unreadMsg";
+                                this.chatRooms[index].unreadMessages += 1;
+                            }
                         }
+                        this.chatRooms[index].history = chatRoom['history'];
+                        isNew = false;
                     }
                 }
                 if (isNew) {
@@ -120,6 +124,14 @@ export class CurrentchatComponent implements OnInit {
             }
         }
         return [];
+    }
+
+    changeRoom(x) {
+        this.chat.changeRoom(x);
+    }
+
+    leaveRoom(roomName) {
+        this.chat.leaveRoom(roomName);
     }
 
 

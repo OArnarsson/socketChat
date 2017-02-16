@@ -7,9 +7,23 @@
   height: 100%
   overflow: hidden
   font-family: 'Source Sans Pro', sans-serif
-
+  display: flex
+  flex-direction: column
+  .openConvContainer
+    height: auto
+    display: flex
+    div
+      padding: 0.5% 1%
+      background-color: $color-font-light *1.3
+      cursor: pointer
+      display: flex
+      width: auto
+      border-left: 1px solid $color-font-light
+      border-right: 1px solid $color-font-light
+      &.unreadMsg
+        animation: unreadMessage 2s linear infinite
   .mainChat
-    height: 95%
+    height: 100%
     width: 100%
     flex-direction: column
     justify-content: flex-end
@@ -57,7 +71,7 @@
       div
         display: inline-block
     .ownMessage
-      float:right
+      float: right
 
   .inputContainer
     display: flex
@@ -91,3 +105,11 @@
         color: #FFF
         opacity: 1
         @include transition
+
+@keyframes unreadMessage
+  0%
+    background-color: $color-font-light *1.3
+  50%
+    background-color: #008800
+  100%
+    background-color: $color-font-light *1.3
