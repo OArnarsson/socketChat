@@ -60,6 +60,10 @@ export class ChatdetailsComponent implements OnInit {
         }
     }
 
+    notEmpty() {
+        return this.userList.users.length > 1;
+    }
+
     isAdmin(userName:any) {
         if(this.userList.ops.indexOf(userName) > -1) {
             return true;
