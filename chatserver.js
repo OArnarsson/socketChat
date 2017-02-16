@@ -168,6 +168,7 @@ io.sockets.on('connection', function (socket) {
 		//Remove the channel from the user object in the global user roster.
 		delete users[socket.username].channels[room];
 		//Update the userlist in the room.
+        io.sockets.emit('userRooms', users[socket.username].channels);
 		io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
 		io.sockets.emit('servermessage', "part", room, socket.username);
 	});
