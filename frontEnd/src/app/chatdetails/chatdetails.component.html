@@ -1,26 +1,28 @@
 <div id="chatDetails">
   <div class="user">
-    <h3>Users online</h3>
-    <div *ngFor="let user of globalUsers" class="userTab" (click)="goToPrivate(user)">
-      <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
-      <div class="userName">{{user}}</div>
-    </div>
-    <div *ngIf="globalUsers.length < 1" class="nobody">
-      <div>You are the only one here.</div>
+    <h3 (click)="toggleDropDown()">Users online: {{globalUsers.length}}</h3>
+    <div class="toggler" [@onlineToggle]="onlineState">
+      <div *ngFor="let user of globalUsers" [ngClass]="{dropHidden: hiddenDropDown}" class="userTab" (click)="goToPrivate(user)">
+        <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
+        <div class="userName">{{user}}</div>
+        <i *ngIf="!isMyself(user)" (click)="goToPrivate(user)" class="fa fa-comment-o" aria-hidden="true"></i>
+        <i *ngIf="isMyself(user)" class="fa fa-user-circle-o noHover" aria-hidden="true"></i>
+      </div>
+      <div *ngIf="globalUsers.length < 1" class="nobody">
+        <div>No other users online.</div>
+      </div>
     </div>
   </div>
 
   <div class="user">
     <h3>Users in room</h3>
-    <div *ngFor="let user of globalUsers" class="userTab" (click)="toggleDropDown()">
+    <div *ngFor="let user of userList.users" class="userTab" (click)="toggleDropDown()">
       <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
       <div class="userName">{{user}}</div>
-      <div class="actionButtons">
-        <i (click)="goToPrivate(user)" class="fa fa-comment-o" aria-hidden="true">
-          <span class="tooltip">Message</span>
-        </i>
+      <i *ngIf="isAdmin(user)" class="fa fa-trophy noHover" aria-hidden="true"></i>
+      <div *ngIf="isAdmin(whoAmI)" class="actionButtons">
         <i (click)="opUser(user)" class="fa fa-user-o" aria-hidden="true">
-          <span class="tooltip">OP</span>
+          <span class="tooltip">Admin</span>
         </i>
         <i (click)="kickUser(user)" class="fa fa-trash-o" aria-hidden="true">
           <span class="tooltip">Kick</span>
@@ -33,7 +35,7 @@
         </i>
       </div>
     </div>
-    <div *ngIf="globalUsers.length < 1" class="nobody">
+    <div *ngIf="userList.users.length < 1" class="nobody">
       <div>You are the only one here.</div>
     </div>
   </div>
