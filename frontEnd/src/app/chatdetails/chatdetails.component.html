@@ -39,7 +39,28 @@
     </div>
   </div>
 
-
+  <div class="user">
+    <h3>Users in {{whereAmI}}</h3>
+    <div *ngFor="let user of getActiveDetails()" class="userTab" (click)="toggleDropDown()">
+      <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
+      <div class="userName">{{user}}</div>
+      <i *ngIf="isAdmin(user)" class="fa fa-trophy noHover" aria-hidden="true"></i>
+      <div *ngIf="isAdmin(whoAmI)" class="actionButtons">
+        <i (click)="opUser(user)" class="fa fa-user-o" aria-hidden="true">
+          <span class="tooltip">Admin</span>
+        </i>
+        <i (click)="kickUser(user)" class="fa fa-trash-o" aria-hidden="true">
+          <span class="tooltip">Kick</span>
+        </i>
+        <i (click)="banUser(user)" class="fa fa-ban" aria-hidden="true">
+          <span class="tooltip">Ban</span>
+        </i>
+        <i (click)="unBanUser(user)" class="fa fa-circle-o" aria-hidden="true">
+          <span class="tooltip">Unban</span>
+        </i>
+      </div>
+    </div>
+  </div>
 </div>
 
 
