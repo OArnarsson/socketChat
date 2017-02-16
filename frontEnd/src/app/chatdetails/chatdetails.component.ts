@@ -60,7 +60,7 @@ export class ChatdetailsComponent implements OnInit {
                 let found = false;
                 for(let index in this.roomDetails){
                     if(this.roomDetails[index].room == userList['room']){
-                        this.roomDetails[index] = userList['room'];
+                        this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
                         found = true;
                     }
                 }

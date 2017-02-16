@@ -1,8 +1,8 @@
 <div id="chatDetails">
   <div class="user">
-    <h3 (click)="toggleDropDown('room')">Users in {{whereAmI}}: {{userList.users.length}}</h3>
+    <h3 (click)="toggleDropDown('room')">Users in {{whereAmI}}: {{getActiveDetails().length}}</h3>
     <div class="toggler" [@roomToggle]="roomState">
-      <div *ngFor="let user of userList.users" class="userTab" (click)="toggleDropDown()">
+      <div *ngFor="let user of getActiveDetails()" class="userTab" (click)="toggleDropDown()">
         <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
         <div class="userName">{{user}}</div>
         <i *ngIf="isAdmin(user)" class="fa fa-trophy noHover" aria-hidden="true"></i>
