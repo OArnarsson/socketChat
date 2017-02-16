@@ -52,6 +52,10 @@ export class ChatdetailsComponent implements OnInit {
         let x = {room:this.userList.room, user: userName};
         this.chat.opUser(x);
     }
+    deOpUser(userName:any){
+        let x = {room:this.userList.room, user: userName};
+        this.chat.deOpUser(x);
+    }
 
     banUser(userName:any){
         let x = {room:this.userList.room, user: userName};

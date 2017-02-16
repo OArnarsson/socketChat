@@ -69,6 +69,7 @@ export class ChatService {
             this.socket.on("roomlist", (data) => {
                 let arr:string[] = [];
                 for(var x in data){
+                    console.log("this is a global room: "+x);
                     arr.push(x);
                 }
                 observer.next(arr);
@@ -76,6 +77,21 @@ export class ChatService {
         });
         return observable;
     }
+    getUserRooms() : Observable<string[]>{
+        let observable = new Observable(observer => {
+            this.socket.emit("rooms");
+            this.socket.on("userRooms", (data) => {
+                let arr:string[] = [];
+                for(var x in data){
+                    arr.push(x);
+                    console.log("this is a room: "+x);
+                }
+                observer.next(arr);
+            });
+        });
+        return observable;
+    }
+
     getGlobalUsers(){
         let observable = new Observable(observer => {
             this.socket.on("globalUsers", (users) =>{

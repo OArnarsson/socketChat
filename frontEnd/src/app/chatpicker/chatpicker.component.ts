@@ -8,6 +8,7 @@ import {ChatService} from "../chat.service";
 })
 export class ChatpickerComponent implements OnInit {
     availableRooms: string[];
+    activeRooms: string[];
     isCreating: boolean;
     newName: string;
     newTopic: string;
@@ -15,6 +16,7 @@ export class ChatpickerComponent implements OnInit {
     constructor(private chat:ChatService) {
         this.availableRooms = [];
         this.getAllRooms();
+        this.getAllUserRooms();
         this.isCreating = false;
     }
 
@@ -23,7 +25,13 @@ export class ChatpickerComponent implements OnInit {
 
     getAllRooms(){
         this.chat.getAllRooms().subscribe(
-            data => this.availableRooms =  data
+            rooms => this.availableRooms =  rooms
+        );
+    }
+
+    getAllUserRooms(){
+        this.chat.getUserRooms().subscribe(
+            rooms => this.activeRooms = rooms
         );
     }
 

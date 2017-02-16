@@ -105,7 +105,6 @@ export class CurrentchatComponent implements OnInit {
     }
 
     getActiveRoomChat(){
-        console.log(this.privateConv.length);
         if(!this.activeObj.privateMsg){
             for(let room of this.chatRooms){
                 if(room.name == this.activeObj.room){
