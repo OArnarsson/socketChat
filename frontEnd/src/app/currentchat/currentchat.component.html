@@ -1,7 +1,9 @@
 <div id="currentChat">
   <div class="mainChat">
-      <div class="message" *ngFor="let msgObj of getActiveRoomChat(); let indx = index" [ngClass]="{'unread': getUnreadMessages() < indx}">
-      <div><div class="avatar" [ngStyle]="{'background-color':msgObj.nick | namecolor}">{{msgObj.nick | initials}}</div></div>
+    <div class="message" *ngFor="let msgObj of getActiveRoomChat(); let indx = index" [ngClass]="{'unread': getUnreadMessages() < indx}">
+      <div>
+        <div class="avatar" [ngStyle]="{'background-color':msgObj.nick | namecolor}">{{msgObj.nick | initials}}</div>
+      </div>
       <div>
         <div class="messageUser">{{msgObj.nick}}</div>
         <div class="messageText">{{msgObj.message}}</div>

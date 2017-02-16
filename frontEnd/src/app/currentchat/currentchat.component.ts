@@ -1,19 +1,19 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChatService } from '../chat.service'
-import {Chatroom} from "./chatroom";
-import {Message} from "./message";
+import { Chatroom } from "./chatroom";
+import { Message } from "./message";
 
 @Component({
-  selector: 'app-currentchat',
-  templateUrl: './currentchat.component.html',
-  styleUrls: ['./currentchat.component.sass']
+    selector: 'app-currentchat',
+    templateUrl: './currentchat.component.html',
+    styleUrls: ['./currentchat.component.sass']
 })
 export class CurrentchatComponent implements OnInit {
-    message:string;
-    chatRooms:Chatroom[];
-    privateConv:Chatroom[];
-    @Input() activeObj:any;
-    constructor(private chat:ChatService) {
+    message: string;
+    chatRooms: Chatroom[];
+    privateConv: Chatroom[];
+    @Input() activeObj: any;
+    constructor(private chat: ChatService) {
         this.message = "";
         this.getMessages();
         this.getPrivateMessages();
@@ -25,22 +25,22 @@ export class CurrentchatComponent implements OnInit {
 
     }
 
-    sendMsg(event:any){
-        if(event.keyCode == 13 || event == 'sendButton'){
-            let msg = {roomName: this.activeObj.room, msg: this.message};
-            if(!this.activeObj.privateMsg){
-                    this.chat.sendMessage(msg);
+    sendMsg(event: any) {
+        if (event.keyCode == 13 || event == 'sendButton') {
+            let msg = { roomName: this.activeObj.room, msg: this.message };
+            if (!this.activeObj.privateMsg) {
+                this.chat.sendMessage(msg);
             }
-            else{
-                let msg = {nick: this.activeObj.room, message: this.message};
+            else {
+                let msg = { nick: this.activeObj.room, message: this.message };
                 let found = false;
-                for(let index in this.privateConv){
-                    if(this.privateConv[index].name = this.activeObj.room){
+                for (let index in this.privateConv) {
+                    if (this.privateConv[index].name = this.activeObj.room) {
                         this.privateConv[index].history.push(new Message(this.activeObj.username, new Date(), this.message));
                         found = true;
                     }
                 }
-            if(!found){
+                if (!found) {
                     let msgArr = [];
                     let msg = new Message(this.activeObj.username, new Date(), this.message);
                     msgArr.push(msg);
@@ -51,50 +51,50 @@ export class CurrentchatComponent implements OnInit {
             this.message = "";
         }
     }
-    getMessages(){
+    getMessages() {
         this.chat.getMessages().subscribe(
             chatRoom => {
                 let isNew = true;
-                for(let index in this.chatRooms){
-                    if(this.chatRooms[index].name == chatRoom['name']){
+                for (let index in this.chatRooms) {
+                    if (this.chatRooms[index].name == chatRoom['name']) {
                         this.chatRooms[index] = chatRoom;
                         isNew = false;
                         //This need some more work.
-                        if(this.chatRooms[index].name == this.activeObj.room){
+                        if (this.chatRooms[index].name == this.activeObj.room) {
                             this.chatRooms[index].unreadMessages = 0;
                         }
-                        else{
-                            this.chatRooms[index].unreadMessages +=1;
+                        else {
+                            this.chatRooms[index].unreadMessages += 1;
                         }
                     }
                 }
-                if(isNew){
+                if (isNew) {
                     this.chatRooms.push(chatRoom);
                 }
             }
         );
     }
-    getUnreadMessages(){
-        let size:number;
-        for(let room of this.chatRooms){
-            if(room.name == this.activeObj.room){
+    getUnreadMessages() {
+        let size: number;
+        for (let room of this.chatRooms) {
+            if (room.name == this.activeObj.room) {
                 size = room.history.length - room.unreadMessages;
             }
         }
         return size;
     }
 
-    getPrivateMessages(){
+    getPrivateMessages() {
         this.chat.getPrivateMessages().subscribe(
             message => {
                 let found = false;
-                for(let index in this.privateConv){
-                    if(this.privateConv[index].name = message['nick']){
+                for (let index in this.privateConv) {
+                    if (this.privateConv[index].name = message['nick']) {
                         this.privateConv[index].history.push(new Message(message['nick'], message['timeStamp'], message['message']));
                         found = true;
                     }
                 }
-                if(!found){
+                if (!found) {
                     let msgArr = [];
                     let msg = new Message(message['nick'], message['timeStamp'], message['message']);
                     msgArr.push(msg);
@@ -104,17 +104,17 @@ export class CurrentchatComponent implements OnInit {
         )
     }
 
-    getActiveRoomChat(){
-        if(!this.activeObj.privateMsg){
-            for(let room of this.chatRooms){
-                if(room.name == this.activeObj.room){
+    getActiveRoomChat() {
+        if (!this.activeObj.privateMsg) {
+            for (let room of this.chatRooms) {
+                if (room.name == this.activeObj.room) {
                     return room.history;
                 }
             }
         }
-        else{
-            for(let room of this.privateConv){
-                if(room.name == this.activeObj.room){
+        else {
+            for (let room of this.privateConv) {
+                if (room.name == this.activeObj.room) {
                     return room.history;
                 }
             }
