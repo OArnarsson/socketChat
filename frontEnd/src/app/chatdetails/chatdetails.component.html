@@ -15,8 +15,8 @@
   </div>
 
   <div class="user">
-    <h3>Users in room</h3>
-    <div *ngFor="let user of userList.users" class="userTab" (click)="toggleDropDown()">
+    <h3>Users in {{whereAmI}}</h3>
+    <div *ngFor="let user of getActiveDetails()" class="userTab" (click)="toggleDropDown()">
       <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
       <div class="userName">{{user}}</div>
       <i *ngIf="isAdmin(user)" class="fa fa-trophy noHover" aria-hidden="true"></i>

@@ -24,6 +24,6 @@
     <div id="content" *ngIf="loggedIn">
         <app-chatpicker></app-chatpicker>
         <app-currentchat [(activeObj)]="roomObj"></app-currentchat>
-        <app-chatdetails (setToPrivate)="setViewToPrivateMsg($event)" [whoAmI]="userName" ></app-chatdetails>
+        <app-chatdetails (setToPrivate)="setViewToPrivateMsg($event)" [whoAmI]="userName" [whereAmI]="roomObj.room"></app-chatdetails>
     </div>
 </div>
