@@ -27,13 +27,24 @@ import { ChatService } from "../chat.service";
             })),
             transition('active => inactive', animate('300ms ease')),
             transition('inactive => active', animate('300ms ease')),
+        ]),
+        trigger('modalToggle', [
+            state('active', style({
+                transform: 'translateY(0%)'
+            })),
+            state('inactive', style({
+                transform: 'translateY(-100%)',
+                display: 'none'
+            })),
+            transition('active => inactive', animate('550ms ease')),
+            transition('inactive => active', animate('550ms ease')),
         ])
     ]
 })
 export class ChatpickerComponent implements OnInit {
     availableRooms: string[];
     activeRooms: string[];
-    isCreating: boolean;
+    modalState: string;
     availableState: string;
     activeState: string;
     newName: string;
@@ -43,7 +54,7 @@ export class ChatpickerComponent implements OnInit {
         this.availableRooms = [];
         this.getAllRooms();
         this.getAllUserRooms();
-        this.isCreating = false;
+        this.modalState = 'inactive';
         this.activeState = 'active';
         this.availableState = 'inactive';
     }
@@ -63,12 +74,9 @@ export class ChatpickerComponent implements OnInit {
         );
     }
 
-    toggleModal() {
-        this.isCreating = !this.isCreating;
-    }
 
     toggleDropDown(menu: string) {
-         if (menu == 'active') {
+        if (menu == 'active') {
             if (this.activeState == 'active') {
                 this.activeState = 'inactive';
             }
@@ -84,12 +92,22 @@ export class ChatpickerComponent implements OnInit {
                 this.availableState = 'active';
             }
         }
+        else if (menu == 'modal') {
+            if (this.modalState == 'active') {
+                this.modalState = 'inactive';
+            }
+            else {
+                this.modalState = 'active';
+            }
+        }
     }
 
     newRoom() {
         let x = { room: this.newName, topic: this.newTopic };
         this.changeRoom(x);
-        this.isCreating = false;
+        this.newName = "";
+        this.newTopic = "";
+        this.modalState = 'inactive';
     }
 
     changeRoom(x) {
