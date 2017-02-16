@@ -6,6 +6,8 @@
   overflow: hidden
   background-color: $color-main
   border-left: $borderThick solid $color-light
+  .toggler
+    transform: translateX(100%)
   h3
     width: 100%
     margin: 3% 5%
@@ -20,21 +22,24 @@
     flex-wrap: wrap
     align-items: center
     padding: 15px 0
-    cursor: pointer
     &:hover
       background: $color-light
     .userName
-    color: #333
-    opacity: 0.9
-    font-size: 1.5rem
-    font-weight: bold
+      flex-grow: 2
+      color: #333
+      opacity: 0.9
+      font-size: 1.5rem
+      font-weight: bold
+    i
+      padding: 5px 29px
+      font-size: 16px
   .actionButtons
     width: 100%
     padding-top: 5px
     display: flex
     justify-content: space-around
     font-size: 16px
-    i
+  i
       padding: 5px
       .tooltip
         z-index: 1
@@ -48,8 +53,12 @@
         border-radius: $radius
       &:hover
         color: $color-pink
+        cursor: pointer
         .tooltip
           visibility: visible
+      &.noHover:hover
+        color: #000
+        cursor: default
 
   
   
