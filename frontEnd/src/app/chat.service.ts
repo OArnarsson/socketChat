@@ -126,6 +126,9 @@ export class ChatService {
     opUser(obj:any){
         this.socket.emit('op', obj, (data) => {});
     }
+    deOpUser(obj:any){
+        this.socket.emit('deop', obj, (data) => {});
+    }
 
     banUser(obj:any){
         this.socket.emit('ban', obj, (data) => {});
