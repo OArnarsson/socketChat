@@ -42,6 +42,10 @@ export class ChatdetailsComponent implements OnInit {
     @Input() whoAmI:string;
     @Output() setToPrivate = new EventEmitter();
     constructor(private chat:ChatService) {
+
+    }
+
+    ngOnInit() {
         this.roomDetails = [];
         this.userList = {room:'', users:[], ops:[]};
         this.globalUsers = [];
@@ -49,9 +53,6 @@ export class ChatdetailsComponent implements OnInit {
         this.roomState = 'active';
         this.getGlobalUsers();
         this.getUsers();
-    }
-
-    ngOnInit() {
     }
 
     getUsers() {

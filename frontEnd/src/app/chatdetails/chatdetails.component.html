@@ -27,7 +27,7 @@
   <div class="user">
     <h3 (click)="toggleDropDown('online')">All users: {{globalUsers.length}}</h3>
     <div class="toggler" [@onlineToggle]="onlineState">
-      <div *ngFor="let user of globalUsers" [ngClass]="{dropHidden: hiddenDropDown}" class="userTab" (click)="goToPrivate(user)">
+      <div *ngFor="let user of globalUsers" class="userTab" (click)="goToPrivate(user)">
         <div class="avatar" [ngStyle]="{'background-color':user | namecolor}">{{user | initials}}</div>
         <div class="userName">{{user}}</div>
         <i *ngIf="!isMyself(user)" (click)="goToPrivate(user)" class="fa fa-comment-o" aria-hidden="true"></i>

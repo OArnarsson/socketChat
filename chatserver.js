@@ -34,6 +34,7 @@ io.sockets.on('connection', function (socket) {
                 globalUsers.push(user);
             }
             io.sockets.emit('globalUsers', globalUsers);
+            io.sockets.emit('updateusers', 'lobby', rooms['lobby'].users, rooms['lobby'].ops);
 		}
 		else {
 			console.log("User " + username + " already present!");
@@ -108,7 +109,11 @@ io.sockets.on('connection', function (socket) {
 				users[socket.username].channels[room] = room;
 				//Send the room information to the client.
 				io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
-				socket.emit('updatechat', room, rooms[room].messageHistory);
+                //socket.emit('updatechat', room, rooms[room].messageHistory);
+                //Testing this
+                for(var user in rooms[room].users){
+                    users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+                }
 				socket.emit('updatetopic', room, rooms[room].topic, socket.username);
 				io.sockets.emit('servermessage', "join", room, socket.username);
 			}
@@ -139,7 +144,11 @@ io.sockets.on('connection', function (socket) {
 				message : data.msg.substring(0, 200)
 			};
 			rooms[data.roomName].addMessage(messageObj);
-			io.sockets.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
+			//Testing this
+			for(var user in rooms[data.roomName].users){
+                users[user].socket.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
+            }
+			//io.sockets.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
 		}
 	});
 
@@ -160,7 +169,7 @@ io.sockets.on('connection', function (socket) {
 	//When a user leaves a room this gets performed.
 	socket.on('partroom', function (room) {
 		//remove the user from the room roster and room op roster.
-        console.log("parting room");
+        console.log("parting room: "+room+" as: "+ socket.username);
 		delete rooms[room].users[socket.username];
 		delete rooms[room].ops[socket.username];
 		//Remove the channel from the user object in the global user roster.

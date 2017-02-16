@@ -49,7 +49,6 @@ export class ChatService {
             this.socket.on('updatechat', (room, history) => {
                 let msgHistory:Message[] = [];
                 for(let msg of history){
-                    console.log("this is the msg"+msg);
                     msgHistory.push(new Message(msg['nick'], msg['timestamp'],msg['message']))
                 };
                 let chatRoom = new Chatroom(room, msgHistory);
@@ -69,7 +68,6 @@ export class ChatService {
             this.socket.on("roomlist", (data) => {
                 let arr:string[] = [];
                 for(var x in data){
-                    console.log("this is a global room: "+x);
                     arr.push(x);
                 }
                 observer.next(arr);
@@ -89,10 +87,12 @@ export class ChatService {
 
 
     getAllUsers(){
+        console.log("doing this!");
         let observable = new Observable(observer => {
             this.socket.on("updateusers", (room, users, ops) =>{
                 let userArr:string[] = [];
                 for(let x in users){
+                    console.log("this is a user:"+x);
                     userArr.push(x);
                 }
                 let opsArr:string[] = [];

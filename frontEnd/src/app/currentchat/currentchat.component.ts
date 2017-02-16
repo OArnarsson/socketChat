@@ -129,7 +129,6 @@ export class CurrentchatComponent implements OnInit {
     }
 
     changeRoom(x) {
-        console.log(x);
         this.chat.changeRoom(x);
     }
 
@@ -138,7 +137,6 @@ export class CurrentchatComponent implements OnInit {
     }
 
     leaveRoom(roomName) {
-        console.log(roomName);
         this.chat.leaveRoom(roomName);
     }
 
