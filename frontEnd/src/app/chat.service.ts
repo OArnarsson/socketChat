@@ -77,20 +77,6 @@ export class ChatService {
         });
         return observable;
     }
-    getUserRooms() : Observable<string[]>{
-        let observable = new Observable(observer => {
-            this.socket.emit("rooms");
-            this.socket.on("userRooms", (data) => {
-                let arr:string[] = [];
-                for(var x in data){
-                    arr.push(x);
-                    console.log("this is a room: "+x);
-                }
-                observer.next(arr);
-            });
-        });
-        return observable;
-    }
 
     getGlobalUsers(){
         let observable = new Observable(observer => {

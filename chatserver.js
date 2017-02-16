@@ -69,7 +69,6 @@ io.sockets.on('connection', function (socket) {
 				fn(true);
 			}
 			io.sockets.emit("roomlist", rooms);
-            io.sockets.emit('userRooms', users[socket.username].channels);
 			io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
 			// Update topic
 			socket.emit('updatetopic', room, rooms[room].topic, socket.username);
@@ -108,7 +107,6 @@ io.sockets.on('connection', function (socket) {
 				//Keep track of the room in the user object.
 				users[socket.username].channels[room] = room;
 				//Send the room information to the client.
-                io.sockets.emit('userRooms', users[socket.username].channels);
 				io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
 				socket.emit('updatechat', room, rooms[room].messageHistory);
 				socket.emit('updatetopic', room, rooms[room].topic, socket.username);
@@ -168,7 +166,6 @@ io.sockets.on('connection', function (socket) {
 		//Remove the channel from the user object in the global user roster.
 		delete users[socket.username].channels[room];
 		//Update the userlist in the room.
-        io.sockets.emit('userRooms', users[socket.username].channels);
 		io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
 		io.sockets.emit('servermessage', "part", room, socket.username);
 	});
@@ -287,7 +284,6 @@ io.sockets.on('connection', function (socket) {
 	socket.on('rooms', function() {
 		console.log("Requesting a list of rooms");
 		socket.emit('roomlist', rooms);
-		socket.emit('userRooms',users[socket.username].channels);
 	});
 
 	//Returns a list of all connected users.
