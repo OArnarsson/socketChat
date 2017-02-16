@@ -4,18 +4,6 @@
     <div class="roomName">New room</div>
   </div>
 
-  <h3 (click)="toggleDropDown('active')">Your rooms</h3>
-  <div class="toggler" [@activeToggle]="activeState">
-    <div class="room" *ngFor="let room of activeRooms">
-      <div class="joinRoom" (click)="changeRoom({room: room})">
-        <div *ngIf="room != 'lobby'" class="avatar" [ngStyle]="{'background-color':room | namecolor}">{{room | initials}}</div>
-        <i *ngIf="room == 'lobby'" class="fa fa-home" aria-hidden="true"></i>
-        <div class="roomName">{{room}}</div>
-      </div>
-      <i (click)="leaveRoom(room)" class="fa fa-times exit" aria-hidden="true"></i>
-    </div>
-  </div>
-
   <h3 (click)="toggleDropDown('all')">All rooms</h3>
   <div class="toggler" [@availableToggle]="availableState">
     <div class="room" *ngFor="let room of availableRooms">
