@@ -112,6 +112,8 @@ export class CurrentchatComponent implements OnInit {
         if (!this.activeObj.privateMsg) {
             for (let room of this.chatRooms) {
                 if (room.name == this.activeObj.room) {
+                    room.roomClass = "";
+                    room.unreadMessages = 0;
                     return room.history;
                 }
             }
