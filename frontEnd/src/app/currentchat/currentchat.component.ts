@@ -127,10 +127,16 @@ export class CurrentchatComponent implements OnInit {
     }
 
     changeRoom(x) {
+        console.log(x);
         this.chat.changeRoom(x);
     }
 
+    isActive(x) {
+        return x == this.activeObj.room;
+    }
+
     leaveRoom(roomName) {
+        console.log(roomName);
         this.chat.leaveRoom(roomName);
     }
 
