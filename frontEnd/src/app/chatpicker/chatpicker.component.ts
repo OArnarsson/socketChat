@@ -53,7 +53,6 @@ export class ChatpickerComponent implements OnInit {
     constructor(private chat: ChatService) {
         this.availableRooms = [];
         this.getAllRooms();
-        this.getAllUserRooms();
         this.modalState = 'inactive';
         this.activeState = 'active';
         this.availableState = 'inactive';
@@ -67,13 +66,6 @@ export class ChatpickerComponent implements OnInit {
             rooms => this.availableRooms = rooms
         );
     }
-
-    getAllUserRooms() {
-        this.chat.getUserRooms().subscribe(
-            rooms => this.activeRooms = rooms
-        );
-    }
-
 
     toggleDropDown(menu: string) {
         if (menu == 'active') {
