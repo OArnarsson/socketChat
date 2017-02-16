@@ -17,17 +17,6 @@ import { ChatService } from "../chat.service";
             transition('active => inactive', animate('300ms ease')),
             transition('inactive => active', animate('300ms ease'))
         ]),
-        trigger('activeToggle', [
-            state('active', style({
-                transform: 'translateX(0%)'
-            })),
-            state('inactive', style({
-                transform: 'translateX(-100%)',
-                display: 'none'
-            })),
-            transition('active => inactive', animate('300ms ease')),
-            transition('inactive => active', animate('300ms ease')),
-        ]),
         trigger('modalToggle', [
             state('active', style({
                 transform: 'translateY(0%)'
@@ -54,8 +43,7 @@ export class ChatpickerComponent implements OnInit {
         this.availableRooms = [];
         this.getAllRooms();
         this.modalState = 'inactive';
-        this.activeState = 'active';
-        this.availableState = 'inactive';
+        this.availableState = 'active';
     }
 
     ngOnInit() {
@@ -68,15 +56,7 @@ export class ChatpickerComponent implements OnInit {
     }
 
     toggleDropDown(menu: string) {
-        if (menu == 'active') {
-            if (this.activeState == 'active') {
-                this.activeState = 'inactive';
-            }
-            else {
-                this.activeState = 'active';
-            }
-        }
-        else if (menu == 'all') {
+        if (menu == 'all') {
             if (this.availableState == 'active') {
                 this.availableState = 'inactive';
             }

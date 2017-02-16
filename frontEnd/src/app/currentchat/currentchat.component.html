@@ -1,7 +1,10 @@
 <div id="currentChat">
-    <div class="openConvContainer">
-        <div *ngFor="let conversation of chatRooms" class="{{conversation.roomClass}}"> <h4 (click)="leaveRoom(conversation.name)">{{conversation.name}} {{conversation.unreadMessages}}</h4></div>
+  <div class="openConvContainer">
+    <div *ngFor="let conversation of chatRooms" [ngClass]="{'activeChat': isActive(conversation.name)}"  class="{{conversation.roomClass}}" (click)="changeRoom({room: conversation.name, topic: conversation.topic})">
+      <h4>{{conversation.name}} {{conversation.unreadMessages}}</h4>
+      <i (click)="leaveRoom({room: conversation.name, topic: conversation.topic})" class="fa fa-times exit" aria-hidden="true"></i>
     </div>
+  </div>
   <div class="mainChat">
     <div class="message" *ngFor="let msgObj of getActiveRoomChat(); let indx = index" [ngClass]="{'unread': getUnreadMessages() < indx}">
       <div>
