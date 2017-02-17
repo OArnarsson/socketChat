@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 import {Message} from './currentchat/message';
 import {Chatroom} from './currentchat/chatroom'
+import { SharedRoomObj } from './shared-room-obj'
 @Injectable()
 export class ChatService {
     private url = 'localhost:8080/';
@@ -33,11 +34,11 @@ export class ChatService {
         this.socket.emit('privatemsg', msg, (data) => {});
     }
 
-    getPrivateMessages(){
+    getPrivateMessages():Observable<Message>{
         let observable = new Observable(observer => {
             this.socket.on('recvPrivateMsg', (userName, msgObj) => {
                 let date = new Date();
-                let msg = new Message(userName, date, msgObj);
+                let msg = new Message(userName, date, msgObj, true);
                 observer.next(msg);
             });
         });
@@ -49,7 +50,7 @@ export class ChatService {
             this.socket.on('updatechat', (room, history) => {
                 let msgHistory:Message[] = [];
                 for(let msg of history){
-                    msgHistory.push(new Message(msg['nick'], msg['timestamp'],msg['message']))
+                    msgHistory.push(new Message(msg['nick'], msg['timestamp'],msg['message'], false))
                 };
                 let chatRoom = new Chatroom(room, msgHistory);
                 observer.next(chatRoom);
@@ -106,11 +107,11 @@ export class ChatService {
         return observable;
     }
 
-    getRoomTopic(){
+    getRoomTopic(): Observable<SharedRoomObj>{
         let observable = new Observable(observer => {
             this.socket.on("updatetopic", (room, topic, username) =>{
-                let roomObj = {room: room, topic:topic, username: username};
-                observer.next(roomObj);
+                //let roomObj = {room: room, topic:topic, username: username};
+                observer.next(new SharedRoomObj(room, topic, username, false));
             });
         });
         return observable;

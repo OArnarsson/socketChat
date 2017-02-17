@@ -1,5 +1,6 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
 import { ChatService } from "../chat.service";
+import { SharedRoomObj } from "../shared-room-obj"
 
 @Component({
     selector: 'app-main',
@@ -20,12 +21,12 @@ export class MainComponent implements OnInit {
     public loggedIn: boolean;
     public loginState: string;
     public userNameAvailable: boolean;
-    public roomObj: any;
+    public roomObj: SharedRoomObj;
 
     constructor(private chat: ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
-        this.roomObj = { room: "lobby", topic: "", username: "", privateMsg: false };
+        this.roomObj = new SharedRoomObj("lobby", "", "", false);
         this.loginState = 'active';
     }
 
@@ -41,8 +42,7 @@ export class MainComponent implements OnInit {
     getCurrentRoom() {
         this.chat.getRoomTopic().subscribe(
             room => {
-                this.roomObj = room
-                this.roomObj.privateMsg = false;
+                this.roomObj = room;
             }
         );
     }
@@ -53,6 +53,9 @@ export class MainComponent implements OnInit {
             this.roomObj.topic = "private Msg";
             this.roomObj.privateMsg = true;
         }
+    }
+    changeConvo(roomObj:SharedRoomObj){
+        this.roomObj = roomObj;
     }
 
 
