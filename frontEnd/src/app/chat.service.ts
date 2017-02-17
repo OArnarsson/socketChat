@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core'
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 import { Message } from './currentchat/message';
-import { Chatroom } from './currentchat/chatroom'
+import { Chatroom } from './currentchat/chatroom';
 @Injectable()
 export class ChatService {
     private url = 'localhost:8080/';
     private socket;
-    //Room variables
+    // Room variables
 
     constructor() {
         this.socket = io(this.url);
-        this.socket.on("connect", () => {
-            console.log("Connected!");
+        this.socket.on('connect', () => {
+            console.log('Connected!');
         });
     }
 
     public logIn(userName: string) {
         let observable = new Observable(observer => {
-            this.socket.emit("adduser", userName, (data) => {
+            this.socket.emit('adduser', userName, (data) => {
                 observer.next(data);
                 observer.complete();
             });
@@ -49,7 +49,7 @@ export class ChatService {
             this.socket.on('updatechat', (room, history) => {
                 let msgHistory: Message[] = [];
                 for (let msg of history) {
-                    msgHistory.push(new Message(msg['nick'], msg['timestamp'], msg['message']))
+                    msgHistory.push(new Message(msg['nick'], msg['timestamp'], msg['message']));
                 };
                 let chatRoom = new Chatroom(room, msgHistory);
                 observer.next(chatRoom);
@@ -64,10 +64,10 @@ export class ChatService {
 
     getAllRooms(): Observable<string[]> {
         let observable = new Observable(observer => {
-            this.socket.emit("rooms");
-            this.socket.on("roomlist", (data) => {
+            this.socket.emit('rooms');
+            this.socket.on('roomlist', (data) => {
                 let arr: string[] = [];
-                for (var x in data) {
+                for (let x in data) {
                     arr.push(x);
                 }
                 observer.next(arr);
@@ -78,7 +78,7 @@ export class ChatService {
 
     getGlobalUsers() {
         let observable = new Observable(observer => {
-            this.socket.on("globalUsers", (users) => {
+            this.socket.on('globalUsers', (users) => {
                 observer.next(users);
             });
         });
@@ -87,12 +87,12 @@ export class ChatService {
 
 
     getAllUsers() {
-        console.log("doing this!");
+        console.log('doing this!');
         let observable = new Observable(observer => {
-            this.socket.on("updateusers", (room, users, ops) => {
+            this.socket.on('updateusers', (room, users, ops) => {
                 let userArr: string[] = [];
                 for (let x in users) {
-                    console.log("this is a user:" + x);
+                    console.log('this is a user:' + x);
                     userArr.push(x);
                 }
                 let opsArr: string[] = [];
@@ -108,7 +108,7 @@ export class ChatService {
 
     getRoomTopic() {
         let observable = new Observable(observer => {
-            this.socket.on("updatetopic", (room, topic, username) => {
+            this.socket.on('updatetopic', (room, topic, username) => {
                 let roomObj = { room: room, topic: topic, username: username };
                 observer.next(roomObj);
             });
@@ -116,10 +116,10 @@ export class ChatService {
         return observable;
     }
     changeRoom(x) {
-        this.socket.emit("joinroom", x);
+        this.socket.emit('joinroom', x);
     }
     leaveRoom(roomName) {
-        this.socket.emit("partroom", roomName);
+        this.socket.emit('partroom', roomName);
     }
 
     kickUser(obj: any) {

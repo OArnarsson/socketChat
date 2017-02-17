@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ChatService } from "../chat.service";
+import { ChatService } from '../chat.service';
 
 @Component({
     selector: 'app-login',
@@ -14,25 +14,24 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userName = "";
+        this.userName = '';
     }
     public logIn() {
         this.chat.logIn(this.userName).subscribe(
             data => {
                 if (data) {
-                    console.log(`"${this.userName}" has been logged in`);
+                    console.log(`'${this.userName}' has been logged in`);
                     this.isAvailable = true;
                     this.attemptToLogIn.emit(this.userName);
                     this.joinRoom();
-                }
-                else {
-                    this.userName = "";
+                } else {
+                    this.userName = '';
                     this.isAvailable = false;
                 }
             });
     }
     public joinRoom() {
-        this.chat.joinRoom({ room: "lobby" });
+        this.chat.joinRoom({ room: 'lobby' });
     }
 
 

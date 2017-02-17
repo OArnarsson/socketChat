@@ -1,5 +1,5 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from "../chat.service";
+import { ChatService } from '../chat.service';
 
 @Component({
     selector: 'app-main',
@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
     constructor(private chat: ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
-        this.roomObj = { room: "lobby", topic: "", username: "", privateMsg: false };
+        this.roomObj = { room: 'lobby', topic: '', username: '', privateMsg: false };
         this.loginState = 'active';
     }
 
@@ -41,7 +41,7 @@ export class MainComponent implements OnInit {
     getCurrentRoom() {
         this.chat.getRoomTopic().subscribe(
             room => {
-                this.roomObj = room
+                this.roomObj = room;
                 this.roomObj.privateMsg = false;
             }
         );
@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
     setViewToPrivateMsg(userName: string) {
         if (userName.toLowerCase() != this.userName.toLowerCase()) {
             this.roomObj.room = userName;
-            this.roomObj.topic = "private Msg";
+            this.roomObj.topic = 'private Msg';
             this.roomObj.privateMsg = true;
         }
     }

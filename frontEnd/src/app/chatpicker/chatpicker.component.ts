@@ -1,5 +1,5 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from "../chat.service";
+import { ChatService } from '../chat.service';
 
 @Component({
     selector: 'app-chatpicker',
@@ -59,26 +59,23 @@ export class ChatpickerComponent implements OnInit {
         if (menu == 'all') {
             if (this.availableState == 'active') {
                 this.availableState = 'inactive';
-            }
-            else {
+            } else {
                 this.availableState = 'active';
             }
-        }
-        else if (menu == 'modal') {
+        } else if (menu == 'modal') {
             if (this.modalState == 'active') {
                 this.modalState = 'inactive';
-            }
-            else {
+            } else {
                 this.modalState = 'active';
             }
         }
     }
 
     newRoom() {
-        let x = { room: this.newName, topic: this.newTopic };
+        const x = { room: this.newName, topic: this.newTopic };
         this.changeRoom(x);
-        this.newName = "";
-        this.newTopic = "";
+        this.newName = '';
+        this.newTopic = '';
         this.modalState = 'inactive';
     }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from "../chat.service";
-import { Roomdetails } from "./roomdetails";
+import { ChatService } from '../chat.service';
+import { Roomdetails } from './roomdetails';
 
 @Component({
     selector: 'app-chatdetails',
@@ -86,7 +86,7 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.getGlobalUsers().subscribe(
             userList => {
                 this.globalUsers = userList;
-                //this.globalUsers.splice(this.globalUsers.indexOf(this.whoAmI), 1);
+                // this.globalUsers.splice(this.globalUsers.indexOf(this.whoAmI), 1);
             }
         );
     }
@@ -95,16 +95,13 @@ export class ChatdetailsComponent implements OnInit {
         if (menu == 'online') {
             if (this.onlineState == 'active') {
                 this.onlineState = 'inactive';
-            }
-            else {
+            } else {
                 this.onlineState = 'active';
             }
-        }
-        else if (menu == 'room') {
+        } else if (menu == 'room') {
             if (this.roomState == 'active') {
                 this.roomState = 'inactive';
-            }
-            else {
+            } else {
                 this.roomState = 'active';
             }
         }
