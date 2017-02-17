@@ -127,28 +127,23 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     kickUser(userName: any) {
-        let x = { room: this.userList.room, user: userName };
-        this.chat.kickUser(x);
+        this.chat.kickUser({ room: this.userList.room, user: userName });
     }
 
     opUser(userName: any) {
-        let x = { room: this.userList.room, user: userName };
-        this.chat.opUser(x);
+        this.chat.opUser({ room: this.userList.room, user: userName });
     }
 
     deOpUser(userName: any) {
-        let x = { room: this.userList.room, user: userName };
-        this.chat.deOpUser(x);
+        this.chat.deOpUser({ room: this.userList.room, user: userName });
     }
 
     banUser(userName: any) {
-        let x = { room: this.userList.room, user: userName };
-        this.chat.banUser(x);
+        this.chat.banUser({ room: this.userList.room, user: userName });
     }
 
     unBanUser(userName: any) {
-        let x = { room: this.userList.room, user: userName };
-        this.chat.unBanUser(x);
+        this.chat.unBanUser({ room: this.userList.room, user: userName });
     }
 
 

@@ -136,8 +136,4 @@ export class CurrentchatComponent implements OnInit {
     leaveRoom(roomName) {
         this.chat.leaveRoom(roomName);
     }
-
-
-
-
 }
