@@ -63,7 +63,7 @@ export class CurrentchatComponent implements OnInit {
                             this.chatRooms[index].roomClass = "";
                         }
                         else {
-                            if(this.chatRooms[index].history.length < chatRoom['history'].length){
+                            if (this.chatRooms[index].history.length < chatRoom['history'].length) {
                                 this.chatRooms[index].roomClass = "unreadMsg";
                                 this.chatRooms[index].unreadMessages += 1;
                             }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, trigger, state, style, transition, animate} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { ChatService } from "../chat.service";
 import { Roomdetails } from "./roomdetails";
 
@@ -33,21 +33,21 @@ import { Roomdetails } from "./roomdetails";
 })
 
 export class ChatdetailsComponent implements OnInit {
-    public userList:any;
-    public roomDetails:Roomdetails[];
-    public globalUsers:any;
-    public onlineState:string;
+    public userList: any;
+    public roomDetails: Roomdetails[];
+    public globalUsers: any;
+    public onlineState: string;
     public roomState: string;
-    @Input() whereAmI:string;
-    @Input() whoAmI:string;
+    @Input() whereAmI: string;
+    @Input() whoAmI: string;
     @Output() setToPrivate = new EventEmitter();
-    constructor(private chat:ChatService) {
+    constructor(private chat: ChatService) {
 
     }
 
     ngOnInit() {
         this.roomDetails = [];
-        this.userList = {room:'', users:[], ops:[]};
+        this.userList = { room: '', users: [], ops: [] };
         this.globalUsers = [];
         this.onlineState = 'inactive';
         this.roomState = 'active';
@@ -59,13 +59,13 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.getAllUsers().subscribe(
             userList => {
                 let found = false;
-                for(let index in this.roomDetails){
-                    if(this.roomDetails[index].room == userList['room']){
+                for (let index in this.roomDetails) {
+                    if (this.roomDetails[index].room == userList['room']) {
                         this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
                         found = true;
                     }
                 }
-                if(!found){
+                if (!found) {
                     this.roomDetails.push(new Roomdetails(userList['room'], userList['users'], userList['ops']));
                 }
             }
@@ -73,16 +73,16 @@ export class ChatdetailsComponent implements OnInit {
         );
     }
 
-    getActiveDetails(){
-        for(let detail of this.roomDetails){
-            if(detail.room == this.whereAmI){
+    getActiveDetails() {
+        for (let detail of this.roomDetails) {
+            if (detail.room == this.whereAmI) {
                 return detail.users;
             }
         }
         return [];
     }
 
-    getGlobalUsers(){
+    getGlobalUsers() {
         this.chat.getGlobalUsers().subscribe(
             userList => {
                 this.globalUsers = userList;
@@ -139,8 +139,8 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.opUser(x);
     }
 
-    deOpUser(userName:any){
-        let x = {room:this.userList.room, user: userName};
+    deOpUser(userName: any) {
+        let x = { room: this.userList.room, user: userName };
         this.chat.deOpUser(x);
     }
 
