@@ -1,6 +1,7 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from "../chat.service";
-import { SharedRoomObj } from "../shared-room-obj"
+import { ChatService } from '../chat.service';
+import { SharedRoomObj } from '../shared-room-obj';
+
 
 @Component({
     selector: 'app-main',
@@ -17,7 +18,6 @@ import { SharedRoomObj } from "../shared-room-obj"
 
 })
 export class MainComponent implements OnInit {
-    public userName: string;
     public loggedIn: boolean;
     public loginState: string;
     public userNameAvailable: boolean;
@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
     constructor(private chat: ChatService) {
         this.loggedIn = false;
         this.userNameAvailable = true;
-        this.roomObj = new SharedRoomObj("lobby", "", "", false);
+        this.roomObj = new SharedRoomObj('lobby', '', '', false);
         this.loginState = 'active';
     }
 
@@ -34,7 +34,7 @@ export class MainComponent implements OnInit {
     }
 
     logIn(name: string) {
-        this.userName = name;
+        this.roomObj.username = name;
         this.loggedIn = true;
         this.loginState = 'inactive';
         this.getCurrentRoom();
@@ -48,13 +48,15 @@ export class MainComponent implements OnInit {
     }
 
     setViewToPrivateMsg(userName: string) {
-        if (userName.toLowerCase() != this.userName.toLowerCase()) {
+        if (userName.toLowerCase() != this.roomObj.username.toLowerCase()) {
             this.roomObj.room = userName;
-            this.roomObj.topic = "private Msg";
+            this.roomObj.topic = 'private Msg';
             this.roomObj.privateMsg = true;
         }
     }
+
     changeConvo(roomObj:SharedRoomObj){
+        console.log("getting some!" + roomObj);
         this.roomObj = roomObj;
     }
 

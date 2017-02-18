@@ -7,7 +7,7 @@ import { MainComponent } from './main/main.component';
 import { CurrentchatComponent } from './currentchat/currentchat.component';
 import { ChatdetailsComponent } from './chatdetails/chatdetails.component';
 import { ChatpickerComponent } from './chatpicker/chatpicker.component';
-import { ChatService } from "./chat.service";
+import { ChatService } from './chat.service';
 import { LoginComponent } from './login/login.component';
 import { InitialsPipe } from './initials.pipe';
 import { NamecolorPipe } from './namecolor.pipe';

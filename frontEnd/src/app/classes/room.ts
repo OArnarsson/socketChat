@@ -1,19 +1,19 @@
 export class Room {
-    public users:string[];
-    public ops:string[];
-    public banned:string[];
-    public messageHistory:string[];
-    public topic:string;
-    public locked:boolean;
-    public password:string;
+    public users: string[];
+    public ops: string[];
+    public banned: string[];
+    public messageHistory: string[];
+    public topic: string;
+    public locked: boolean;
+    public password: string;
 
-    constructor(){
+    constructor() {
         this.users = [];
         this.ops = [];
         this.banned = [];
         this.messageHistory = [];
-        this.topic = "";
+        this.topic = '';
         this.locked = false;
-        this.password = "";
+        this.password = '';
     }
 }

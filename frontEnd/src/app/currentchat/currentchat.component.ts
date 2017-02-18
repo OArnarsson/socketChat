@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ChatService } from '../chat.service'
-import { Chatroom } from "./chatroom";
-import { Message } from "./message";
-import { SharedRoomObj } from "../shared-room-obj"
+import { ChatService } from '../chat.service';
+import { Chatroom } from './chatroom';
+import { Message } from './message';
+import { SharedRoomObj } from '../shared-room-obj';
 
-@Component({
+@Component( {
     selector: 'app-currentchat',
     templateUrl: './currentchat.component.html',
     styleUrls: ['./currentchat.component.sass']
@@ -16,7 +16,7 @@ export class CurrentchatComponent implements OnInit {
     @Input() activeObj: SharedRoomObj;
     @Output() setActiveRoom = new EventEmitter();
     constructor(private chat: ChatService) {
-        this.message = "";
+        this.message = '';
         this.getMessages();
         this.getPrivateMessages();
         this.chatRooms = [];
@@ -32,8 +32,7 @@ export class CurrentchatComponent implements OnInit {
             let msg = { roomName: this.activeObj.room, msg: this.message };
             if (!this.activeObj.privateMsg) {
                 this.chat.sendMessage(msg);
-            }
-            else {
+            } else {
                 let msg = { nick: this.activeObj.room, message: this.message };
                 let found = false;
                 for (let index in this.privateConv) {
@@ -50,7 +49,7 @@ export class CurrentchatComponent implements OnInit {
                 }
                 this.chat.sendPrivateMessage(msg);
             }
-            this.message = "";
+            this.message = '';
         }
     }
     getMessages() {
@@ -59,14 +58,13 @@ export class CurrentchatComponent implements OnInit {
                 let isNew = true;
                 for (let index in this.chatRooms) {
                     if (this.chatRooms[index].name == chatRoom['name']) {
-                        //This need some more work.
+                        // This need some more work.
                         if (this.chatRooms[index].name == this.activeObj.room) {
                             this.chatRooms[index].unreadMessages = 0;
-                            this.chatRooms[index].roomClass = "";
-                        }
-                        else {
-                            if(this.chatRooms[index].history.length < chatRoom['history'].length){
-                                this.chatRooms[index].roomClass = "unreadMsg";
+                            this.chatRooms[index].roomClass = '';
+                        } else {
+                            if (this.chatRooms[index].history.length < chatRoom['history'].length) {
+                                this.chatRooms[index].roomClass = 'unreadMsg';
                                 this.chatRooms[index].unreadMessages += 1;
                             }
                         }
@@ -114,20 +112,19 @@ export class CurrentchatComponent implements OnInit {
                     this.privateConv.push(newPrivateConv);
                 }
             }
-        )
+        );
     }
 
     getActiveRoomChat() {
         if (!this.activeObj.privateMsg) {
             for (let room of this.chatRooms) {
                 if (room.name == this.activeObj.room) {
-                    room.roomClass = "";
+                    room.roomClass = '';
                     room.unreadMessages = 0;
                     return room.history;
                 }
             }
-        }
-        else {
+        } else {
             for (let room of this.privateConv) {
                 if (room.name == this.activeObj.room) {
                     room.roomClass = "";
@@ -141,10 +138,11 @@ export class CurrentchatComponent implements OnInit {
 
     changeRoom(convo:Chatroom) {
         let newObj:SharedRoomObj = new SharedRoomObj(convo.name,"missing from ChatRoom class",this.activeObj.username,false);
-
-        if(convo.history[0].privateMsg){
-            newObj.privateMsg = true;
-            newObj.topic = "Private Message";
+        if(convo.history.length > 0){
+            if(convo.history[0].privateMsg){
+                newObj.privateMsg = true;
+                newObj.topic = "Private Message";
+            }
         }
         //ToDo: Now we need to be able to retrieve topic from the room.
         this.setActiveRoom.emit(newObj);
@@ -185,8 +183,4 @@ export class CurrentchatComponent implements OnInit {
             }
         }
     }
-
-
-
-
 }
