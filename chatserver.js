@@ -55,7 +55,9 @@ io.sockets.on('connection', function (socket) {
 		// If the room does not exist
 		if(rooms[room] === undefined) {
 			rooms[room] = new Room();
-			rooms[room].topic = joinObj.topic;
+			if(joinObj.topic != ""){
+                rooms[room].topic = joinObj.topic;
+            }
 			// Op the user if he creates the room.
 			rooms[room].ops[socket.username] = socket.username;
 			// If the user wants to password protect the room we set the password.
@@ -69,12 +71,22 @@ io.sockets.on('connection', function (socket) {
 			if (fn) {
 				fn(true);
 			}
+            rooms[room].addUser(socket.username);
 			io.sockets.emit("roomlist", rooms);
 			io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message : 'This room was created by: '+ socket.username
+            };
+            rooms[room].addMessage(messageObj);
+
+            for(var user in rooms[room].users){
+                users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+            }
 			// Update topic
 			socket.emit('updatetopic', room, rooms[room].topic, socket.username);
 			io.sockets.emit('servermessage', "join", room, socket.username);
-			//Hey Boi
 		}
 		else {
 
@@ -110,7 +122,12 @@ io.sockets.on('connection', function (socket) {
 				//Send the room information to the client.
 				io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
                 //socket.emit('updatechat', room, rooms[room].messageHistory);
-                //Testing this
+                var messageObj = {
+                    nick : 'Server',
+                    timestamp :  new Date(),
+                    message :'The user \''+ socket.username + '\' joined the room'
+                };
+                rooms[room].addMessage(messageObj);
                 for(var user in rooms[room].users){
                     users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
                 }
@@ -176,6 +193,15 @@ io.sockets.on('connection', function (socket) {
 		//Remove the channel from the user object in the global user roster.
 		delete users[socket.username].channels[room];
 		//Update the userlist in the room.
+        var messageObj = {
+            nick : 'Server',
+            timestamp :  new Date(),
+            message :'The user \''+ socket.username + '\' left the room'
+        };
+        rooms[room].addMessage(messageObj);
+        for(var user in rooms[room].users){
+            users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+        }
 		io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
 		io.sockets.emit('servermessage', "part", room, socket.username);
 	});
@@ -185,12 +211,23 @@ io.sockets.on('connection', function (socket) {
 		if(socket.username) {
 			//If the socket doesn't have a username the client joined and parted without
 			//chosing a username, so we just close the socket without any cleanup.
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' disconnected'
+            };
+
 			for(var room in users[socket.username].channels) {
 				//Remove the user from users/ops lists in the rooms he's currently in.
 				delete rooms[room].users[socket.username];
 				delete rooms[room].ops[socket.username];
 				io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops);
+                rooms[room].addMessage(messageObj);
+                for(var user in rooms[room].users){
+                    users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+                }
 			}
+
 
 			//Broadcast the the user has left the channels he was in.
 			io.sockets.emit('servermessage', "quit", users[socket.username].channels, socket.username);
@@ -219,6 +256,15 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('kicked', kickObj.room, kickObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', kickObj.room, rooms[kickObj.room].users, rooms[kickObj.room].ops);
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' was kicked out from the room'
+            };
+            rooms[kickObj.room].addMessage(messageObj);
+            for(var user in rooms[kickObj.room].users){
+                users[user].socket.emit('updatechat', kickObj.room, rooms[kickObj.room].messageHistory);
+            }
 			fn(true);
 		}
 		else {
@@ -238,6 +284,15 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('opped', opObj.room, opObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', opObj.room, rooms[opObj.room].users, rooms[opObj.room].ops);
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' is now an admin!'
+            };
+            rooms[opObj.room].addMessage(messageObj);
+            for(var user in rooms[opObj.room].users){
+                users[user].socket.emit('updatechat', opObj.room, rooms[opObj.room].messageHistory);
+            }
 			fn(true);
 		}
 		else {
@@ -258,6 +313,15 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('deopped', deopObj.room, deopObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', deopObj.room, rooms[deopObj.room].users, rooms[deopObj.room].ops);
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' is no longer an admin!'
+            };
+            rooms[deopObj.room].addMessage(messageObj);
+            for(var user in rooms[deopObj.room].users){
+                users[user].socket.emit('updatechat', deopObj.room, rooms[deopObj.room].messageHistory);
+            }
 			fn(true);
 		}
 		else {
@@ -275,6 +339,15 @@ io.sockets.on('connection', function (socket) {
 			//Kick the user from the room.
 			io.sockets.emit('banned', banObj.room, banObj.user, socket.username);
 			io.sockets.emit('updateusers', banObj.room, rooms[banObj.room].users, rooms[banObj.room].ops);
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' is now banned from the room'
+            };
+            rooms[banObj.room].addMessage(messageObj);
+            for(var user in rooms[banObj.room].users){
+                users[user].socket.emit('updatechat', banObj.room, rooms[banObj.room].messageHistory);
+            }
 			fn(true);
 		}
 		fn(false);
@@ -285,6 +358,15 @@ io.sockets.on('connection', function (socket) {
 		if(rooms[unbanObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room ban list.
 			delete rooms[unbanObj.room].banned[unbanObj.user];
+            var messageObj = {
+                nick : 'Server',
+                timestamp :  new Date(),
+                message :'The user \''+ socket.username + '\' is no longer banned from the room'
+            };
+            rooms[unbanObj.room].addMessage(messageObj);
+            for(var user in rooms[unbanObj.room].users){
+                users[user].socket.emit('updatechat', unbanObj.room, rooms[unbanObj.room].messageHistory);
+            }
 			fn(true);
 		}
 		fn(false);
@@ -342,13 +424,6 @@ io.sockets.on('connection', function (socket) {
 		fn(false);
 	});
 });
-
-function getUserRooms(){
-    var roomArr = [];
-    for(var x in rooms){
-        console.log("seeing User:"+x.users[0]);
-    }
-}
 
 //Define the Room class/object.
 function Room() {

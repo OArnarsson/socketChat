@@ -1,5 +1,6 @@
-import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, Input } from '@angular/core';
 import { ChatService } from '../chat.service';
+import { SharedRoomObj } from '../shared-room-obj';
 
 @Component({
     selector: 'app-chatpicker',
@@ -38,6 +39,8 @@ export class ChatpickerComponent implements OnInit {
     activeState: string;
     newName: string;
     newTopic: string;
+    @Input() activeObj: SharedRoomObj;
+    @Output() setActiveRoom = new EventEmitter();
 
     constructor(private chat: ChatService) {
         this.availableRooms = [];
@@ -80,11 +83,18 @@ export class ChatpickerComponent implements OnInit {
     }
 
     changeRoom(x) {
-        this.chat.changeRoom(x);
+        this.chat.changeRoom(x).subscribe(
+            data => {
+                if(data['data']){
+                    console.log("this room was created!");
+                    this.setActiveRoom.emit(new SharedRoomObj(x.room, x.topic, this.activeObj.username, false));
+                }
+                else{
+                    //do something and log? data['reason']
+                }
+            }
+        );
     }
 
-    leaveRoom(roomName) {
-        this.chat.leaveRoom(roomName);
-    }
 
 }

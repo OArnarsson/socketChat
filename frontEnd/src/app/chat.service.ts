@@ -116,8 +116,13 @@ export class ChatService {
         });
         return observable;
     }
-    changeRoom(x) {
-        this.socket.emit('joinroom', x);
+    changeRoom(x):Observable<boolean> {
+        let observable = new Observable(observer => {
+            this.socket.emit('joinroom', x, (data, reason) =>{
+                observer.next({data:data, reason:reason});
+            });
+        });
+        return observable;
     }
     leaveRoom(roomName) {
         this.socket.emit('partroom', roomName);

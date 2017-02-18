@@ -22,7 +22,7 @@
 
     <app-login [@loginTrigger]="loginState" [(isAvailable)]="userNameAvailable" (attemptToLogIn)="logIn($event)"></app-login>
     <div id="content" *ngIf="loggedIn">
-        <app-chatpicker></app-chatpicker>
+        <app-chatpicker (setActiveRoom)="changeConvo($event)" [(activeObj)]="roomObj"></app-chatpicker>
         <app-currentchat [(activeObj)]="roomObj" (setActiveRoom)="changeConvo($event)"></app-currentchat>
         <app-chatdetails (setToPrivate)="setViewToPrivateMsg($event)" [whoAmI]="roomObj.username" [whereAmI]="roomObj.room"></app-chatdetails>
     </div>
