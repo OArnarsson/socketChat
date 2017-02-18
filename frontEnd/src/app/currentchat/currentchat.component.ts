@@ -226,6 +226,8 @@ export class CurrentchatComponent implements OnInit {
         )
     }
     // Toast service functions
+    // For information about how this toast works:  https://github.com/akserg/ng2-toasty
+
     addToast(title: string, announcement: ServerAnnouncement) {
         var toastOptions:ToastOptions = {
             title: title,

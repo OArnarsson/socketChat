@@ -55,18 +55,18 @@ export class ChatdetailsComponent implements OnInit {
 
     getUsers() {
         this.chat.getAllUsers().subscribe(
-            userList => {
+            roomDetails => {
                 let found = false;
                 for (const index in this.roomDetails) {
                     if (index in this.roomDetails) {
-                        if (this.roomDetails[index].room === userList['room']) {
-                            this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
+                        if (this.roomDetails[index].room === roomDetails.room) {
+                            this.roomDetails[index] = roomDetails;
                             found = true;
                         }
                     }
                 }
                 if (!found) {
-                    this.roomDetails.push(new Roomdetails(userList['room'], userList['users'], userList['ops']));
+                    this.roomDetails.push(roomDetails);
                 }
             }
 
@@ -74,12 +74,35 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     getActiveDetails() {
+        let UserArr: string[] = [];
+        let isAdmin: boolean = false;
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI) {
-                return detail.users;
+                // User list for normal user
+                UserArr = detail.users;
+
+                // We add banned users to the list for admins.
+                if (detail.ops.indexOf(this.whoAmI) > -1) {
+                    isAdmin = true;
+                }
             }
         }
-        return [];
+        if (isAdmin){
+            UserArr = this.getBannedUsers(UserArr);
+        }
+        return UserArr;
+    }
+
+    getBannedUsers(UserArr: string[]) {
+        let allUsers = UserArr;
+        let bannedUsers: string [];
+        for (const detail of this.roomDetails) {
+            if (detail.room === this.whereAmI) {
+                bannedUsers = detail.banned;
+            }
+        };
+
+        return allUsers.concat(bannedUsers);
     }
 
     getGlobalUsers() {
@@ -110,8 +133,15 @@ export class ChatdetailsComponent implements OnInit {
         }
     }
 
-
-    isAdmin(userName: any) {
+    isBanned(userName: string){
+        for (const detail of this.roomDetails) {
+            if (detail.room === this.whereAmI && detail.banned.indexOf(userName) > -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    isAdmin(userName: string) {
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI && detail.ops.indexOf(userName) > -1) {
                 return true;
@@ -120,31 +150,31 @@ export class ChatdetailsComponent implements OnInit {
         return false;
     }
 
-    isMyself(userName: any) {
+    isMyself(userName: string) {
         return userName === this.whoAmI;
     }
 
-    goToPrivate(userName: any) {
+    goToPrivate(userName: string) {
         this.setToPrivate.emit(userName);
     }
 
-    kickUser(userName: any) {
+    kickUser(userName: string) {
         this.chat.kickUser({ room: this.whereAmI, user: userName });
     }
 
-    opUser(userName: any) {
+    opUser(userName: string) {
         this.chat.opUser({ room: this.whereAmI, user: userName });
     }
 
-    deOpUser(userName: any) {
+    deOpUser(userName: string) {
         this.chat.deOpUser({ room: this.whereAmI, user: userName });
     }
 
-    banUser(userName: any) {
+    banUser(userName: string) {
         this.chat.banUser({ room: this.whereAmI, user: userName });
     }
 
-    unBanUser(userName: any) {
+    unBanUser(userName: string) {
         this.chat.unBanUser({ room: this.whereAmI, user: userName });
     }
 

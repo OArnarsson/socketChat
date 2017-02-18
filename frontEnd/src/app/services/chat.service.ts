@@ -5,6 +5,7 @@ import { Message } from '../classes/message';
 import { Chatroom } from '../classes/chatroom';
 import { SharedRoomObj } from '../classes/shared-room-obj';
 import { ServerAnnouncement } from '../classes/server-announcement';
+import { Roomdetails } from '../classes/roomdetails';
 @Injectable()
 export class ChatService {
     private url = 'localhost:8080/';
@@ -88,9 +89,9 @@ export class ChatService {
     }
 
 
-    getAllUsers() {
+    getAllUsers(): Observable<Roomdetails> {
         const observable = new Observable(observer => {
-            this.socket.on('updateusers', (room, userList, opsList) => {
+            this.socket.on('updateusers', (room, userList, opsList, bannedList) => {
                 const userArr: string[] = [];
                 for (const user in userList) {
                     if (user in userList) {
@@ -103,7 +104,13 @@ export class ChatService {
                         opsArr.push(op);
                     }
                 };
-                observer.next({ room: room, users: userArr, ops: opsArr });
+                const bannedArr: string[] = [];
+                for (const op in bannedList) {
+                    if (op in bannedList) {
+                        bannedArr.push(op);
+                    }
+                };
+                observer.next(new Roomdetails(room, userArr, opsArr, bannedArr));
             });
         });
         return observable;
