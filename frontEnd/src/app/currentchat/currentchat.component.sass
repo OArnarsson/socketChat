@@ -11,42 +11,81 @@
   flex-direction: column
   .openConvContainer
     background: #FFF
+    display: -webkit-box
+    display: -ms-flexbox
     display: flex
+    align-items: center
+    -webkit-box-pack: end
+    -ms-flex-pack: end
+    justify-content: flex-end
+    -ms-flex-wrap: wrap
     flex-wrap: wrap
-    border-bottom: $borderThick solid $color-light
+    border-bottom: 1.25px solid #DADADA
     cursor: default
-    h4
-      padding: 5px
-      cursor: pointer
-    i
-      padding: 5px 3px    
-      cursor: pointer
-      &:hover
-        color: $color-pink
-    span
-      background: #8548a3
-      border: 1px solid #2d2a2a
-      display: flex
-      justify-content: center
-      border-radius: 45%
-      align-self: center
-      font-size: 15px
-      width: 22px
-      height: 22px
-      position: absolute
-      color: #ffffff
-      transform: translateY(-60%) translateX(-70%)
+    height: 90px
+    padding: 0% 1%
+    border-left: 1.25px solid #DADADA
+    .activeChat
+      background-color: $color-font-light *1.3
+      .weirdActiveBorder
+        display: block
+        position: absolute
+        background-color: transparent
+        border-radius: 0%
+        transform: translateY(228%) translateX(-15%)
+        width: 0
+        height: 0
+        border-left: 13px solid transparent
+        border-right: 13px solid transparent
+        border-bottom: 14px solid #d8d8d8
     div
       background-color: #FFF
       cursor: pointer
+      display: -webkit-box
+      display: -ms-flexbox
       display: flex
-      width: auto
-      border-left: 1px solid $color-font-light
-      border-right: 1px solid $color-font-light
+      flex-direction: row
+      border-left: 1px solid #AAA
+      border-right: 1px solid #AAA
+      align-items: center
+      align-content: flex-start
+      border-radius: 50%
+      width: 50px
+      height: 50px
+      margin-left: 1%
+      .weirdActiveBorder
+        display: none
       &.unreadMsg
-        animation: unreadMessage 2s linear infinite
-    .activeChat
-      background-color: $color-font-light *1.3
+        animation: unreadMessage 2s cubic-bezier(0.4, 0, 1, 1) infinite
+      h4
+        cursor: pointer
+        width: 100%
+        text-align: center
+      i
+        padding: 5px 3px
+        cursor: pointer
+        position: absolute
+        transform: translateY(-60%) translateX(150%)
+        font-size: 20px
+        &:hover
+          color: $color-pink
+      span
+        background: #ef035b
+        display: -webkit-box
+        display: -ms-flexbox
+        display: flex
+        -webkit-box-pack: center
+        -ms-flex-pack: center
+        justify-content: center
+        border-radius: 45%
+        align-self: center
+        font-size: 15px
+        width: 22px
+        height: 22px
+        position: absolute
+        color: #ffffff
+        -webkit-transform: translateY(-60%) translateX(-70%)
+        transform: translateY(70%) translateX(-25%)
   .mainChat
     height: 100%
     width: 100%
@@ -131,10 +170,13 @@
         opacity: 1
         @include transition
 
+
+
+
 @keyframes unreadMessage
   0%
-    background-color: $color-font-light *1.3
+    background-color: #ffffff
   50%
-    background-color: #008800
+    background-color: rgba(255, 19, 203, 0.32)
   100%
-    background-color: $color-font-light *1.3
+    background-color: #ffffff

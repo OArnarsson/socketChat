@@ -1,8 +1,9 @@
 <div id="currentChat">
   <div class="openConvContainer">
     <div *ngFor="let conversation of getOpenConversations()" [ngClass]="{'activeChat': isActive(conversation.name)}"  class="{{conversation.roomClass}}">
-      <span *ngIf="conversation.unreadMessages > 0">{{conversation.unreadMessages}}</span><h4 (click)="changeRoom(conversation)">{{conversation.name}}</h4>
+      <span *ngIf="conversation.unreadMessages > 0">{{conversation.unreadMessages}}</span><h4 (click)="changeRoom(conversation)">{{conversation.name | initials}}</h4>
       <i (click)="leaveRoom(conversation)" class="fa fa-times exit" aria-hidden="true"></i>
+        <div class="weirdActiveBorder"></div>
     </div>
   </div>
   <div class="mainChat">
