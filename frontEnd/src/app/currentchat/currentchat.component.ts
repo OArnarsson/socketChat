@@ -3,8 +3,9 @@ import { ChatService } from '../services/chat.service';
 import { Chatroom } from '../classes/chatroom';
 import { Message } from '../classes/message';
 import { SharedRoomObj } from '../classes/shared-room-obj';
-import { Observable } from "rxjs";
+import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
 import { ServerAnnouncement } from '../classes/server-announcement'
+import {ServerMessage} from "../classes/server-message";
 
 @Component( {
     selector: 'app-currentchat',
@@ -17,13 +18,14 @@ export class CurrentchatComponent implements OnInit {
     privateConv: Chatroom[];
     @Input() activeObj: SharedRoomObj;
     @Output() setActiveRoom = new EventEmitter();
-    constructor(private chat: ChatService) {
+    constructor(private chat: ChatService, private toastyService:ToastyService, private toastyConfig: ToastyConfig) {
         this.message = '';
         this.getMessages();
         this.getPrivateMessages();
         this.getServerAnnouncement();
         this.chatRooms = [];
         this.privateConv = [];
+        this.toastyConfig.theme = 'material';
     }
 
     ngOnInit() {
@@ -186,15 +188,83 @@ export class CurrentchatComponent implements OnInit {
                 break;
             };
         }
+        if (this.getOpenConversations().length > 0 && roomName === this.activeObj.room) {
+            this.changeRoom(this.getOpenConversations()[this.getOpenConversations().length-1]);
+        }
     }
 
     getServerAnnouncement(){
         this.chat.getServerAnnouncement().subscribe(
             Announcement => {
-                console.log("something happened!");
-                console.log(Announcement);
+                switch(Announcement.reason){
+                    case 'kick' :
+                        // Anounce message for the user
+                        this.searchAndDestroy(Announcement.room);
+                        this.addToast("o shii", Announcement);
+                        break;
+
+                    case 'ban' :
+                        // Anounce message for the user
+                        this.searchAndDestroy(Announcement.room);
+                        this.addToast("O shii", Announcement);
+                        break;
+
+                    case 'unBan' :
+                        this.addToast("Congratz", Announcement);
+                        break;
+
+                    case 'op' :
+                        this.addToast("Congratz", Announcement);
+                        break;
+
+                    case 'deOp' :
+                        this.addToast("O shii", Announcement);
+                        break;
+
+                }
             }
         )
     }
+
+    // Toast service functions
+
+    addToast(title: string, announcement: ServerAnnouncement) {
+        var toastOptions:ToastOptions = {
+            title: title,
+            msg: announcement.msg.message,
+            showClose: true,
+            timeout: 5000,
+            theme: 'material',
+            onAdd: (toast:ToastData) => {
+                console.log('Toast ' + toast.id + ' has been added!');
+            },
+            onRemove: function(toast:ToastData) {
+                console.log('Toast ' + toast.id + ' has been removed!');
+            }
+        };
+        // Add see all possible types in one shot
+        switch(announcement.reason){
+            case 'kick' :
+                this.toastyService.warning(toastOptions);
+                break;
+
+            case 'ban' :
+                this.toastyService.warning(toastOptions);
+                break;
+
+            case 'unBan' :
+                this.toastyService.success(toastOptions);
+                break;
+
+            case 'op' :
+                this.toastyService.success(toastOptions);
+                break;
+
+            case 'deOp' :
+                this.toastyService.warning(toastOptions);
+                break;
+        }
+    }
+
 
 }

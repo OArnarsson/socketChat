@@ -11,6 +11,7 @@ import { ChatService } from './services/chat.service';
 import { LoginComponent } from './login/login.component';
 import { InitialsPipe } from './pipes/initials.pipe';
 import { NamecolorPipe } from './pipes/namecolor.pipe';
+import { ToastyModule } from 'ng2-toasty';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { NamecolorPipe } from './pipes/namecolor.pipe';
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        ToastyModule.forRoot()
     ],
     providers: [ChatService, InitialsPipe, NamecolorPipe],
     bootstrap: [AppComponent]

@@ -302,8 +302,8 @@ io.sockets.on('connection', function (socket) {
 	//Handles banning the user from a room.
 	socket.on('ban', function (banObj, fn) {
 		if(rooms[banObj.room].ops[socket.username] !== undefined) {
-			//Add the user to the ban list and remove him from the room user roster.
-			rooms[banObj.room].banUser(banObj.user);
+			//Add the user to the ban list.
+			rooms[banObj.room].banned[banObj.user] = banObj.user;
 			//Kick the user from the room.
 			io.sockets.emit('banned', banObj.room, banObj.user, socket.username);
 			io.sockets.emit('updateusers', banObj.room, rooms[banObj.room].users, rooms[banObj.room].ops);

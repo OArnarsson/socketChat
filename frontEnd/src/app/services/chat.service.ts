@@ -126,11 +126,9 @@ export class ChatService {
         });
         return observable;
     }
-    getServerAnnouncement (): Observable<any> {
+    getServerAnnouncement (): Observable<ServerAnnouncement> {
         const observable = new Observable(observer => {
             this.socket.on('serverAnnouncement', (obj)  => {
-                console.log("im getting something!!!");
-
                 observer.next(obj);
             });
         });
