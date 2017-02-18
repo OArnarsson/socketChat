@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 import { Message } from './currentchat/message';
-import { Chatroom } from './currentchat/chatroom'
-import { SharedRoomObj } from './shared-room-obj'
+import { Chatroom } from './currentchat/chatroom';
+import { SharedRoomObj } from './shared-room-obj';
 @Injectable()
 export class ChatService {
     private url = 'localhost:8080/';
@@ -18,7 +18,7 @@ export class ChatService {
     }
 
     public logIn(userName: string) {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.emit('adduser', userName, (data) => {
                 observer.next(data);
                 observer.complete();
@@ -31,29 +31,27 @@ export class ChatService {
         this.socket.emit('sendmsg', msg);
     }
     sendPrivateMessage(msg) {
+        console.log('this is the private msg: ' + msg);
         this.socket.emit('privatemsg', msg, (data) => { });
     }
 
-    getPrivateMessages():Observable<Message>{
-        let observable = new Observable(observer => {
+    getPrivateMessages(): Observable<Message> {
+        const observable = new Observable(observer => {
             this.socket.on('recvPrivateMsg', (userName, msgObj) => {
-                let date = new Date();
-                let msg = new Message(userName, date, msgObj, true);
-                observer.next(msg);
+                observer.next(new Message(userName, new Date(), msgObj, true));
             });
         });
         return observable;
     }
 
     getMessages(): Observable<Chatroom> {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.on('updatechat', (room, history) => {
-                let msgHistory:Message[] = [];
-                for(let msg of history){
-                    msgHistory.push(new Message(msg['nick'], msg['timestamp'],msg['message'], false))
+                const msgHistory: Message[] = [];
+                for (const msg of history) {
+                    msgHistory.push(new Message(msg['nick'], msg['timestamp'], msg['message'], false));
                 };
-                let chatRoom = new Chatroom(room, msgHistory);
-                observer.next(chatRoom);
+                observer.next(new Chatroom(room, msgHistory));
             });
         });
         return observable;
@@ -64,21 +62,23 @@ export class ChatService {
     }
 
     getAllRooms(): Observable<string[]> {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.emit('rooms');
-            this.socket.on('roomlist', (data) => {
-                let arr: string[] = [];
-                for (let x in data) {
-                    arr.push(x);
-                }
-                observer.next(arr);
+            this.socket.on('roomlist', (roomList) => {
+                const RoomArr: string[] = [];
+                for (const room in roomList) {
+                    if (room in roomList) {
+                        RoomArr.push(room);
+                    }
+                };
+                observer.next(RoomArr);
             });
         });
         return observable;
     }
 
     getGlobalUsers() {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.on('globalUsers', (users) => {
                 observer.next(users);
             });
@@ -88,42 +88,44 @@ export class ChatService {
 
 
     getAllUsers() {
-        console.log('doing this!');
-        let observable = new Observable(observer => {
-            this.socket.on('updateusers', (room, users, ops) => {
-                let userArr: string[] = [];
-                for (let x in users) {
-                    console.log('this is a user:' + x);
-                    userArr.push(x);
-                }
-                let opsArr: string[] = [];
-                for (let x in ops) {
-                    opsArr.push(x);
-                }
-                let roomObj = { room: room, users: userArr, ops: opsArr };
-                observer.next(roomObj);
+        const observable = new Observable(observer => {
+            this.socket.on('updateusers', (room, userList, opsList) => {
+                const userArr: string[] = [];
+                for (const user in userList) {
+                    if (user in userList) {
+                        userArr.push(user);
+                    }
+                };
+                const opsArr: string[] = [];
+                for (const op in opsList) {
+                    if (op in opsList) {
+                        opsArr.push(op);
+                    }
+                };
+                observer.next({ room: room, users: userArr, ops: opsArr });
             });
         });
         return observable;
     }
 
-    getRoomTopic(): Observable<SharedRoomObj>{
-        let observable = new Observable(observer => {
-            this.socket.on("updatetopic", (room, topic, username) =>{
-                //let roomObj = {room: room, topic:topic, username: username};
+    getRoomTopic(): Observable<SharedRoomObj> {
+        const observable = new Observable(observer => {
+            this.socket.on('updatetopic', (room, topic, username) => {
                 observer.next(new SharedRoomObj(room, topic, username, false));
             });
         });
         return observable;
     }
-    changeRoom(x):Observable<boolean> {
-        let observable = new Observable(observer => {
-            this.socket.emit('joinroom', x, (data, reason) =>{
-                observer.next({data:data, reason:reason});
+
+    changeRoom(x): Observable<boolean> {
+        const observable = new Observable(observer => {
+            this.socket.emit('joinroom', x, (data, reason) => {
+                observer.next({ data: data, reason: reason });
             });
         });
         return observable;
     }
+
     leaveRoom(roomName) {
         this.socket.emit('partroom', roomName);
     }

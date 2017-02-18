@@ -16,6 +16,11 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         this.userName = '';
     }
+    public getKeyEv(ev: any) {
+        if (ev.keyCode === 13) {
+            this.logIn();
+        }
+    }
     public logIn() {
         this.chat.logIn(this.userName).subscribe(
             data => {
@@ -30,6 +35,7 @@ export class LoginComponent implements OnInit {
                 }
             });
     }
+
     public joinRoom() {
         this.chat.joinRoom({ room: 'lobby' });
     }

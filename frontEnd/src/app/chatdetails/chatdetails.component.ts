@@ -57,11 +57,12 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.getAllUsers().subscribe(
             userList => {
                 let found = false;
-                console.log("this is the userlist: ", userList);
-                for (let index in this.roomDetails) {
-                    if (this.roomDetails[index].room == userList['room']) {
-                        this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
-                        found = true;
+                for (const index in this.roomDetails) {
+                    if (index in this.roomDetails) {
+                        if (this.roomDetails[index].room === userList['room']) {
+                            this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
+                            found = true;
+                        }
                     }
                 }
                 if (!found) {
@@ -73,8 +74,8 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     getActiveDetails() {
-        for (let detail of this.roomDetails) {
-            if (detail.room == this.whereAmI) {
+        for (const detail of this.roomDetails) {
+            if (detail.room === this.whereAmI) {
                 return detail.users;
             }
         }
@@ -91,25 +92,24 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     toggleDropDown(menu: string) {
-        if (menu == 'online') {
-            if (this.onlineState == 'active') {
+        if (menu === 'online') {
+            if (this.onlineState === 'active') {
                 this.onlineState = 'inactive';
-            } else {
-                this.onlineState = 'active';
             }
-        } else if (menu == 'room') {
-            if (this.roomState == 'active') {
+            this.onlineState = 'active';
+        }
+        if (menu === 'room') {
+            if (this.roomState === 'active') {
                 this.roomState = 'inactive';
-            } else {
-                this.roomState = 'active';
             }
+            this.roomState = 'active';
         }
     }
 
 
     isAdmin(userName: any) {
-        for(let detail of this.roomDetails){
-            if(detail.room === this.whereAmI && detail.ops.indexOf(userName) > -1){
+        for (const detail of this.roomDetails) {
+            if (detail.room === this.whereAmI && detail.ops.indexOf(userName) > -1) {
                 return true;
             }
         }
@@ -117,7 +117,7 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     isMyself(userName: any) {
-        return userName == this.whoAmI;
+        return userName === this.whoAmI;
     }
 
     goToPrivate(userName: any) {

@@ -48,15 +48,14 @@ export class MainComponent implements OnInit {
     }
 
     setViewToPrivateMsg(userName: string) {
-        if (userName.toLowerCase() != this.roomObj.username.toLowerCase()) {
+        if (userName.toLowerCase() !== this.roomObj.username.toLowerCase()) {
             this.roomObj.room = userName;
             this.roomObj.topic = 'private Msg';
             this.roomObj.privateMsg = true;
         }
     }
 
-    changeConvo(roomObj:SharedRoomObj){
-        console.log("getting some!" + roomObj);
+    changeConvo(roomObj: SharedRoomObj) {
         this.roomObj = roomObj;
     }
 

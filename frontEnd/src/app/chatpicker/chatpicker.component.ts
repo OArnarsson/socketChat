@@ -59,24 +59,24 @@ export class ChatpickerComponent implements OnInit {
     }
 
     toggleDropDown(menu: string) {
-        if (menu == 'all') {
-            if (this.availableState == 'active') {
+        if (menu === 'all') {
+            if (this.availableState === 'active') {
                 this.availableState = 'inactive';
-            } else {
-                this.availableState = 'active';
             }
-        } else if (menu == 'modal') {
-            if (this.modalState == 'active') {
+            this.availableState = 'active';
+
+        }
+        if (menu === 'modal') {
+            if (this.modalState === 'active') {
                 this.modalState = 'inactive';
-            } else {
-                this.modalState = 'active';
             }
+
+            this.modalState = 'active';
         }
     }
 
     newRoom() {
-        const x = { room: this.newName, topic: this.newTopic };
-        this.changeRoom(x);
+        this.changeRoom({ room: this.newName, topic: this.newTopic });
         this.newName = '';
         this.newTopic = '';
         this.modalState = 'inactive';
@@ -85,12 +85,11 @@ export class ChatpickerComponent implements OnInit {
     changeRoom(x) {
         this.chat.changeRoom(x).subscribe(
             data => {
-                if(data['data']){
+                if (data['data']) {
                     this.setActiveRoom.emit(new SharedRoomObj(x.room, x.topic, this.activeObj.username, false));
                 }
-                else{
-                    //data['reason'] is a type string, we can display for the user if password is need or, user is banned etc.
-                }
+                // data['reason'] is a type string, we can display for the user if password is need or, user is banned etc.
+
             }
         );
     }

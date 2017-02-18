@@ -1,5 +1,5 @@
 <div class="flexContainer">
-    <input input id="name" type="text" [(ngModel)]="userName">
+    <input input id="name" type="text" [(ngModel)]="userName" (keyup)="getKeyEv($event)">
     <div class="loginButton" (click)="logIn()">Login</div>
     <div *ngIf="!isAvailable">That username is taken!</div>
 </div>

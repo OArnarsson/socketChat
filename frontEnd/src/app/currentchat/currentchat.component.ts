@@ -28,26 +28,25 @@ export class CurrentchatComponent implements OnInit {
     }
 
     sendMsg(event: any) {
-        if (event.keyCode == 13 || event == 'sendButton') {
-            let msg = { roomName: this.activeObj.room, msg: this.message };
+        if (event.keyCode === 13 || event === 'sendButton') {
             if (!this.activeObj.privateMsg) {
-                this.chat.sendMessage(msg);
+                this.chat.sendMessage({ roomName: this.activeObj.room, msg: this.message });
             } else {
-                let msg = { nick: this.activeObj.room, message: this.message };
                 let found = false;
-                for (let index in this.privateConv) {
-                    if (this.privateConv[index].name = this.activeObj.room) {
-                        this.privateConv[index].history.push(new Message(this.activeObj.username, new Date(), this.message, true));
-                        found = true;
+                for (const index in this.privateConv) {
+                    if (index in this.privateConv) {
+                        if (this.privateConv[index].name === this.activeObj.room) {
+                            this.privateConv[index].history.push(new Message(this.activeObj.username, new Date(), this.message, true));
+                            found = true;
+                        }
                     }
                 }
                 if (!found) {
-                    let msgArr = [];
-                    let msg = new Message(this.activeObj.username, new Date(), this.message, true);
-                    msgArr.push(msg);
+                    const msgArr = [];
+                    msgArr.push(new Message(this.activeObj.username, new Date(), this.message, true));
                     this.privateConv.push(new Chatroom(this.activeObj.room, msgArr));
                 }
-                this.chat.sendPrivateMessage(msg);
+                this.chat.sendPrivateMessage({ nick: this.activeObj.room, msg: this.message });
             }
             this.message = '';
         }
@@ -56,10 +55,10 @@ export class CurrentchatComponent implements OnInit {
         this.chat.getMessages().subscribe(
             chatRoom => {
                 let isNew = true;
-                for (let index in this.chatRooms) {
-                    if (this.chatRooms[index].name == chatRoom['name']) {
+                for (const index in this.chatRooms) {
+                    if (this.chatRooms[index].name === chatRoom['name']) {
                         // This need some more work.
-                        if (this.chatRooms[index].name == this.activeObj.room) {
+                        if (this.chatRooms[index].name === this.activeObj.room) {
                             this.chatRooms[index].unreadMessages = 0;
                             this.chatRooms[index].roomClass = '';
                         } else {
@@ -80,8 +79,8 @@ export class CurrentchatComponent implements OnInit {
     }
     getUnreadMessages() {
         let size: number;
-        for (let room of this.chatRooms) {
-            if (room.name == this.activeObj.room) {
+        for (const room of this.chatRooms) {
+            if (room.name === this.activeObj.room) {
                 size = room.history.length - room.unreadMessages;
             }
         }
@@ -92,23 +91,25 @@ export class CurrentchatComponent implements OnInit {
         this.chat.getPrivateMessages().subscribe(
             message => {
                 let found = false;
-                for (let index in this.privateConv) {
-                    if (this.privateConv[index].name = message.nick) {
-                        this.privateConv[index].history.push(message);
-                        found = true;
-                    }
-                    if (this.privateConv[index].name != this.activeObj.room) {
-                        this.privateConv[index].roomClass = "unreadMsg";
-                        this.privateConv[index].unreadMessages += 1;
+                for (const index in this.privateConv) {
+                    if (index in this.privateConv) {
+                        if (this.privateConv[index].name === message.nick) {
+                            this.privateConv[index].history.push(message);
+                            found = true;
+                        }
+                        if (this.privateConv[index].name !== this.activeObj.room) {
+                            this.privateConv[index].roomClass = 'unreadMsg';
+                            this.privateConv[index].unreadMessages += 1;
+                        }
                     }
                 }
 
                 if (!found) {
-                    let msgArr = [];
+                    const msgArr = [];
                     msgArr.push(message);
-                    let newPrivateConv = new Chatroom(message.nick, msgArr);
+                    const newPrivateConv = new Chatroom(message.nick, msgArr);
                     newPrivateConv.unreadMessages = 1;
-                    newPrivateConv.roomClass = "unreadMsg";
+                    newPrivateConv.roomClass = 'unreadMsg';
                     this.privateConv.push(newPrivateConv);
                 }
             }
@@ -117,17 +118,17 @@ export class CurrentchatComponent implements OnInit {
 
     getActiveRoomChat() {
         if (!this.activeObj.privateMsg) {
-            for (let room of this.chatRooms) {
-                if (room.name == this.activeObj.room) {
+            for (const room of this.chatRooms) {
+                if (room.name === this.activeObj.room) {
                     room.roomClass = '';
                     room.unreadMessages = 0;
                     return room.history;
                 }
             }
         } else {
-            for (let room of this.privateConv) {
-                if (room.name == this.activeObj.room) {
-                    room.roomClass = "";
+            for (const room of this.privateConv) {
+                if (room.name === this.activeObj.room) {
+                    room.roomClass = '';
                     room.unreadMessages = 0;
                     return room.history;
                 }
@@ -136,51 +137,51 @@ export class CurrentchatComponent implements OnInit {
         return [];
     }
 
-    changeRoom(convo:Chatroom) {
-        let newObj:SharedRoomObj = new SharedRoomObj(convo.name,"missing from ChatRoom class",this.activeObj.username,false);
-        if(convo.history.length > 0){
-            if(convo.history[0].privateMsg){
+    changeRoom(convo: Chatroom) {
+        const newObj: SharedRoomObj = new SharedRoomObj(convo.name, 'missing from ChatRoom class', this.activeObj.username, false);
+        if (convo.history.length > 0) {
+            if (convo.history[0].privateMsg) {
                 newObj.privateMsg = true;
-                newObj.topic = "Private Message";
+                newObj.topic = 'Private Message';
             }
         }
-        //ToDo: Now we need to be able to retrieve topic from the room.
+        // ToDo: Now we need to be able to retrieve topic from the room.
         this.setActiveRoom.emit(newObj);
-        //this.chat.changeRoom(x);
+        // this.chat.changeRoom(x);
     }
 
     isActive(x) {
-        return x == this.activeObj.room;
+        return x === this.activeObj.room;
     }
 
-    leaveRoom(convo:Chatroom) {
-        this.searchAndDestroy(convo.name); //Here we remove the conversation/chatRoom for local array.
-        if(!convo.history[0].privateMsg){
-            this.chat.leaveRoom(convo.name); //If and only if its a chat room we leave from the room on the server.
+    leaveRoom(convo: Chatroom) {
+        this.searchAndDestroy(convo.name); // Here we remove the conversation/chatRoom for local array.
+        if (!convo.history[0].privateMsg) {
+            this.chat.leaveRoom(convo.name); // If and only if its a chat room we leave from the room on the server.
         }
     }
-    getOpenConversations():Chatroom[]{
-        let combined:Chatroom[] = [];
-        for(let room of this.chatRooms){
+    getOpenConversations(): Chatroom[] {
+        const combined: Chatroom[] = [];
+        for (const room of this.chatRooms){
             combined.push(room);
-        }
-        for(let priv of this.privateConv){
+        };
+        for (const priv of this.privateConv){
             combined.push(priv);
-        }
+        };
         return combined;
     }
-    searchAndDestroy(roomName:string){
-        for(let index = 0; index < this.chatRooms.length; index+=1){
-            if(this.chatRooms[index].name == roomName){
+    searchAndDestroy(roomName: string) {
+        for (let index = 0; index < this.chatRooms.length; index += 1) {
+            if (this.chatRooms[index].name === roomName) {
                 this.chatRooms.splice(index, 1);
                 break;
-            }
+            };
         }
-        for(let index = 0; index < this.privateConv.length; index+=1){
-            if(this.privateConv[index].name == roomName){
+        for (let index = 0; index < this.privateConv.length; index += 1) {
+            if (this.privateConv[index].name === roomName) {
                 this.privateConv.splice(index, 1);
                 break;
-            }
+            };
         }
     }
 }
