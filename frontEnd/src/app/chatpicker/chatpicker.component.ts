@@ -86,11 +86,10 @@ export class ChatpickerComponent implements OnInit {
         this.chat.changeRoom(x).subscribe(
             data => {
                 if(data['data']){
-                    console.log("this room was created!");
                     this.setActiveRoom.emit(new SharedRoomObj(x.room, x.topic, this.activeObj.username, false));
                 }
                 else{
-                    //do something and log? data['reason']
+                    //data['reason'] is a type string, we can display for the user if password is need or, user is banned etc.
                 }
             }
         );

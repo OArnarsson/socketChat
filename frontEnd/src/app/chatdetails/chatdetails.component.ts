@@ -33,7 +33,6 @@ import { Roomdetails } from './roomdetails';
 })
 
 export class ChatdetailsComponent implements OnInit {
-    public userList: any;
     public roomDetails: Roomdetails[];
     public globalUsers: any;
     public onlineState: string;
@@ -47,7 +46,6 @@ export class ChatdetailsComponent implements OnInit {
 
     ngOnInit() {
         this.roomDetails = [];
-        this.userList = { room: '', users: [], ops: [] };
         this.globalUsers = [];
         this.onlineState = 'inactive';
         this.roomState = 'active';
@@ -59,6 +57,7 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.getAllUsers().subscribe(
             userList => {
                 let found = false;
+                console.log("this is the userlist: ", userList);
                 for (let index in this.roomDetails) {
                     if (this.roomDetails[index].room == userList['room']) {
                         this.roomDetails[index] = new Roomdetails(userList['room'], userList['users'], userList['ops']);
@@ -107,13 +106,12 @@ export class ChatdetailsComponent implements OnInit {
         }
     }
 
-    notEmpty() {
-        return this.userList.users.length > 1;
-    }
 
     isAdmin(userName: any) {
-        if (this.userList.ops.indexOf(userName) > -1) {
-            return true;
+        for(let detail of this.roomDetails){
+            if(detail.room === this.whereAmI && detail.ops.indexOf(userName) > -1){
+                return true;
+            }
         }
         return false;
     }
@@ -127,23 +125,23 @@ export class ChatdetailsComponent implements OnInit {
     }
 
     kickUser(userName: any) {
-        this.chat.kickUser({ room: this.userList.room, user: userName });
+        this.chat.kickUser({ room: this.whereAmI, user: userName });
     }
 
     opUser(userName: any) {
-        this.chat.opUser({ room: this.userList.room, user: userName });
+        this.chat.opUser({ room: this.whereAmI, user: userName });
     }
 
     deOpUser(userName: any) {
-        this.chat.deOpUser({ room: this.userList.room, user: userName });
+        this.chat.deOpUser({ room: this.whereAmI, user: userName });
     }
 
     banUser(userName: any) {
-        this.chat.banUser({ room: this.userList.room, user: userName });
+        this.chat.banUser({ room: this.whereAmI, user: userName });
     }
 
     unBanUser(userName: any) {
-        this.chat.unBanUser({ room: this.userList.room, user: userName });
+        this.chat.unBanUser({ room: this.whereAmI, user: userName });
     }
 
 
