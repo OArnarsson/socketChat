@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ChatService } from '../chat.service';
+import { ChatService } from '../services/chat.service';
 
 @Component({
     selector: 'app-login',

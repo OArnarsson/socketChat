@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
-import { Message } from './currentchat/message';
-import { Chatroom } from './currentchat/chatroom';
-import { SharedRoomObj } from './shared-room-obj';
+import { Message } from '../classes/message';
+import { Chatroom } from '../classes/chatroom';
+import { SharedRoomObj } from '../classes/shared-room-obj';
+import { ServerAnnouncement } from '../classes/server-announcement';
 @Injectable()
 export class ChatService {
     private url = 'localhost:8080/';
@@ -125,6 +126,17 @@ export class ChatService {
         });
         return observable;
     }
+    getServerAnnouncement (): Observable<any> {
+        const observable = new Observable(observer => {
+            this.socket.on('serverAnnouncement', (obj)  => {
+                console.log("im getting something!!!");
+
+                observer.next(obj);
+            });
+        });
+        return observable;
+    }
+
 
     leaveRoom(roomName) {
         this.socket.emit('partroom', roomName);

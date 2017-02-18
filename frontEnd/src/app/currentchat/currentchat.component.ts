@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ChatService } from '../chat.service';
-import { Chatroom } from './chatroom';
-import { Message } from './message';
-import { SharedRoomObj } from '../shared-room-obj';
+import { ChatService } from '../services/chat.service';
+import { Chatroom } from '../classes/chatroom';
+import { Message } from '../classes/message';
+import { SharedRoomObj } from '../classes/shared-room-obj';
+import { Observable } from "rxjs";
+import { ServerAnnouncement } from '../classes/server-announcement'
 
 @Component( {
     selector: 'app-currentchat',
@@ -19,6 +21,7 @@ export class CurrentchatComponent implements OnInit {
         this.message = '';
         this.getMessages();
         this.getPrivateMessages();
+        this.getServerAnnouncement();
         this.chatRooms = [];
         this.privateConv = [];
     }
@@ -184,4 +187,14 @@ export class CurrentchatComponent implements OnInit {
             };
         }
     }
+
+    getServerAnnouncement(){
+        this.chat.getServerAnnouncement().subscribe(
+            Announcement => {
+                console.log("something happened!");
+                console.log(Announcement);
+            }
+        )
+    }
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from '../chat.service';
-import { Roomdetails } from './roomdetails';
+import { ChatService } from '../services/chat.service';
+import { Roomdetails } from '../classes/roomdetails';
 
 @Component({
     selector: 'app-chatdetails',

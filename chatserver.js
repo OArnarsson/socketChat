@@ -170,7 +170,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('privatemsg', function (msgObj, fn) {
-        console.log("trying to send private");
+        console.log("trying to send private from: "+socket.username+", to: " + msgObj.nick);
 		//If user exists in global user list.
         var obj =  {nick: "", message: ""};
 		if(users[msgObj.nick] !== undefined) {
@@ -254,15 +254,7 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('kicked', kickObj.room, kickObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', kickObj.room, rooms[kickObj.room].users, rooms[kickObj.room].ops);
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ kickObj.user + '\' was kicked out from the room'
-            };
-            rooms[kickObj.room].addMessage(messageObj);
-            for(var user in rooms[kickObj.room].users){
-                users[user].socket.emit('updatechat', kickObj.room, rooms[kickObj.room].messageHistory);
-            }
+            users[kickObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(kickObj.room, "kick"));
 			fn(true);
 		}
 		else {
@@ -280,15 +272,7 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('opped', opObj.room, opObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', opObj.room, rooms[opObj.room].users, rooms[opObj.room].ops);
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ socket.username + '\' is now an admin!'
-            };
-            rooms[opObj.room].addMessage(messageObj);
-            for(var user in rooms[opObj.room].users){
-                users[user].socket.emit('updatechat', opObj.room, rooms[opObj.room].messageHistory);
-            }
+            users[opObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(opObj.room, "op"));
 			fn(true);
 		}
 		else {
@@ -307,15 +291,7 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('deopped', deopObj.room, deopObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', deopObj.room, rooms[deopObj.room].users, rooms[deopObj.room].ops);
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ socket.username + '\' is no longer an admin!'
-            };
-            rooms[deopObj.room].addMessage(messageObj);
-            for(var user in rooms[deopObj.room].users){
-                users[user].socket.emit('updatechat', deopObj.room, rooms[deopObj.room].messageHistory);
-            }
+            users[deopObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(deopObj.room, "deOp"));
 			fn(true);
 		}
 		else {
@@ -326,22 +302,12 @@ io.sockets.on('connection', function (socket) {
 	//Handles banning the user from a room.
 	socket.on('ban', function (banObj, fn) {
 		if(rooms[banObj.room].ops[socket.username] !== undefined) {
-			//Remove the channel from the user in the global user roster.
-			delete users[banObj.user].channels[banObj.room];
 			//Add the user to the ban list and remove him from the room user roster.
 			rooms[banObj.room].banUser(banObj.user);
 			//Kick the user from the room.
 			io.sockets.emit('banned', banObj.room, banObj.user, socket.username);
 			io.sockets.emit('updateusers', banObj.room, rooms[banObj.room].users, rooms[banObj.room].ops);
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ socket.username + '\' is now banned from the room'
-            };
-            rooms[banObj.room].addMessage(messageObj);
-            for(var user in rooms[banObj.room].users){
-                users[user].socket.emit('updatechat', banObj.room, rooms[banObj.room].messageHistory);
-            }
+            users[banObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(banObj.room, "ban"));
 			fn(true);
 		}
 		fn(false);
@@ -352,15 +318,7 @@ io.sockets.on('connection', function (socket) {
 		if(rooms[unbanObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room ban list.
 			delete rooms[unbanObj.room].banned[unbanObj.user];
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ socket.username + '\' is no longer banned from the room'
-            };
-            rooms[unbanObj.room].addMessage(messageObj);
-            for(var user in rooms[unbanObj.room].users){
-                users[user].socket.emit('updatechat', unbanObj.room, rooms[unbanObj.room].messageHistory);
-            }
+            users[unbanObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(unbanObj.room, "unBan"));
 			fn(true);
 		}
 		fn(false);
@@ -418,6 +376,34 @@ io.sockets.on('connection', function (socket) {
 		fn(false);
 	});
 });
+
+function ServerAnnouncement( room, reason) {
+    this.room = room;
+    this.msg = {
+        nick : 'Server',
+        timestamp :  new Date(),
+        message :''
+    };
+    this.reason = reason;
+
+    switch (reason){
+        case 'ban':
+            this.msg.message = 'You have been banned from '+ room;
+            break;
+        case 'unBan':
+            this.msg.message = 'You are no longer banned from '+ room;
+            break;
+        case 'kick':
+            this.msg.message = 'You have been kicked from '+ room;
+            break;
+        case 'op':
+            this.msg.message = 'You just became an admin of '+ room;
+            break;
+        case 'deOp':
+            this.msg.message = 'Your admin rights of '+ room + ' has been terminated.';
+            break;
+    }
+}
 
 //Define the Room class/object.
 function Room() {

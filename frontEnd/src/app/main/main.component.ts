@@ -1,6 +1,6 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { ChatService } from '../chat.service';
-import { SharedRoomObj } from '../shared-room-obj';
+import { ChatService } from '../services/chat.service';
+import { SharedRoomObj } from '../classes/shared-room-obj';
 
 
 @Component({

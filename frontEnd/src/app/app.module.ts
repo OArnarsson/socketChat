@@ -7,10 +7,10 @@ import { MainComponent } from './main/main.component';
 import { CurrentchatComponent } from './currentchat/currentchat.component';
 import { ChatdetailsComponent } from './chatdetails/chatdetails.component';
 import { ChatpickerComponent } from './chatpicker/chatpicker.component';
-import { ChatService } from './chat.service';
+import { ChatService } from './services/chat.service';
 import { LoginComponent } from './login/login.component';
-import { InitialsPipe } from './initials.pipe';
-import { NamecolorPipe } from './namecolor.pipe';
+import { InitialsPipe } from './pipes/initials.pipe';
+import { NamecolorPipe } from './pipes/namecolor.pipe';
 
 @NgModule({
     declarations: [
