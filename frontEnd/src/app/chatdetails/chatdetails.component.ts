@@ -96,13 +96,17 @@ export class ChatdetailsComponent implements OnInit {
             if (this.onlineState === 'active') {
                 this.onlineState = 'inactive';
             }
-            this.onlineState = 'active';
+            else {
+                this.onlineState = 'active';
+            }
         }
         if (menu === 'room') {
             if (this.roomState === 'active') {
                 this.roomState = 'inactive';
             }
-            this.roomState = 'active';
+            else {
+                this.roomState = 'active';
+            }
         }
     }
 
