@@ -225,9 +225,7 @@ export class CurrentchatComponent implements OnInit {
             }
         )
     }
-
     // Toast service functions
-
     addToast(title: string, announcement: ServerAnnouncement) {
         var toastOptions:ToastOptions = {
             title: title,
