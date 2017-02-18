@@ -169,7 +169,6 @@ io.sockets.on('connection', function (socket) {
 			for(var user in rooms[data.roomName].users){
                 users[user].socket.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
             }
-			//io.sockets.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
 		}
 	});
 
@@ -178,9 +177,9 @@ io.sockets.on('connection', function (socket) {
 		//If user exists in global user list.
         var obj =  {nick: "", message: ""};
 		if(users[msgObj.nick] !== undefined) {
-            console.log("found user:"+msgObj.nick);
+            console.log("found user:"+msgObj.nick + "msg: "+ msgObj.msg);
 			//Send the message only to this user.
-			users[msgObj.nick].socket.emit('recvPrivateMsg', socket.username, msgObj.message);
+			users[msgObj.nick].socket.emit('recvPrivateMsg', socket.username, msgObj.msg);
 			//Callback recieves true.
 			fn(true);
 		}

@@ -33,7 +33,7 @@ export class ChatService {
         this.socket.emit('sendmsg', msg);
     }
     sendPrivateMessage(msg) {
-        console.log('this is the private msg: ' + msg);
+        console.log('this is the private msg: ' + msg['msg']);
         this.socket.emit('privatemsg', msg, (data) => { });
     }
 
