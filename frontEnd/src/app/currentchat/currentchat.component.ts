@@ -221,6 +221,14 @@ export class CurrentchatComponent implements OnInit {
                         this.addToast("O shii", Announcement);
                         break;
 
+                    case 'wrong password' :
+                        this.addToast("Damn..", Announcement);
+                        break;
+
+                    case 'banned' :
+                        this.addToast("To bad...", Announcement);
+                        break;
+
                 }
             }
         )
@@ -261,6 +269,14 @@ export class CurrentchatComponent implements OnInit {
                 break;
 
             case 'deOp' :
+                this.toastyService.warning(toastOptions);
+                break;
+
+            case 'wrong password' :
+                this.toastyService.warning(toastOptions);
+                break;
+
+            case 'banned' :
                 this.toastyService.warning(toastOptions);
                 break;
         }

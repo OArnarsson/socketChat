@@ -139,6 +139,7 @@ io.sockets.on('connection', function (socket) {
 				io.sockets.emit('servermessage', "join", room, socket.username);
 			}
 			if (fn) {
+                users[socket.username].socket.emit('serverAnnouncement', new ServerAnnouncement(room, reason));
 				fn(false, reason);
 			}
 		}
@@ -407,6 +408,12 @@ function ServerAnnouncement( room, reason) {
             break;
         case 'deOp':
             this.msg.message = 'Your admin rights of '+ room + ' has been terminated.';
+            break;
+        case 'wrong password':
+            this.msg.message = 'You entered wrong password for ' + room;
+            break;
+        case 'banned':
+            this.msg.message = 'Sorry you are banned from this room: ' + room;
             break;
     }
 }
