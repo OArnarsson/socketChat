@@ -238,7 +238,7 @@ export class CurrentchatComponent implements OnInit {
                     title = 'Good or bad thing ?';
                 }
 
-                this.addToast(title,Announcement);
+                this.addToast(title, Announcement);
             }
         );
     }
@@ -260,11 +260,11 @@ export class CurrentchatComponent implements OnInit {
             sent = true;
             this.toastyService.success(toastOptions);
         }
-        if (announcement.reason === 'ban'){
+        if (announcement.reason === 'ban') {
             sent = true;
             this.toastyService.info(toastOptions);
         }
-        if (announcement.reason === 'self-ban'){
+        if (announcement.reason === 'self-ban') {
             sent = true;
             this.toastyService.error(toastOptions);
         }

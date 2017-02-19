@@ -74,10 +74,10 @@ io.sockets.on('connection', function (socket) {
                 message : 'This room was created by: '+ socket.username
             };
             rooms[room].addMessage(messageObj);
-
             for(var user in rooms[room].users){
-                users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+                users[user].socket.emit('updatechat', room, rooms[room].topic, rooms[room].messageHistory);
             }
+
 			// Update topic
 			socket.emit('updatetopic', room, rooms[room].topic, socket.username);
 			io.sockets.emit('servermessage', "join", room, socket.username);
@@ -110,27 +110,23 @@ io.sockets.on('connection', function (socket) {
 				}
 				//Keep track of the room in the user object.
 				users[socket.username].channels[room] = room;
-				//Send the room information to the client.
-                //socket.emit('updatechat', room, rooms[room].messageHistory);
-                if (rooms[room].users[socket.username] === undefined){
-                    var messageObj = {
-                        nick : 'Server',
-                        timestamp :  new Date(),
-                        message :'The user \''+ socket.username + '\' joined the room'
-                    };
-                    rooms[room].addMessage(messageObj);
-                }
+
                 rooms[room].addUser(socket.username);
-                for(var user in rooms[room].users){
-                    users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
-                }
 
                 io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops, rooms[room].banned);
 				socket.emit('updatetopic', room, rooms[room].topic, socket.username);
 				io.sockets.emit('servermessage', "join", room, socket.username);
+                for(var user in rooms[room].users){
+                    if (user !== socket.username) {
+                        users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'join'));
+                    }
+                    users[user].socket.emit('updatechat', room, rooms[room].topic, rooms[room].messageHistory);
+                }
 			}
 			if (fn) {
-                users[socket.username].socket.emit('serverAnnouncement', new ServerAnnouncement(room, reason));
+			    if(!accepted){
+                    users[socket.username].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, reason));
+                }
 				fn(false, reason);
 			}
 		}
@@ -158,7 +154,7 @@ io.sockets.on('connection', function (socket) {
 			rooms[data.roomName].addMessage(messageObj);
 			//Testing this
 			for(var user in rooms[data.roomName].users){
-                users[user].socket.emit('updatechat', data.roomName, rooms[data.roomName].messageHistory);
+                users[user].socket.emit('updatechat', data.roomName, rooms[data.roomName].topic, rooms[data.roomName].messageHistory);
             }
 		}
 	});
@@ -183,14 +179,9 @@ io.sockets.on('connection', function (socket) {
 		//Remove the channel from the user object in the global user roster.
 		delete users[socket.username].channels[room];
 		//Update the userlist in the room.
-        var messageObj = {
-            nick : 'Server',
-            timestamp :  new Date(),
-            message :'The user \''+ socket.username + '\' left the room'
-        };
-        rooms[room].addMessage(messageObj);
+        console.log("leaving"+ room);
         for(var user in rooms[room].users){
-            users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+            users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'leave'));
         }
 		io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops, rooms[room].banned);
 		io.sockets.emit('servermessage', "part", room, socket.username);
@@ -201,23 +192,16 @@ io.sockets.on('connection', function (socket) {
 		if(socket.username) {
 			//If the socket doesn't have a username the client joined and parted without
 			//chosing a username, so we just close the socket without any cleanup.
-            var messageObj = {
-                nick : 'Server',
-                timestamp :  new Date(),
-                message :'The user \''+ socket.username + '\' disconnected'
-            };
 
 			for(var room in users[socket.username].channels) {
 				//Remove the user from users/ops lists in the rooms he's currently in.
 				delete rooms[room].users[socket.username];
 				delete rooms[room].ops[socket.username];
 				io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops, rooms[room].banned);
-                rooms[room].addMessage(messageObj);
                 for(var user in rooms[room].users){
-                    users[user].socket.emit('updatechat', room, rooms[room].messageHistory);
+                    users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'leave'));
                 }
 			}
-
 
 			//Broadcast the the user has left the channels he was in.
 			io.sockets.emit('servermessage', "quit", users[socket.username].channels, socket.username);
@@ -239,11 +223,12 @@ io.sockets.on('connection', function (socket) {
 		if(rooms[kickObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room roster.
 			delete rooms[kickObj.room].users[kickObj.user];
-			//Broadcast to the room who got kicked.
-			io.sockets.emit('kicked', kickObj.room, kickObj.user, socket.username);
+            users[kickObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(kickObj.user, kickObj.room, "self-kick"));
 			//Update user list for room.
 			io.sockets.emit('updateusers', kickObj.room, rooms[kickObj.room].users, rooms[kickObj.room].ops, rooms[kickObj.room].banned);
-            users[kickObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(kickObj.room, "kick"));
+            for(var user in rooms[kickObj.room].users){
+                users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(kickObj.user, kickObj.room, "kick"));
+            }
 			fn(true);
 		}
 		else {
@@ -260,7 +245,9 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('opped', opObj.room, opObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', opObj.room, rooms[opObj.room].users, rooms[opObj.room].ops, rooms[opObj.room].banned);
-            users[opObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(opObj.room, "op"));
+            for(var user in rooms[opObj.room].users){
+                users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(opObj.user, opObj.room, "op"));
+            }
 			fn(true);
 		}
 		else {
@@ -278,7 +265,9 @@ io.sockets.on('connection', function (socket) {
 			io.sockets.emit('deopped', deopObj.room, deopObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', deopObj.room, rooms[deopObj.room].users, rooms[deopObj.room].ops, rooms[deopObj.room].banned);
-            users[deopObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(deopObj.room, "deOp"));
+            for(var user in rooms[deopObj.room].users){
+                users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(deopObj.user, deopObj.room, "deOp"));
+            }
 			fn(true);
 		}
 		else {
@@ -296,7 +285,10 @@ io.sockets.on('connection', function (socket) {
 			//Kick the user from the room.
 			io.sockets.emit('banned', banObj.room, banObj.user, socket.username);
 			io.sockets.emit('updateusers', banObj.room, rooms[banObj.room].users, rooms[banObj.room].ops, rooms[banObj.room].banned);
-            users[banObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(banObj.room, "ban"));
+            users[banObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(banObj.user, banObj.room, "self-ban"));
+            for(var user in rooms[banObj.room].users){
+                users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(banObj.user, banObj.room, "ban"));
+            }
 			fn(true);
 		}
 		fn(false);
@@ -308,7 +300,10 @@ io.sockets.on('connection', function (socket) {
 			//Remove the user from the room ban list.
 			delete rooms[unbanObj.room].banned[unbanObj.user];
             io.sockets.emit('updateusers', unbanObj.room, rooms[unbanObj.room].users, rooms[unbanObj.room].ops, rooms[unbanObj.room].banned);
-            users[unbanObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(unbanObj.room, "unBan"));
+            users[unbanObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(unbanObj.user ,unbanObj.room, "unBan"));
+            for(var user in rooms[unbanObj.room].users){
+                users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(unbanObj.user, unbanObj.room, "unBan"));
+            }
 			fn(true);
 		}
 		fn(false);
@@ -365,7 +360,7 @@ io.sockets.on('connection', function (socket) {
 });
 
 // Define the ServerAnnouncement class, we user this to display some of the server messages for the user.
-function ServerAnnouncement( room, reason) {
+function ServerAnnouncement(user, room, reason) {
     this.room = room;
     this.msg = {
         nick : 'Server',
@@ -375,20 +370,32 @@ function ServerAnnouncement( room, reason) {
     this.reason = reason;
 
     switch (reason){
+        case 'join':
+            this.msg.message = user + ' joined room: '+ room;
+            break;
+        case 'leave':
+            this.msg.message = user + 'left from room: '+ room;
+            break;
         case 'ban':
+            this.msg.message = user + ' is now banned from '+ room;
+            break;
+        case 'self-ban':
             this.msg.message = 'You have been banned from '+ room;
             break;
         case 'unBan':
-            this.msg.message = 'You are no longer banned from '+ room;
+            this.msg.message = user + ' is no longer banned from '+ room;
             break;
-        case 'kick':
+        case 'self-kick':
             this.msg.message = 'You have been kicked from '+ room;
             break;
+        case 'kick':
+            this.msg.message = user +' was kicked from '+ room;
+            break;
         case 'op':
-            this.msg.message = 'You just became an admin of '+ room;
+            this.msg.message = user +' just became an admin of '+ room;
             break;
         case 'deOp':
-            this.msg.message = 'Your admin rights of '+ room + ' has been terminated.';
+            this.msg.message = user + '\'s admin rights of '+ room + ' has been terminated.';
             break;
         case 'wrong password':
             this.msg.message = 'You entered wrong password for ' + room;

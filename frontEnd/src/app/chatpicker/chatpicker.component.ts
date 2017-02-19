@@ -90,7 +90,7 @@ export class ChatpickerComponent implements OnInit {
             this.showError = true;
         }
     }
-    removeError(){
+    removeError() {
         this.showError = false;
     }
 
