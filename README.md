@@ -25,6 +25,8 @@ $ cd socketChat/frontend
 $ npm i
 $ ng serve
 ```
+Now open up your browser and navigate to:  
+http://localhost:4200/
 
 
 [Onri]: <https://onri.is/>
