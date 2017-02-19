@@ -22,7 +22,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('adduser', function(username, fn){
 
 		//Check if username is avaliable.
-		if (users[username.toLowerCase()] === undefined && username.toLowerCase() != "server" && username.length < 21) {
+		if (users[username] === undefined && username.toLowerCase() != "server" && (username.toLowerCase().replace(" ", "").match(/^[0-9a-z]+$/)) && username.toLowerCase().replace(" ", "") != "you" && username.length < 21) {
 			socket.username = username;
 
 			//Store user object in global user roster.
@@ -55,7 +55,7 @@ io.sockets.on('connection', function (socket) {
 		// If the room does not exist
 		if(rooms[room] === undefined) {
 			rooms[room] = new Room();
-			if(joinObj.topic != ""){
+			if(joinObj.topic !== ""){
                 rooms[room].topic = joinObj.topic;
             }
 			// Op the user if he creates the room.

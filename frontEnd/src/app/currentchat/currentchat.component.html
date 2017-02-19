@@ -1,18 +1,20 @@
 <div id="currentChat">
   <div class="openConvContainer">
-    <div *ngFor="let conversation of getOpenConversations()" [ngClass]="{'activeChat': isActive(conversation.name)}"  class="{{conversation.roomClass}}">
-      <span *ngIf="conversation.unreadMessages > 0">{{conversation.unreadMessages}}</span><h4 (click)="changeRoom(conversation)">{{conversation.name | initials}}</h4>
-      <i (click)="leaveRoom(conversation)" class="fa fa-times exit" aria-hidden="true"></i>
-        <div class="weirdActiveBorder"></div>
+      <div *ngFor="let conversation of getOpenConversations()" [ngClass]="{'activeChat': isActive(conversation.name)}" class="bubbleContainer">
+          <i (click)="leaveRoom(conversation)" class="fa fa-times exit bubbleExit" aria-hidden="true"></i>
+          <div class="{{conversation.roomClass}} chatBubble" (click)="changeRoom(conversation)">
+              <span *ngIf="conversation.unreadMessages > 0">{{conversation.unreadMessages}}</span><h4>{{conversation.name | initials}}</h4>
+          </div>
+          <div class="weirdActiveBorder"></div>
+      </div>
     </div>
-  </div>
-  <div class="mainChat">
-    <div class="message" *ngFor="let msgObj of getActiveRoomChat(); let indx = index" [ngClass]="{'unread': getUnreadMessages() < indx}">
+  <div class="mainChat" (mouseenter)="resetRoomUnreadMsg()">
+    <div class="message" *ngFor="let msgObj of getActiveRoomChat(); let indx = index" [ngClass]="{'unread': getUnreadMessages() <= indx}" >
       <div>
         <div class="avatar" [ngStyle]="{'background-color':msgObj.nick | namecolor}">{{msgObj.nick | initials}}</div>
       </div>
       <div>
-        <div class="messageUser">{{msgObj.nick}}</div>
+        <div class="messageUser">{{getUserName(msgObj.nick)}}</div>
         <div class="messageText">{{msgObj.message}}</div>
       </div>
       <div class="messageTime">{{msgObj.timeStamp | date:'hh:mm'}}</div>

@@ -104,7 +104,12 @@ export class ChatdetailsComponent implements OnInit {
 
         return allUsers.concat(bannedUsers);
     }
-
+    getUserName(user){
+        if (user === this.whoAmI) {
+           return 'You';
+        }
+        return user;
+    }
     getGlobalUsers() {
         this.chat.getGlobalUsers().subscribe(
             userList => {
@@ -148,6 +153,9 @@ export class ChatdetailsComponent implements OnInit {
             }
         }
         return false;
+    }
+    isAdminAndNotMe(user){
+        return (this.isAdmin(this.whoAmI) && user !== this.whoAmI);
     }
 
     isMyself(userName: string) {
