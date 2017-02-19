@@ -75,7 +75,7 @@ export class ChatdetailsComponent implements OnInit {
 
     getActiveDetails() {
         let UserArr: string[] = [];
-        let isAdmin: boolean = false;
+        let isAdmin = false;
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI) {
                 // User list for normal user
@@ -87,14 +87,14 @@ export class ChatdetailsComponent implements OnInit {
                 }
             }
         }
-        if (isAdmin){
+        if (isAdmin) {
             UserArr = this.getBannedUsers(UserArr);
         }
         return UserArr;
     }
 
     getBannedUsers(UserArr: string[]) {
-        let allUsers = UserArr;
+        const allUsers = UserArr;
         let bannedUsers: string [];
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI) {
@@ -104,7 +104,7 @@ export class ChatdetailsComponent implements OnInit {
 
         return allUsers.concat(bannedUsers);
     }
-    getUserName(user){
+    getUserName(user) {
         if (user === this.whoAmI) {
            return 'You';
         }
@@ -119,44 +119,40 @@ export class ChatdetailsComponent implements OnInit {
         );
     }
 
-    getFontAwesomeClass(action: string, userName: string){
-        let className: string = '';
-        switch (action){
+    getFontAwesomeClass(action: string, userName: string) {
+        let className = '';
+        switch (action) {
             case 'admin':
                 if (this.isAdmin(userName)) {
                     className = 'fa fa-user-times';
-                }
-                else{
+                } else {
                     className = 'fa fa-user-o';
                 }
                 break;
             case 'ban':
                 if (this.isBanned(userName)) {
                     className = 'fa fa-circle-o';
-                }
-                else{
+                } else {
                     className = 'fa fa-ban';
                 }
                 break;
         }
         return className;
     }
-    getspanDescription(action:string, userName:string){
-        let description: string = '';
-        switch (action){
-            case 'admin':
+    getspanDescription(action: string, userName: string) {
+        let description = '';
+        switch (action) {
+            case 'admin' :
                 if (this.isAdmin(userName)) {
                     description = 'DeOp User';
-                }
-                else{
+                } else {
                     description = 'Op User';
                 }
                 break;
-            case 'ban':
+            case 'ban' :
                 if (this.isBanned(userName)) {
                     description = 'Unban';
-                }
-                else{
+                } else {
                     description = 'Ban';
                 }
                 break;
@@ -168,22 +164,20 @@ export class ChatdetailsComponent implements OnInit {
         if (menu === 'online') {
             if (this.onlineState === 'active') {
                 this.onlineState = 'inactive';
-            }
-            else {
+            } else {
                 this.onlineState = 'active';
             }
         }
         if (menu === 'room') {
             if (this.roomState === 'active') {
                 this.roomState = 'inactive';
-            }
-            else {
+            } else {
                 this.roomState = 'active';
             }
         }
     }
 
-    isBanned(userName: string){
+    isBanned(userName: string) {
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI && detail.banned.indexOf(userName) > -1) {
                 return true;
@@ -201,7 +195,7 @@ export class ChatdetailsComponent implements OnInit {
         return false;
     }
 
-    isAdminAndNotMe(user){
+    isAdminAndNotMe(user) {
         return (this.isAdmin(this.whoAmI) && user !== this.whoAmI);
     }
 
@@ -220,8 +214,7 @@ export class ChatdetailsComponent implements OnInit {
     toggleOpUser(userName: string) {
         if (this.isAdmin(userName)) {
             this.chat.deOpUser({ room: this.whereAmI, user: userName });
-        }
-        else {
+        } else {
             this.chat.opUser({ room: this.whereAmI, user: userName });
         }
     }
@@ -229,8 +222,7 @@ export class ChatdetailsComponent implements OnInit {
     toggleBanUser(userName: string) {
         if (this.isBanned(userName)) {
             this.chat.unBanUser({ room: this.whereAmI, user: userName });
-        }
-        else {
+        } else {
             this.chat.banUser({ room: this.whereAmI, user: userName });
         }
     }

@@ -1,4 +1,4 @@
-import { ServerMessage} from './server-message'
+import { ServerMessage} from './server-message';
 export class ServerAnnouncement {
     public room: string;
     public msg: ServerMessage;

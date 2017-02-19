@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
         this.chat.logIn(this.userName).subscribe(
             data => {
                 if (data) {
-                    console.log(`'${this.userName}' has been logged in`);
                     this.isAvailable = true;
                     this.attemptToLogIn.emit(this.userName);
                     this.joinRoom();

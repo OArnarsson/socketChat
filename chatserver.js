@@ -24,29 +24,24 @@ io.sockets.on('connection', function (socket) {
 		//Check if username is avaliable.
 		if (users[username] === undefined && username.toLowerCase() != "server" && (username.toLowerCase().replace(" ", "").match(/^[0-9a-z]+$/)) && username.toLowerCase().replace(" ", "") != "you" && username.length < 21) {
 			socket.username = username;
-
 			//Store user object in global user roster.
 			users[username] = { username: socket.username, channels: {}, socket: this };
-			console.log("User added: " + username);
 			fn(true); // Callback, user name was available
             var globalUsers = [];
             for(var user in users){
                 globalUsers.push(user);
             }
-            io.sockets.emit('globalUsers', globalUsers);
+            //Returns all connected users.
+            io.sockets.emit('globalUsers', globalUsers); //The other method was not working as well as expected, so globalUsers was created to fill its place.
             io.sockets.emit('updateusers', 'lobby', rooms['lobby'].users, rooms['lobby'].ops, rooms['lobby'].banned);
 		}
 		else {
-			console.log("User " + username + " already present!");
 			fn(false); // Callback, it wasn't available
 		}
 	});
 
 	//When a user joins a room this processes the request.
 	socket.on('joinroom', function (joinObj, fn) {
-		console.log("Attempting to join a room");
-		console.log(joinObj);
-
 		var room = joinObj.room;
 		var pass = joinObj.pass;
 		var accepted = true;
@@ -66,7 +61,6 @@ io.sockets.on('connection', function (socket) {
 			}
 			// Keep track of the room in the user object.
 			users[socket.username].channels[room] = room;
-			console.log(users[socket.username].channels);
 			// Send the room information to the client.
 			if (fn) {
 				fn(true);
@@ -114,9 +108,6 @@ io.sockets.on('connection', function (socket) {
 				if (fn) {
 					fn(true);
 				}
-				console.log("User was added to room"); //Debugging
-				//Add user to room.
-
 				//Keep track of the room in the user object.
 				users[socket.username].channels[room] = room;
 				//Send the room information to the client.
@@ -147,7 +138,6 @@ io.sockets.on('connection', function (socket) {
 
 	// when the client emits 'sendchat', this listens and executes
 	socket.on('sendmsg', function (data) {
-		console.log("trying to send msg from:", socket.username); //Debugging
 		var userAllowed = false;
 
 		//Check if user is allowed to send message.
@@ -174,11 +164,8 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('privatemsg', function (msgObj, fn) {
-        console.log("trying to send private from: "+socket.username+", to: " + msgObj.nick);
 		//If user exists in global user list.
-        var obj =  {nick: "", message: ""};
 		if(users[msgObj.nick] !== undefined) {
-            console.log("found user:"+msgObj.nick + "msg: "+ msgObj.msg);
 			//Send the message only to this user.
 			users[msgObj.nick].socket.emit('recvPrivateMsg', socket.username, msgObj.msg);
 			//Callback recieves true.
@@ -191,7 +178,6 @@ io.sockets.on('connection', function (socket) {
 	//When a user leaves a room this gets performed.
 	socket.on('partroom', function (room) {
 		//remove the user from the room roster and room op roster.
-        console.log("parting room: "+room+" as: "+ socket.username);
 		delete rooms[room].users[socket.username];
 		delete rooms[room].ops[socket.username];
 		//Remove the channel from the user object in the global user roster.
@@ -249,7 +235,6 @@ io.sockets.on('connection', function (socket) {
 
 	//When a user tries to kick another user this gets performed.
 	socket.on('kick', function (kickObj, fn) {
-		console.log(socket.username + " kicked " + kickObj.user + " from " + kickObj.room);
 
 		if(rooms[kickObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room roster.
@@ -268,7 +253,6 @@ io.sockets.on('connection', function (socket) {
 
 	//When a user tries to op another user this gets performed.
 	socket.on('op', function (opObj, fn) {
-		console.log(socket.username + " opped " + opObj.user + " from " + opObj.room);
 		if(rooms[opObj.room].ops[socket.username] !== undefined) {
 			//Op the user.
 			rooms[opObj.room].ops[opObj.user] = opObj.user;
@@ -286,7 +270,6 @@ io.sockets.on('connection', function (socket) {
 
 		//When a user tries to deop another user this gets performed.
 	socket.on('deop', function (deopObj, fn) {
-		console.log(socket.username + " deopped " + deopObj.user + " from " + deopObj.room);
 		//If user is OP
 		if(rooms[deopObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room op roster.
@@ -333,20 +316,17 @@ io.sockets.on('connection', function (socket) {
 
 	//Returns a list of all avaliable rooms.
 	socket.on('rooms', function() {
-		console.log("Requesting a list of rooms");
 		socket.emit('roomlist', rooms);
 	});
 
 	//Returns a list of all connected users.
 	socket.on('users', function() {
 		var userlist = [];
-
 		//We need to construct the list since the users in the global user roster have a reference to socket, which has a reference
 		//back to users so the JSON serializer can't serialize them.
 		for(var user in users) {
 			userlist.push(user);
 		}
-		console.log("Requesting list of users");
 		socket.emit('userlist', userlist);
 	});
 
@@ -384,6 +364,7 @@ io.sockets.on('connection', function (socket) {
 	});
 });
 
+// Define the ServerAnnouncement class, we user this to display some of the server messages for the user.
 function ServerAnnouncement( room, reason) {
     this.room = room;
     this.msg = {

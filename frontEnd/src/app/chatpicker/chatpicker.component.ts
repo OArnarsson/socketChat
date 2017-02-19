@@ -62,8 +62,7 @@ export class ChatpickerComponent implements OnInit {
         if (menu === 'all') {
             if (this.availableState === 'active') {
                 this.availableState = 'inactive';
-            }
-            else {
+            } else {
                 this.availableState = 'active';
             }
 
@@ -71,8 +70,7 @@ export class ChatpickerComponent implements OnInit {
         if (menu === 'modal') {
             if (this.modalState === 'active') {
                 this.modalState = 'inactive';
-            }
-            else {
+            } else {
                 this.modalState = 'active';
             }
         }
