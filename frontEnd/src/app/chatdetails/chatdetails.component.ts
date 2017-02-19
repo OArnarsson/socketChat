@@ -47,7 +47,7 @@ export class ChatdetailsComponent implements OnInit {
     ngOnInit() {
         this.roomDetails = [];
         this.globalUsers = [];
-        this.onlineState = 'inactive';
+        this.onlineState = 'active';
         this.roomState = 'active';
         this.getGlobalUsers();
         this.getUsers();
