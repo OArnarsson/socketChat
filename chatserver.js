@@ -80,7 +80,6 @@ io.sockets.on('connection', function (socket) {
 
 			// Update topic
 			socket.emit('updatetopic', room, rooms[room].topic, socket.username);
-			io.sockets.emit('servermessage', "join", room, socket.username);
 		}
 		else {
 
@@ -115,7 +114,6 @@ io.sockets.on('connection', function (socket) {
 
                 io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops, rooms[room].banned);
 				socket.emit('updatetopic', room, rooms[room].topic, socket.username);
-				io.sockets.emit('servermessage', "join", room, socket.username);
                 for(var user in rooms[room].users){
                     if (user !== socket.username) {
                         users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'join'));
@@ -184,7 +182,6 @@ io.sockets.on('connection', function (socket) {
             users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'leave'));
         }
 		io.sockets.emit('updateusers', room, rooms[room].users, rooms[room].ops, rooms[room].banned);
-		io.sockets.emit('servermessage', "part", room, socket.username);
 	});
 
 	// when the user disconnects.. perform this
@@ -202,9 +199,6 @@ io.sockets.on('connection', function (socket) {
                     users[user].socket.emit('serverAnnouncement', new ServerAnnouncement(socket.username, room, 'leave'));
                 }
 			}
-
-			//Broadcast the the user has left the channels he was in.
-			io.sockets.emit('servermessage', "quit", users[socket.username].channels, socket.username);
 			//Remove the user from the global user roster.
 			delete users[socket.username];
 
@@ -241,8 +235,6 @@ io.sockets.on('connection', function (socket) {
 		if(rooms[opObj.room].ops[socket.username] !== undefined) {
 			//Op the user.
 			rooms[opObj.room].ops[opObj.user] = opObj.user;
-			//Broadcast to the room who got opped.
-			io.sockets.emit('opped', opObj.room, opObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', opObj.room, rooms[opObj.room].users, rooms[opObj.room].ops, rooms[opObj.room].banned);
             for(var user in rooms[opObj.room].users){
@@ -261,8 +253,6 @@ io.sockets.on('connection', function (socket) {
 		if(rooms[deopObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room op roster.
 			delete rooms[deopObj.room].ops[deopObj.user];
-			//Broadcast to the room who got opped.
-			io.sockets.emit('deopped', deopObj.room, deopObj.user, socket.username);
 			//Update user list for room.
 			io.sockets.emit('updateusers', deopObj.room, rooms[deopObj.room].users, rooms[deopObj.room].ops, rooms[deopObj.room].banned);
             for(var user in rooms[deopObj.room].users){
@@ -282,8 +272,6 @@ io.sockets.on('connection', function (socket) {
             delete users[banObj.user].channels[banObj.room];
             //Add the user to the ban list and remove him from the room user roster.
             rooms[banObj.room].banUser(banObj.user);
-			//Kick the user from the room.
-			io.sockets.emit('banned', banObj.room, banObj.user, socket.username);
 			io.sockets.emit('updateusers', banObj.room, rooms[banObj.room].users, rooms[banObj.room].ops, rooms[banObj.room].banned);
             users[banObj.user].socket.emit('serverAnnouncement', new ServerAnnouncement(banObj.user, banObj.room, "self-ban"));
             for(var user in rooms[banObj.room].users){
@@ -314,49 +302,6 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('roomlist', rooms);
 	});
 
-	//Returns a list of all connected users.
-	socket.on('users', function() {
-		var userlist = [];
-		//We need to construct the list since the users in the global user roster have a reference to socket, which has a reference
-		//back to users so the JSON serializer can't serialize them.
-		for(var user in users) {
-			userlist.push(user);
-		}
-		socket.emit('userlist', userlist);
-	});
-
-	//Sets topic for room.
-	socket.on('settopic', function (topicObj, fn) {
-		//If user is OP
-		if(rooms[topicObj.room].ops[socket.username] !== undefined) {
-			rooms[topicObj.room].setTopic(topicObj.topic);
-			//Broadcast to room that the user changed the topic.
-			io.sockets.emit('updatetopic', topicObj.room, topicObj.topic, socket.username);
-			fn(true);
-		}
-		//Return false if topic was not set.
-		fn(false);
-	});
-
-	//Password locks the room.
-	socket.on('setpassword', function (passwordObj, fn) {
-
-		//If user is OP
-		if(rooms[passwordObj.room].ops[socket.username] !== undefined) {
-			rooms[passwordObj.room].setPassword(passwordObj.password);
-			fn(true);
-		}
-		fn(false);
-	});
-
-	//Unlocks the room.
-	socket.on('removepassword', function (remObj, fn) {
-		if(rooms[remObj.room].ops[socket.username] !== undefined) {
-			rooms[remObj.room].clearPassword();
-			fn(true);
-		}
-		fn(false);
-	});
 });
 
 // Define the ServerAnnouncement class, we user this to display some of the server messages for the user.
