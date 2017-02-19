@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
     setViewToPrivateMsg(userName: string) {
         if (userName !== this.roomObj.username) {
             this.roomObj.room = userName;
-            this.roomObj.topic = 'private Msg';
+            this.roomObj.topic = 'Private Msg';
             this.roomObj.privateMsg = true;
         }
     }

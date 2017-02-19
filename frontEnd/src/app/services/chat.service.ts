@@ -47,12 +47,12 @@ export class ChatService {
 
     getMessages(): Observable<Chatroom> {
         const observable = new Observable(observer => {
-            this.socket.on('updatechat', (room, history) => {
+            this.socket.on('updatechat', (room, topic, history) => {
                 const msgHistory: Message[] = [];
                 for (const msg of history) {
                     msgHistory.push(new Message(msg['nick'], msg['timestamp'], msg['message'], false));
                 };
-                observer.next(new Chatroom(room, msgHistory));
+                observer.next(new Chatroom(room, topic, msgHistory));
             });
         });
         return observable;

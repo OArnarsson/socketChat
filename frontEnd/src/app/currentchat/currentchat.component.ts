@@ -48,7 +48,7 @@ export class CurrentchatComponent implements OnInit {
                 if (!found) {
                     const msgArr = [];
                     msgArr.push(new Message(this.activeObj.username, new Date(), this.message, true));
-                    this.privateConv.push(new Chatroom(this.activeObj.room, msgArr));
+                    this.privateConv.push(new Chatroom(this.activeObj.room, this.activeObj.topic, msgArr));
                 }
                 this.chat.sendPrivateMessage({ nick: this.activeObj.room, msg: this.message });
             }
@@ -60,15 +60,15 @@ export class CurrentchatComponent implements OnInit {
             chatRoom => {
                 let isNew = true;
                 for (const index in this.chatRooms) {
-                    if (this.chatRooms[index].name === chatRoom['name']) {
+                    if (this.chatRooms[index].name === chatRoom.name) {
                         // This need some more work.
                         if (this.chatRooms[index].name !== this.activeObj.room) {
-                            if (this.chatRooms[index].history.length < chatRoom['history'].length) {
+                            if (this.chatRooms[index].history.length < chatRoom.history.length) {
                                 this.chatRooms[index].roomClass = 'unreadMsg';
                                 this.chatRooms[index].unreadMessages += 1;
                             }
                         }
-                        this.chatRooms[index].history = chatRoom['history'];
+                        this.chatRooms[index].history = chatRoom.history;
                         isNew = false;
                     }
                 }
@@ -94,7 +94,7 @@ export class CurrentchatComponent implements OnInit {
                 if (!found) {
                     const msgArr = [];
                     msgArr.push(message);
-                    const newPrivateConv = new Chatroom(message.nick, msgArr);
+                    const newPrivateConv = new Chatroom(message.nick, 'Private Msg', msgArr);
                     newPrivateConv.unreadMessages += 1;
                     newPrivateConv.roomClass = 'unreadMsg';
                     this.privateConv.push(newPrivateConv);
@@ -147,7 +147,6 @@ export class CurrentchatComponent implements OnInit {
 
     resetRoomUnreadMsg() {
         const active = this.findActiveRoom();
-
         if (active !== null) {
             setTimeout(function(){
                 active.unreadMessages = 0;
@@ -158,11 +157,11 @@ export class CurrentchatComponent implements OnInit {
     }
 
     changeRoom(convo: Chatroom) {
-        const newObj: SharedRoomObj = new SharedRoomObj(convo.name, 'missing from ChatRoom class', this.activeObj.username, false);
+        const newObj: SharedRoomObj = new SharedRoomObj(convo.name, convo.topic, this.activeObj.username, false);
         if (convo.history.length > 0) {
             if (convo.history[0].privateMsg) {
                 newObj.privateMsg = true;
-                newObj.topic = 'Private Message';
+                newObj.topic = 'Private Msg';
             }
         }
         // ToDo: Now we need to be able to retrieve topic from the room.
@@ -220,40 +219,26 @@ export class CurrentchatComponent implements OnInit {
     getServerAnnouncement() {
         this.chat.getServerAnnouncement().subscribe(
             Announcement => {
-                switch (Announcement.reason) {
-                    case 'kick' :
-                        // Anounce message for the user
-                        this.searchAndDestroy(Announcement.room);
-                        this.addToast('o shii', Announcement);
-                        break;
-
-                    case 'ban' :
-                        // Anounce message for the user
-                        this.searchAndDestroy(Announcement.room);
-                        this.addToast('O shii...', Announcement);
-                        break;
-
-                    case 'unBan' :
-                        this.addToast('Congratz!', Announcement);
-                        break;
-
-                    case 'op' :
-                        this.addToast('Congratz!', Announcement);
-                        break;
-
-                    case 'deOp' :
-                        this.addToast('O shii...', Announcement);
-                        break;
-
-                    case 'wrong password' :
-                        this.addToast('Damn...', Announcement);
-                        break;
-
-                    case 'banned' :
-                        this.addToast('To bad...', Announcement);
-                        break;
-
+                let title = 'Be adviced! ';
+                if (Announcement.reason === 'self-kick' || Announcement.reason === 'self-ban') {
+                    this.searchAndDestroy(Announcement.room);
                 }
+
+                if (Announcement.reason === 'unBan' || Announcement.reason === 'op') {
+                   title = 'Hurray!';
+                }
+
+                if (Announcement.reason === 'wrong password' || Announcement.reason === 'banned') {
+                    title = 'To bad...';
+                }
+                if (Announcement.reason === 'join') {
+                    title = 'Remember to be nice!';
+                }
+                if (Announcement.reason === 'leave') {
+                    title = 'Good or bad thing ?';
+                }
+
+                this.addToast(title,Announcement);
             }
         );
     }
@@ -270,35 +255,21 @@ export class CurrentchatComponent implements OnInit {
             onAdd: (toast: ToastData) => {},
             onRemove: function(toast: ToastData) {}
         };
-        // Add see all possible types in one shot
-        switch (announcement.reason) {
-            case 'kick' :
-                this.toastyService.warning(toastOptions);
-                break;
-
-            case 'ban' :
-                this.toastyService.warning(toastOptions);
-                break;
-
-            case 'unBan' :
-                this.toastyService.success(toastOptions);
-                break;
-
-            case 'op' :
-                this.toastyService.success(toastOptions);
-                break;
-
-            case 'deOp' :
-                this.toastyService.warning(toastOptions);
-                break;
-
-            case 'wrong password' :
-                this.toastyService.warning(toastOptions);
-                break;
-
-            case 'banned' :
-                this.toastyService.warning(toastOptions);
-                break;
+        let sent = false;
+        if (announcement.reason === 'unBan' || announcement.reason === 'op' || announcement.reason === 'join') {
+            sent = true;
+            this.toastyService.success(toastOptions);
+        }
+        if (announcement.reason === 'ban'){
+            sent = true;
+            this.toastyService.info(toastOptions);
+        }
+        if (announcement.reason === 'self-ban'){
+            sent = true;
+            this.toastyService.error(toastOptions);
+        }
+        if (!sent) {
+            this.toastyService.info(toastOptions);
         }
     }
 

@@ -24,7 +24,8 @@
       <div class="modal">
         <div class="flexRow">
           <h3>Create a room</h3> <i (click)="toggleDropDown('modal')" class="fa fa-times exit" aria-hidden="true"></i></div>
-        <input type="text" name="roomName" autofocus placeholder="Name" [(ngModel)]="newName">
+          <span *ngIf="showError">Please name the room!</span>
+        <input type="text" name="roomName" autofocus placeholder="Name" [(ngModel)]="newName" (keyup)="removeError()">
         <input type="text" name="roomTopic" placeholder="Topic" [(ngModel)]="newTopic">
         <div (click)="newRoom()" class="button">CREATE</div>
       </div>

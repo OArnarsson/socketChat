@@ -39,6 +39,7 @@ export class ChatpickerComponent implements OnInit {
     activeState: string;
     newName: string;
     newTopic: string;
+    showError: boolean;
     @Input() activeObj: SharedRoomObj;
     @Output() setActiveRoom = new EventEmitter();
 
@@ -47,6 +48,8 @@ export class ChatpickerComponent implements OnInit {
         this.getAllRooms();
         this.modalState = 'inactive';
         this.availableState = 'active';
+        this.showError = false;
+        this.newName = '';
     }
 
     ngOnInit() {
@@ -77,11 +80,20 @@ export class ChatpickerComponent implements OnInit {
     }
 
     newRoom() {
-        this.changeRoom({ room: this.newName, topic: this.newTopic });
-        this.newName = '';
-        this.newTopic = '';
-        this.modalState = 'inactive';
+        // Requirement for new room name, not == whitespaces.
+        if (this.newName.replace(/\s/g, '').length) {
+            this.changeRoom({ room: this.newName, topic: this.newTopic });
+            this.newName = '';
+            this.newTopic = '';
+            this.modalState = 'inactive';
+        } else {
+            this.showError = true;
+        }
     }
+    removeError(){
+        this.showError = false;
+    }
+
 
     changeRoom(x) {
         this.chat.changeRoom(x).subscribe(
@@ -89,7 +101,6 @@ export class ChatpickerComponent implements OnInit {
                 if (data['data']) {
                     this.setActiveRoom.emit(new SharedRoomObj(x.room, x.topic, this.activeObj.username, false));
                 }
-                // data['reason'] is a type string, we can display for the user if password is need or, user is banned etc.
 
             }
         );
