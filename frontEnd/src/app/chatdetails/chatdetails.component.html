@@ -7,18 +7,16 @@
         <div class="userName">{{getUserName(user)}}</div>
         <i *ngIf="isAdmin(user)" class="fa fa-trophy noHover" aria-hidden="true"></i>
         <div *ngIf="isAdminAndNotMe(user)" class="actionButtons">
-          <i (click)="opUser(user)" class="fa fa-user-o" aria-hidden="true">
-          <span class="tooltip">Admin</span>
-        </i>
-          <i (click)="kickUser(user)" class="fa fa-trash-o" aria-hidden="true">
-          <span class="tooltip">Kick</span>
-        </i>
-          <i (click)="banUser(user)" class="fa fa-ban" aria-hidden="true">
-          <span class="tooltip">Ban</span>
-        </i>
-          <i (click)="unBanUser(user)" class="fa fa-circle-o" aria-hidden="true">
-          <span class="tooltip">Unban</span>
-        </i>
+            <i *ngIf="!isBanned(user)" (click)="toggleOpUser(user)" class="{{getFontAwesomeClass('admin', user)}}" aria-hidden="true">
+              <span class="tooltip">{{getspanDescription('admin', user)}}</span>
+            </i>
+            <i *ngIf="!isBanned(user)" (click)="kickUser(user)" class="fa fa-trash-o" aria-hidden="true">
+                <span class="tooltip">Kick</span>
+            </i>
+            <h2 *ngIf="isBanned(user)">Is Banned!</h2>
+            <i (click)="toggleBanUser(user)" class="{{getFontAwesomeClass('ban', user)}}" aria-hidden="true">
+                <span class="tooltip">{{getspanDescription('ban', user)}}</span>
+            </i>
         </div>
       </div>
     </div>

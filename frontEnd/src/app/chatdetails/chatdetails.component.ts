@@ -119,6 +119,51 @@ export class ChatdetailsComponent implements OnInit {
         );
     }
 
+    getFontAwesomeClass(action: string, userName: string){
+        let className: string = '';
+        switch (action){
+            case 'admin':
+                if (this.isAdmin(userName)) {
+                    className = 'fa fa-user-times';
+                }
+                else{
+                    className = 'fa fa-user-o';
+                }
+                break;
+            case 'ban':
+                if (this.isBanned(userName)) {
+                    className = 'fa fa-circle-o';
+                }
+                else{
+                    className = 'fa fa-ban';
+                }
+                break;
+        }
+        return className;
+    }
+    getspanDescription(action:string, userName:string){
+        let description: string = '';
+        switch (action){
+            case 'admin':
+                if (this.isAdmin(userName)) {
+                    description = 'DeOp User';
+                }
+                else{
+                    description = 'Op User';
+                }
+                break;
+            case 'ban':
+                if (this.isBanned(userName)) {
+                    description = 'Unban';
+                }
+                else{
+                    description = 'Ban';
+                }
+                break;
+        }
+        return description;
+    }
+
     toggleDropDown(menu: string) {
         if (menu === 'online') {
             if (this.onlineState === 'active') {
@@ -146,6 +191,7 @@ export class ChatdetailsComponent implements OnInit {
         }
         return false;
     }
+
     isAdmin(userName: string) {
         for (const detail of this.roomDetails) {
             if (detail.room === this.whereAmI && detail.ops.indexOf(userName) > -1) {
@@ -154,6 +200,7 @@ export class ChatdetailsComponent implements OnInit {
         }
         return false;
     }
+
     isAdminAndNotMe(user){
         return (this.isAdmin(this.whoAmI) && user !== this.whoAmI);
     }
@@ -170,21 +217,22 @@ export class ChatdetailsComponent implements OnInit {
         this.chat.kickUser({ room: this.whereAmI, user: userName });
     }
 
-    opUser(userName: string) {
-        this.chat.opUser({ room: this.whereAmI, user: userName });
+    toggleOpUser(userName: string) {
+        if (this.isAdmin(userName)) {
+            this.chat.deOpUser({ room: this.whereAmI, user: userName });
+        }
+        else {
+            this.chat.opUser({ room: this.whereAmI, user: userName });
+        }
     }
 
-    deOpUser(userName: string) {
-        this.chat.deOpUser({ room: this.whereAmI, user: userName });
+    toggleBanUser(userName: string) {
+        if (this.isBanned(userName)) {
+            this.chat.unBanUser({ room: this.whereAmI, user: userName });
+        }
+        else {
+            this.chat.banUser({ room: this.whereAmI, user: userName });
+        }
     }
-
-    banUser(userName: string) {
-        this.chat.banUser({ room: this.whereAmI, user: userName });
-    }
-
-    unBanUser(userName: string) {
-        this.chat.unBanUser({ room: this.whereAmI, user: userName });
-    }
-
 
 }
