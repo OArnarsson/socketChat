@@ -14,7 +14,7 @@ Before the installation **make sure** that you are using the **server we supplie
 Install the dependencies and start the server.
 
 ```sh
-$ cd socketChat
+$ cd socketChat/server
 $ npm i
 $ node chatserver.js
 ```
