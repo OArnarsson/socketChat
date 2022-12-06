@@ -3,7 +3,7 @@
 	"description" : "WEPO Chat client assignment",
 	"version" : "0.0.1",
 	"dependencies" : {  
-		"express" : "4.14.1",
+		"express" : "4.17.3",
 		"socket.io" : "1.7.2"
 	}
 }
